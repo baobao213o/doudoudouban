@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">my</string>
+
+    <string name="my_user_gotologin">去登录</string>
+
+
+    <string name="my_navigation_home">个人主页</string>
+    <string name="my_navigation_book">读书</string>
+    <string name="my_navigation_movie">电影</string>
+    <string name="my_navigation_music">音乐</string>
+    <string name="my_navigation_diary">日记</string>
+    <string name="my_navigation_message">消息</string>
+    <string name="my_navigation_exit">退出</string>
+
+    <string name="my_follow">关注：%d</string>
+
+    <string name="my_followed">被关注：%d</string>
+
+
+
+</resources>

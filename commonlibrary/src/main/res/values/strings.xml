@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">CommonLibrary</string>
+    <!--通用错误码 -->
+    <string name="common_network_error">网络连接失败,请检查网络</string>
+    <string name="common_network_parse_error">解析错误</string>
+    <string name="common_network_ssl_error">证书验证失败</string>
+    <string name="common_network_unknow_error">未知host</string>
+
+
+    <!--豆瓣错误码 -->
+    <string name="common_network_invalid_request_scheme">错误的请求协议</string>
+    <string name="common_network_invalid_request_method">错误的请求方法</string>
+    <string name="common_network_access_token_is_missing">未找到access_token</string>
+    <string name="common_network_invalid_access_token">access_token不存在或已被用户删除，或者用户修改了密码</string>
+    <string name="common_network_invalid_apikey">apikey不存在或已删除</string>
+    <string name="common_network_apikey_is_blocked">apikey已被禁用</string>
+    <string name="common_network_access_token_has_expired">access_token已过期</string>
+    <string name="common_network_invalid_request_uri">请求地址未注册</string>
+    <string name="common_network_invalid_credencial1">用户未授权访问此数据</string>
+    <string name="common_network_invalid_credencial2">apikey未申请此权限</string>
+    <string name="common_network_not_trial_user">未注册的测试用户</string>
+    <string name="common_network_rate_limit_exceeded1">用户访问速度限制</string>
+    <string name="common_network_rate_limit_exceeded2">IP访问速度限制</string>
+    <string name="common_network_required_parameter_is_missing">缺少参数</string>
+    <string name="common_network_unsupported_grant_type">错误的grant_type</string>
+    <string name="common_network_unsupported_response_type">错误的response_type</string>
+    <string name="common_network_client_secret_mismatch">client_secret不匹配</string>
+    <string name="common_network_redirect_uri_mismatch">redirect_uri不匹配</string>
+    <string name="common_network_invalid_authorization_code">authorization_code不存在或已过期</string>
+    <string name="common_network_invalid_refresh_token">refresh_token不存在或已过期</string>
+    <string name="common_network_username_password_mismatch">用户名密码不匹配</string>
+    <string name="common_network_invalid_user">用户不存在或已删除</string>
+    <string name="common_network_user_has_blocked">用户已被屏蔽</string>
+    <string name="common_network_access_token_has_expired_since_password_changed">因用户修改密码而导致access_token过期</string>
+    <string name="common_network_access_token_has_not_expired">access_token未过期</string>
+    <string name="common_network_invalid_request_scope">访问的scope不合法</string>
+    <string name="common_network_invalid_request_source">访问来源不合法</string>
+    <string name="common_network_thirdparty_login_auth_faied">第三方授权错误</string>
+    <string name="common_network_user_locked">用户被锁定</string>
+    <string name="common_network_unknow_v2_error">未知错误</string>
+    <string name="common_network_need_permission">需要权限</string>
+    <string name="common_network_uri_not_found">资源不存在</string>
+    <string name="common_network_missing_args">参数不全</string>
+    <string name="common_network_image_too_large">上传的图片太大</string>
+    <string name="common_network_has_ban_word">输入有违禁词</string>
+    <string name="common_network_input_too_short">输入为空，或者输入字数不够</string>
+    <string name="common_network_target_not_fount">相关的对象不存在</string>
+    <string name="common_network_need_captcha">需要验证码，验证码有误</string>
+    <string name="common_network_image_unknow">不支持的图片格式</string>
+    <string name="common_network_image_wrong_format">照片格式有误(仅支持JPG,JPEG,GIF,PNG或BMP)</string>
+    <string name="common_network_image_wrong_ck">访问私有图片ck验证错误</string>
+    <string name="common_network_image_ck_expired">访问私有图片ck过期</string>
+    <string name="common_network_title_missing">题目为空</string>
+    <string name="common_network_desc_missing">描述为空</string>
+
+</resources>

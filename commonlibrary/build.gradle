@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    def applicationId = "\"假的豆瓣\""
+
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue 'string', 'application_id', applicationId
+        buildConfigField 'String', 'application_id', applicationId
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api "com.android.support:appcompat-v7:${compiles.supportLibrary}"
+    api "com.android.support:support-v4:${compiles.supportLibrary}"
+    api "com.android.support:design:${compiles.supportLibrary}"
+    api "com.android.support.constraint:constraint-layout:${compiles.constraintLayout}"
+
+    //arouter
+    api "com.alibaba:arouter-api:${compiles.arouterApi}"
+    //rxjava
+    api "io.reactivex.rxjava2:rxjava:${compiles.rxjava}"
+    api "io.reactivex.rxjava2:rxandroid:${compiles.rxandroid}"
+    //retrofit
+    api "com.squareup.retrofit2:retrofit:${compiles.retrofit}"
+    api "com.squareup.retrofit2:converter-gson:${compiles.retrofit}"
+    api "com.squareup.retrofit2:adapter-rxjava2:${compiles.retrofit}"
+    //gson
+    api "com.google.code.gson:gson:${compiles.gson}"
+    //leakcanary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${compiles.leakcanary}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${compiles.leakcanary}"
+    //glide
+    api "com.github.bumptech.glide:glide:${compiles.glide}"
+    annotationProcessor  "com.github.bumptech.glide:compiler:${compiles.glide}"
+
+}
+

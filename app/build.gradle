@@ -1,0 +1,38 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion versions.compileSdk
+    defaultConfig {
+        applicationId "com.xxx.douban"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    if (isModule.toBoolean()) {
+        implementation project(':commonlibrary')
+    } else {
+        implementation project(':diary')
+        implementation project(':syy')
+        implementation project(':my')
+    }
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    annotationProcessor "com.alibaba:arouter-compiler:${compiles.arouterCompiler}"
+}
