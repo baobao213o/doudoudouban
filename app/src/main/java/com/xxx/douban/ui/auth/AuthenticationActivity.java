@@ -122,7 +122,7 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
         AccountHelper.getInstance().setAuthToken(data.accessToken);
         AccountHelper.getInstance().setRefreshToken(data.refreshToken);
 
-        RxBusManager.getInstance().post(AccountHelper.RXBUS_LOGIN);
+        RxBusManager.getInstance().post(AccountHelper.RXBUS_UPDATE_USER_STATUS);
 
         Intent intent = new Intent();
         intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, data.userName);

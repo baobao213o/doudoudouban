@@ -33,9 +33,9 @@ public class AccountHelper {
 
     private static final String ACCOUNT_ACTIVE_ISEXPIRED = "account_active_isexpired";
 
-    public static final int RXBUS_LOGIN = 1;
+    public static final int RXBUS_UPDATE_USER_STATUS = 1;
 
-    public static final int RXBUS_LOGOUT = 2;
+    public static final int RXBUS_CLEAR_USER_STATUS = 2;
 
     public static AccountHelper getInstance() {
         if (instance == null) {
@@ -112,10 +112,13 @@ public class AccountHelper {
     }
 
     private boolean isAccountExpired() {
-        return getBoolean(getAccounts()[0], ACCOUNT_ACTIVE_ISEXPIRED, false);
+        return getAccounts().length > 0 && getBoolean(getAccounts()[0], ACCOUNT_ACTIVE_ISEXPIRED, false);
     }
 
     public void setAccountExpired(boolean value) {
+        if (getAccounts().length <= 0) {
+            return ;
+        }
         setBoolean(getAccounts()[0], ACCOUNT_ACTIVE_ISEXPIRED, value);
     }
 

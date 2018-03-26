@@ -9,19 +9,20 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xxx.douban.R;
-import com.xxx.library.base.BaseActivity;
+import com.xxx.douban.entity.BookInfo;
 import com.xxx.library.entity.User;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.view.IView;
+import com.xxx.library.user.BaseUserActivity;
+import com.xxx.library.user.IUserFragment;
 import com.xxx.library.utils.ColorUtil;
 import com.xxx.library.utils.FragmentUtil;
-import com.xxx.my.ui.user.UserFragment;
 
 @Route(path = "/main/main/MainActivity")
-public class MainActivity extends BaseActivity<User, TestPresenter> implements IView<User> {
+public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> implements IView<BookInfo> {
 
 
-    private UserFragment leftFragment;
+    private IUserFragment leftFragment;
     private DrawerLayout drawer;
 
     @Override
@@ -54,7 +55,6 @@ public class MainActivity extends BaseActivity<User, TestPresenter> implements I
     }
 
 
-
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -62,5 +62,15 @@ public class MainActivity extends BaseActivity<User, TestPresenter> implements I
         } else {
             moveTaskToBack(isTaskRoot());
         }
+    }
+
+    @Override
+    public void onUserUpdateSuccess(User user) {
+        leftFragment.onUserUpdateSuccess(user);
+    }
+
+    @Override
+    public void clearUserStatus() {
+        leftFragment.clearUserStatus();
     }
 }

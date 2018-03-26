@@ -13,20 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xxx.library.account.AccountHelper;
-import com.xxx.library.base.BaseUserFrgment;
+import com.xxx.library.base.BaseFragment;
 import com.xxx.library.entity.User;
 import com.xxx.library.glide.GlideApp;
-import com.xxx.library.mvp.model.BaseModel;
-import com.xxx.library.mvp.view.IView;
+import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.rxjava.RxBusManager;
+import com.xxx.library.user.IUserFragment;
 import com.xxx.my.R;
 
 /**
  * Created by gaoruochen on 18-3-20.
  */
 
-public class UserFragment extends BaseUserFrgment<User, UserPresenter> implements IView<User> {
+public class UserFragment extends BaseFragment implements IUserFragment{
 
     private ImageView userHead;
     private TextView userName;
@@ -45,51 +45,8 @@ public class UserFragment extends BaseUserFrgment<User, UserPresenter> implement
         initNavigationView(view);
         initUnLoginView(inflater);
         initLoginView(inflater);
+        clearUserStatus();
         return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        updateUserInfo();
-    }
-
-    @Override
-    public void updateUserInfo() {
-        presenter.getUsr();
-    }
-
-    @Override
-    public void removeUserInfo() {
-        if (navigation.getHeaderCount() != 0) {
-            navigation.removeHeaderView(navigation.getHeaderView(0));
-        }
-        navigation.addHeaderView(unloginView);
-    }
-
-    @Override
-    protected UserPresenter createPresenter() {
-        return new UserPresenter(this, new BaseModel());
-    }
-
-    @Override
-    public void onSuccess(User user) {
-        super.onSuccess(user);
-        if (navigation.getHeaderCount() != 0) {
-            navigation.removeHeaderView(navigation.getHeaderView(0));
-        }
-        navigation.addHeaderView(loginView);
-        GlideApp.with(this).load(user.large_avatar).placeholder(R.drawable.my_user_head_normal).error(R.drawable.my_user_head_normal).into(userHead);
-        userName.setText(user.name);
-        userId.setText(user.id);
-        follow.setText(String.format(getString(R.string.my_follow), user.following_count));
-        followed.setText(String.format(getString(R.string.my_followed), user.followers_count));
-    }
-
-    @Override
-    public void onFailure(ExceptionHandle.ResponeThrowable responeThrowable) {
-        super.onFailure(responeThrowable);
-        removeUserInfo();
     }
 
 
@@ -106,7 +63,6 @@ public class UserFragment extends BaseUserFrgment<User, UserPresenter> implement
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.navigation_message) {
-                    presenter.getUsr();
                     System.out.println("message");
                 } else if (id == R.id.navigation_book) {
                     System.out.println("book");
@@ -118,7 +74,7 @@ public class UserFragment extends BaseUserFrgment<User, UserPresenter> implement
                     System.out.println("diary");
                 } else if (id == R.id.navigation_exit) {
                     AccountHelper.getInstance().setAccountExpired(true);
-                    RxBusManager.getInstance().post(AccountHelper.RXBUS_LOGOUT);
+                    RxBusManager.getInstance().post(AccountHelper.RXBUS_CLEAR_USER_STATUS);
                 }
                 return true;
             }
@@ -144,6 +100,7 @@ public class UserFragment extends BaseUserFrgment<User, UserPresenter> implement
 //                        }
 //                    }
 //                });
+                AccountHelper.getInstance().addAccount(getActivity(),null);
             }
         });
     }
@@ -186,4 +143,34 @@ public class UserFragment extends BaseUserFrgment<User, UserPresenter> implement
         });
     }
 
+    @Override
+    public void onUserUpdateFailure(ExceptionHandle.ResponeThrowable responeThrowable) {
+
+    }
+
+    @Override
+    public void onUserUpdateSuccess(User user) {
+        if (navigation.getHeaderCount() != 0) {
+            navigation.removeHeaderView(navigation.getHeaderView(0));
+        }
+        navigation.addHeaderView(loginView);
+        GlideApp.with(this).load(user.large_avatar).placeholder(R.drawable.my_user_head_normal).error(R.drawable.my_user_head_normal).into(userHead);
+        userName.setText(user.name);
+        userId.setText(user.id);
+        follow.setText(String.format(getString(R.string.my_follow), user.following_count));
+        followed.setText(String.format(getString(R.string.my_followed), user.followers_count));
+    }
+
+    @Override
+    public void clearUserStatus() {
+        if (navigation.getHeaderCount() != 0) {
+            navigation.removeHeaderView(navigation.getHeaderView(0));
+        }
+        navigation.addHeaderView(unloginView);
+    }
+
+    @Override
+    protected BasePresenter createPresenter() {
+        return null;
+    }
 }
