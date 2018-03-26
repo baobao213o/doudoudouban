@@ -1,10 +1,5 @@
 package com.xxx.my.ui.user;
 
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,8 +21,6 @@ import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.rxjava.RxBusManager;
 import com.xxx.my.R;
-
-import java.io.IOException;
 
 /**
  * Created by gaoruochen on 18-3-20.
@@ -137,20 +130,20 @@ public class UserFragment extends BaseUserFrgment<User, UserPresenter> implement
         unloginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AccountHelper.getInstance().addAccount(getActivity(), new AccountManagerCallback<Bundle>() {
-                    @Override
-                    public void run(AccountManagerFuture<Bundle> future) {
-                        activity.finish();
-                        try {
-                            Bundle result = future.getResult();
-                            if (result.containsKey(AccountManager.KEY_ACCOUNT_NAME) && result.containsKey(AccountManager.KEY_ACCOUNT_TYPE)) {
-                                activity.startActivity(activity.getIntent());
-                            }
-                        } catch (AuthenticatorException | IOException | OperationCanceledException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+//                AccountHelper.getInstance().addAccount(getActivity(), new AccountManagerCallback<Bundle>() {
+//                    @Override
+//                    public void run(AccountManagerFuture<Bundle> future) {
+//                        activity.finish();
+//                        try {
+//                            Bundle result = future.getResult();
+//                            if (result.containsKey(AccountManager.KEY_ACCOUNT_NAME) && result.containsKey(AccountManager.KEY_ACCOUNT_TYPE)) {
+//                                activity.startActivity(activity.getIntent());
+//                            }
+//                        } catch (AuthenticatorException | IOException | OperationCanceledException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
             }
         });
     }
