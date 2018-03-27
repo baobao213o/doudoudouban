@@ -3,6 +3,7 @@ package com.xxx.library.user;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.xxx.library.account.AccountHelper;
 import com.xxx.library.base.BaseActivity;
 import com.xxx.library.entity.User;
 import com.xxx.library.network.exception.ExceptionHandle;
@@ -16,6 +17,7 @@ public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
         UserManager.getInstance().register(this, this);
         if(!shouldInitUserInfo()){
             return;
@@ -29,6 +31,9 @@ public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends 
     }
 
 
+    public abstract void initView();
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -39,6 +44,11 @@ public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends 
     @Override
     public void getUserFromRemote() {
         presenter.getUserFromRemote();
+    }
+
+    @Override
+    public void onUserUpdateSuccess(User user) {
+        AccountHelper.getInstance().setUser(user);
     }
 
     @Override

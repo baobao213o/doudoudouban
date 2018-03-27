@@ -86,20 +86,6 @@ public class UserFragment extends BaseFragment implements IUserFragment{
         unloginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AccountHelper.getInstance().addAccount(getActivity(), new AccountManagerCallback<Bundle>() {
-//                    @Override
-//                    public void run(AccountManagerFuture<Bundle> future) {
-//                        activity.finish();
-//                        try {
-//                            Bundle result = future.getResult();
-//                            if (result.containsKey(AccountManager.KEY_ACCOUNT_NAME) && result.containsKey(AccountManager.KEY_ACCOUNT_TYPE)) {
-//                                activity.startActivity(activity.getIntent());
-//                            }
-//                        } catch (AuthenticatorException | IOException | OperationCanceledException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
                 AccountHelper.getInstance().addAccount(getActivity(),null);
             }
         });

@@ -10,7 +10,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
 import com.xxx.library.BaseApplication;
+import com.xxx.library.entity.User;
 
 import java.io.IOException;
 
@@ -32,6 +34,8 @@ public class AccountHelper {
     private static AccountManager accountManager;
 
     private static final String ACCOUNT_ACTIVE_ISEXPIRED = "account_active_isexpired";
+
+    private static final String ACCOUNT_USER = "account_user";
 
     public static final int RXBUS_UPDATE_USER_STATUS = 1;
 
@@ -129,6 +133,21 @@ public class AccountHelper {
 
     public void addAccount(Activity activity, AccountManagerCallback<Bundle> callback) {
         accountManager.addAccount(ACCOUNT_TYPE, ACCOUNT_AUTH_TOKEN, null, null, activity, callback, null);
+    }
+
+    public void setUser(User user) {
+        if (!isAccountExpired()) {
+            String userStr = new Gson().toJson(user);
+            setString(getActiveAccount(),ACCOUNT_USER, userStr);
+        }
+    }
+
+    public User getUser() {
+        if (!isAccountExpired()) {
+            String userStr = getString(getActiveAccount(),ACCOUNT_USER, "");
+            return new Gson().fromJson(userStr, User.class);
+        }
+        return null;
     }
 
 

@@ -41,7 +41,7 @@ public class UserManager {
 
         Disposable disposable = RxBusManager.getInstance().registerEvent(Integer.class, new Consumer<Integer>() {
             @Override
-            public void accept(Integer integer) throws Exception {
+            public void accept(Integer integer) {
                 switch (integer) {
                     case AccountHelper.RXBUS_UPDATE_USER_STATUS:
                         listener.getUserFromRemote();
@@ -55,7 +55,7 @@ public class UserManager {
             }
         }, new Consumer<Throwable>() {
             @Override
-            public void accept(Throwable throwable) throws Exception {
+            public void accept(Throwable throwable) {
                 CommonLogger.e(throwable.getMessage());
             }
         });
@@ -82,6 +82,9 @@ public class UserManager {
     public User getUser(Bundle outState) {
         if (outState != null) {
             user = outState.getParcelable(USER_SAVE);
+        }
+        if(user==null){
+            user=AccountHelper.getInstance().getUser();
         }
         return user;
     }
