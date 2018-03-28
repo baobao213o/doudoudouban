@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.xxx.library.R;
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.mvp.view.IView;
@@ -72,7 +73,7 @@ public abstract class BaseActivity<Entity, P extends BasePresenter> extends AppC
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponeThrowable responeThrowable) {
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
 
     }
 
@@ -91,7 +92,10 @@ public abstract class BaseActivity<Entity, P extends BasePresenter> extends AppC
 
     @Override
     public void showAuthError(String errorMsg) {
-        DialogFragmentHelper.showConfirmDialog(getSupportFragmentManager(), errorMsg, new IDialogResultListener<Integer>() {
+        DialogFragmentHelper.showConfirmDialog(getSupportFragmentManager()
+                ,errorMsg,getString(R.string.common_dialog_login)
+                ,getString(R.string.common_dialog_cancel)
+                ,new IDialogResultListener<Integer>() {
             @Override
             public void onDataResult(Integer which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {

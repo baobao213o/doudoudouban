@@ -10,7 +10,7 @@
     <string name="my_navigation_music">音乐</string>
     <string name="my_navigation_diary">日记</string>
     <string name="my_navigation_message">消息</string>
-    <string name="my_navigation_exit">退出</string>
+    <string name="my_navigation_logout">注销</string>
 
     <string name="my_follow">关注：%d</string>
 

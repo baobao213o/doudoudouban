@@ -12,6 +12,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -71,14 +72,14 @@ public class DialogFragmentHelper {
     private static final int CONFIRM_THEME = R.style.Base_AlertDialog;
     public static final String CONfIRM_TAG = TAG_HEAD + ":confirm";
 
-    public static void showConfirmDialog(FragmentManager fragmentManager, final String message, final IDialogResultListener<Integer> listener
+    public static void showConfirmDialog(FragmentManager fragmentManager, final String message,final String confirm,final String cancel,final IDialogResultListener<Integer> listener
             , boolean cancelable, CommonDialogFragment.OnDialogCancelListener cancelListener){
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
             public Dialog getDialog(Context context) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, CONFIRM_THEME);
                 builder.setMessage(message);
-                builder.setPositiveButton(DIALOG_POSITIVE, new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(TextUtils.isEmpty(confirm)?DIALOG_POSITIVE:confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(listener != null){
@@ -86,7 +87,7 @@ public class DialogFragmentHelper {
                         }
                     }
                 });
-                builder.setNegativeButton(DIALOG_NEGATIVE, new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(TextUtils.isEmpty(cancel)?DIALOG_NEGATIVE:cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(listener != null){

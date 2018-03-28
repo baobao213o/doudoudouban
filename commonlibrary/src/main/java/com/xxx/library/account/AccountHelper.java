@@ -13,6 +13,7 @@ import android.os.Bundle;
 import com.google.gson.Gson;
 import com.xxx.library.BaseApplication;
 import com.xxx.library.entity.User;
+import com.xxx.library.utils.CommonLogger;
 
 import java.io.IOException;
 
@@ -32,8 +33,6 @@ public class AccountHelper {
     private static volatile AccountHelper instance;
 
     private static AccountManager accountManager;
-
-    private static final String ACCOUNT_ACTIVE_ISEXPIRED = "account_active_isexpired";
 
     private static final String ACCOUNT_USER = "account_user";
 
@@ -62,11 +61,22 @@ public class AccountHelper {
         accountManager.addAccountExplicitly(account, password, null);
     }
 
-    public void setAuthToken(String authToken) {
-        if (isAccountExpired()) {
-            setAccountExpired(false);
+
+    public void removeAllAccount() {
+        Account[] accounts = AccountHelper.getInstance().getAccounts();
+        if (accounts.length > 0) {
+            for (Account temp : accounts) {
+                accountManager.removeAccount(temp, null, null);
+            }
         }
-        accountManager.setAuthToken(getActiveAccount(), ACCOUNT_AUTH_TOKEN, authToken);
+    }
+
+    public void setAuthToken(String authToken) {
+        try {
+            accountManager.setAuthToken(getActiveAccount(), ACCOUNT_AUTH_TOKEN, authToken);
+        } catch (IllegalArgumentException e) {
+            CommonLogger.e(e.getMessage());
+        }
     }
 
     public String peekAuthToken() {
@@ -74,10 +84,11 @@ public class AccountHelper {
     }
 
     public void setRefreshToken(String token) {
-        if (isAccountExpired()) {
-            setAccountExpired(false);
+        try {
+            setString(getActiveAccount(), ACCOUNT_REFRESH_TOKEN, token);
+        } catch (IllegalArgumentException e) {
+            CommonLogger.e(e.getMessage());
         }
-        setString(getActiveAccount(), ACCOUNT_REFRESH_TOKEN, token);
     }
 
     public String getRefreshToken() {
@@ -85,10 +96,11 @@ public class AccountHelper {
     }
 
     public void setUserName(String name) {
-        if (isAccountExpired()) {
-            setAccountExpired(false);
+        try {
+            setString(getActiveAccount(), ACCOUNT_USER_NAME, name);
+        } catch (IllegalArgumentException e) {
+            CommonLogger.e(e.getMessage());
         }
-        setString(getActiveAccount(), ACCOUNT_USER_NAME, name);
     }
 
 
@@ -97,10 +109,12 @@ public class AccountHelper {
     }
 
     public void setUserId(long id) {
-        if (isAccountExpired()) {
-            setAccountExpired(false);
+        try {
+            setLong(getActiveAccount(), ACCOUNT_USER_ID, id);
+        } catch (IllegalArgumentException e) {
+            CommonLogger.e(e.getMessage());
         }
-        setLong(getActiveAccount(), ACCOUNT_USER_ID, id);
+
     }
 
     public long getUserId() {
@@ -115,17 +129,6 @@ public class AccountHelper {
         return accountManager.getPassword(getActiveAccount());
     }
 
-    private boolean isAccountExpired() {
-        return getAccounts().length > 0 && getBoolean(getAccounts()[0], ACCOUNT_ACTIVE_ISEXPIRED, false);
-    }
-
-    public void setAccountExpired(boolean value) {
-        if (getAccounts().length <= 0) {
-            return ;
-        }
-        setBoolean(getAccounts()[0], ACCOUNT_ACTIVE_ISEXPIRED, value);
-    }
-
 
     public void invalidateAuthToken(String token) {
         accountManager.invalidateAuthToken(ACCOUNT_TYPE, token);
@@ -136,18 +139,22 @@ public class AccountHelper {
     }
 
     public void setUser(User user) {
-        if (!isAccountExpired()) {
+        try {
             String userStr = new Gson().toJson(user);
-            setString(getActiveAccount(),ACCOUNT_USER, userStr);
+            setString(getActiveAccount(), ACCOUNT_USER, userStr);
+        } catch (IllegalArgumentException e) {
+            CommonLogger.e(e.getMessage());
         }
     }
 
     public User getUser() {
-        if (!isAccountExpired()) {
-            String userStr = getString(getActiveAccount(),ACCOUNT_USER, "");
+        try {
+            String userStr = getString(getActiveAccount(), ACCOUNT_USER, "");
             return new Gson().fromJson(userStr, User.class);
+        } catch (IllegalArgumentException e) {
+            CommonLogger.e(e.getMessage());
+            return null;
         }
-        return null;
     }
 
 
@@ -178,7 +185,7 @@ public class AccountHelper {
         if (accounts.length == 0) {
             return null;
         }
-        return isAccountExpired() ? null : accounts[0];
+        return accounts[0];
     }
 
 
@@ -205,7 +212,7 @@ public class AccountHelper {
     }
 
 
-    private Account[] getAccounts() {
+    public Account[] getAccounts() {
         return accountManager.getAccountsByType(ACCOUNT_TYPE);
     }
 

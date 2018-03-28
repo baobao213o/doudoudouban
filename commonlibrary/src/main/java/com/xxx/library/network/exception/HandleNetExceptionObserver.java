@@ -60,7 +60,7 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
         }
     }
 
-    public abstract void onError(ExceptionHandle.ResponeThrowable responeThrowable);
+    public abstract void onError(ExceptionHandle.ResponseThrowable responseThrowable);
 
     @Override
     public void onError(Throwable e) {
@@ -69,28 +69,28 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
         }
         if (e instanceof Exception) {
             //访问获得对应的Exception
-            ExceptionHandle.ResponeThrowable responeThrowable = new ExceptionHandle().handleException(e);
+            ExceptionHandle.ResponseThrowable responseThrowable = new ExceptionHandle().handleException(e);
 
-            ErrorResponse error = responeThrowable.getResponseError();
+            ErrorResponse error = responseThrowable.getResponseError();
             switch (error.code) {
+                case ErrorResponse.USER_LOCKED:
                 case ErrorResponse.ACCESS_TOKEN_IS_MISSING:
                 case ErrorResponse.INVALID_ACCESS_TOKEN:
                 case ErrorResponse.ACCESS_TOKEN_HAS_EXPIRED:
-                    AccountHelper.getInstance().setAccountExpired(true);
-                    showAuthError(responeThrowable);
+                    AccountHelper.getInstance().removeAllAccount();
+                    showAuthError(responseThrowable);
                     break;
                 default:
-                    showErrorDialog(responeThrowable);
+                    showErrorDialog(responseThrowable);
                     break;
             }
-            onError(responeThrowable);
-
+            onError(responseThrowable);
 
         } else {
             //将Throwable 和 未知错误的status code返回
-            ExceptionHandle.ResponeThrowable responeThrowable = new ExceptionHandle().new ResponeThrowable(e, ExceptionHandle.ERROR.UNKNOW);
-            showErrorDialog(responeThrowable);
-            onError(responeThrowable);
+            ExceptionHandle.ResponseThrowable responseThrowable = new ExceptionHandle().new ResponseThrowable(e, ExceptionHandle.ERROR.UNKNOW);
+            showErrorDialog(responseThrowable);
+            onError(responseThrowable);
         }
     }
 
@@ -101,15 +101,15 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
         }
     }
 
-    private void showErrorDialog(ExceptionHandle.ResponeThrowable responeThrowable) {
+    private void showErrorDialog(ExceptionHandle.ResponseThrowable responseThrowable) {
         if (showErrorDialog && presenter != null) {
-            presenter.getView().showErrorResult(responeThrowable.message);
+            presenter.getView().showErrorResult(responseThrowable.message);
         }
     }
 
-    private void showAuthError(ExceptionHandle.ResponeThrowable responeThrowable) {
-        if (showErrorDialog && presenter != null) {
-            presenter.getView().showAuthError(responeThrowable.message);
+    private void showAuthError(ExceptionHandle.ResponseThrowable responseThrowable) {
+        if (presenter != null) {
+            presenter.getView().showAuthError(responseThrowable.message);
         }
     }
 

@@ -14,7 +14,7 @@ public interface Contract {
 
         void onUserUpdateSuccess(User user);
 
-        void onUserUpdateFailure(ExceptionHandle.ResponeThrowable responeThrowable);
+        void onUserUpdateFailure(ExceptionHandle.ResponseThrowable responseThrowable);
     }
 
 

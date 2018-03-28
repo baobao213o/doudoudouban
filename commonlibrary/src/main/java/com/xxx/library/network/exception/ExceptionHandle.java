@@ -19,11 +19,11 @@ public class ExceptionHandle {
 
     private ErrorResponse error = new ErrorResponse();
 
-    ResponeThrowable handleException(Throwable e) {
-        ResponeThrowable ex;
+    ResponseThrowable handleException(Throwable e) {
+        ResponseThrowable ex;
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
-            ex = new ResponeThrowable(e, httpException.code());
+            ex = new ResponseThrowable(e, httpException.code());
             ex.message = e.getMessage();
             try {
                 ResponseBody body = httpException.response().errorBody();
@@ -39,27 +39,27 @@ public class ExceptionHandle {
             return ex;
         } else if (e instanceof ServerException) {
             ServerException resultException = (ServerException) e;
-            ex = new ResponeThrowable(resultException, resultException.code);
+            ex = new ResponseThrowable(resultException, resultException.code);
             ex.message = resultException.message;
             return ex;
         } else if (e instanceof JsonParseException || e instanceof JSONException) {
-            ex = new ResponeThrowable(e, ERROR.PARSE_ERROR);
+            ex = new ResponseThrowable(e, ERROR.PARSE_ERROR);
             ex.message = BaseApplication.getInstance().getString(R.string.common_network_parse_error);
             return ex;
         } else if (e instanceof ConnectException) {
-            ex = new ResponeThrowable(e, ERROR.NETWORD_ERROR);
+            ex = new ResponseThrowable(e, ERROR.NETWORD_ERROR);
             ex.message = BaseApplication.getInstance().getString(R.string.common_network_error);
             return ex;
         } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
-            ex = new ResponeThrowable(e, ERROR.SSL_ERROR);
+            ex = new ResponseThrowable(e, ERROR.SSL_ERROR);
             ex.message = BaseApplication.getInstance().getString(R.string.common_network_ssl_error);
             return ex;
         } else if (e instanceof UnknownHostException) {
-            ex = new ResponeThrowable(e, ERROR.UNKNOWN_HOST);
+            ex = new ResponseThrowable(e, ERROR.UNKNOWN_HOST);
             ex.message = BaseApplication.getInstance().getString(R.string.common_network_unknow_error);
             return ex;
         } else {
-            ex = new ResponeThrowable(e, ERROR.UNKNOW);
+            ex = new ResponseThrowable(e, ERROR.UNKNOW);
             ex.message = e.getMessage();
             return ex;
         }
@@ -70,7 +70,7 @@ public class ExceptionHandle {
      * 通用错误码
      */
 
-    interface ERROR {
+    public interface ERROR {
         /**
          * 未知错误
          */
@@ -93,11 +93,11 @@ public class ExceptionHandle {
         int UNKNOWN_HOST = 10004;
     }
 
-    public class ResponeThrowable extends Exception {
+    public class ResponseThrowable extends Exception {
         public int code;
         public String message;
 
-        ResponeThrowable(Throwable throwable, int code) {
+        ResponseThrowable(Throwable throwable, int code) {
             super(throwable);
             this.code = code;
             this.message = throwable.getMessage();

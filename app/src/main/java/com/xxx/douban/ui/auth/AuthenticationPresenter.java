@@ -31,8 +31,8 @@ class AuthenticationPresenter extends BasePresenter<IView<AuthenticationResponse
         mModel.getDataFromRemote(AuthenticationApi.class).authenticate(client_id, client_secret, redirect_uri, grant_type, user, pwd).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new HandleNetExceptionObserver<AuthenticationResponse>(this) {
             @Override
-            public void onError(ExceptionHandle.ResponeThrowable responeThrowable) {
-                mView.onFailure(responeThrowable);
+            public void onError(ExceptionHandle.ResponseThrowable responseThrowable) {
+                mView.onFailure(responseThrowable);
             }
 
             @Override

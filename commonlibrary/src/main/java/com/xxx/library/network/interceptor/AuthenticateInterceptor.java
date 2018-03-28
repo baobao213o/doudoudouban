@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.xxx.library.Constant;
 import com.xxx.library.account.AccountHelper;
+import com.xxx.library.entity.AuthenticationResponse;
 import com.xxx.library.entity.ErrorResponse;
 import com.xxx.library.utils.CommonLogger;
 
@@ -59,6 +60,12 @@ public class AuthenticateInterceptor implements Interceptor {
                 e.printStackTrace();
                 return response;
             }
+        }
+        //授权成功刷新token
+        if (response.request().url().toString().equals(Constant.Authentication.URL) && response.isSuccessful()) {
+            ResponseBody responseBody = response.peekBody(Long.MAX_VALUE);
+            AuthenticationResponse authenticationResponse = new Gson().fromJson(responseBody.string(), AuthenticationResponse.class);
+            token = authenticationResponse.accessToken;
         }
 
         return response;

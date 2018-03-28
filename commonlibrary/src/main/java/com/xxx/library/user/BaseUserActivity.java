@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.base.BaseActivity;
+import com.xxx.library.entity.ErrorResponse;
 import com.xxx.library.entity.User;
 import com.xxx.library.network.exception.ExceptionHandle;
 
@@ -17,7 +18,7 @@ public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
+        onBaseUserActivityCreate(savedInstanceState);
         UserManager.getInstance().register(this, this);
         if(!shouldInitUserInfo()){
             return;
@@ -31,7 +32,7 @@ public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends 
     }
 
 
-    public abstract void initView();
+    public abstract void onBaseUserActivityCreate(Bundle savedInstanceState);
 
 
     @Override
@@ -52,8 +53,13 @@ public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends 
     }
 
     @Override
-    public void onUserUpdateFailure(ExceptionHandle.ResponeThrowable responeThrowable) {
-
+    public void onUserUpdateFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
+        ErrorResponse error = responseThrowable.getResponseError();
+        switch (error.code) {
+            case ErrorResponse.NEED_PERMISSION:
+                showAuthError(responseThrowable.message);
+                break;
+        }
     }
 
     public boolean shouldInitUserInfo(){

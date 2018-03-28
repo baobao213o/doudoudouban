@@ -1,5 +1,6 @@
 package com.xxx.library.user;
 
+import com.xxx.library.account.AccountHelper;
 import com.xxx.library.entity.User;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.presenter.BasePresenter;
@@ -13,18 +14,34 @@ import io.reactivex.schedulers.Schedulers;
  * Created by gaoruochen on 18-3-20.
  */
 
-public class UserPresenter<Entity,V extends Contract.View<Entity>,M extends BaseModel> extends BasePresenter<V, M> {
+public class UserPresenter<Entity, V extends Contract.View<Entity>, M extends BaseModel> extends BasePresenter<V, M> {
 
     public UserPresenter(V mView, M model) {
         super(mView, model);
     }
 
-    public void getUserFromRemote() {
+    public final void getUserFromRemote() {
         mModel.getDataFromRemote(UserApi.class).getUserInfo().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new HandleNetExceptionObserver<User>(this) {
             @Override
-            public void onError(ExceptionHandle.ResponeThrowable responeThrowable) {
-                mView.onUserUpdateFailure(responeThrowable);
+            public void onError(ExceptionHandle.ResponseThrowable responseThrowable) {
+
+                switch (responseThrowable.code) {
+                    case ExceptionHandle.ERROR.UNKNOW:
+                    case ExceptionHandle.ERROR.PARSE_ERROR:
+                    case ExceptionHandle.ERROR.NETWORD_ERROR:
+                    case ExceptionHandle.ERROR.SSL_ERROR:
+                    case ExceptionHandle.ERROR.UNKNOWN_HOST:
+                        User user = AccountHelper.getInstance().getUser();
+                        if (user != null) {
+                            mView.onUserUpdateSuccess(user);
+                        } else {
+                            mView.onUserUpdateFailure(responseThrowable);
+                        }
+                        return;
+                }
+                mView.onUserUpdateFailure(responseThrowable);
+
             }
 
             @Override

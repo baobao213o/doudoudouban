@@ -73,7 +73,7 @@ public abstract class BaseFragment <B, P extends BasePresenter> extends Fragment
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponeThrowable responeThrowable) {
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
 
     }
 
@@ -92,7 +92,7 @@ public abstract class BaseFragment <B, P extends BasePresenter> extends Fragment
 
     @Override
     public void showAuthError(String errorMsg) {
-        DialogFragmentHelper.showConfirmDialog(getChildFragmentManager(), errorMsg, new IDialogResultListener<Integer>() {
+        DialogFragmentHelper.showConfirmDialog(getChildFragmentManager(), errorMsg,null,null, new IDialogResultListener<Integer>() {
             @Override
             public void onDataResult(Integer which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {

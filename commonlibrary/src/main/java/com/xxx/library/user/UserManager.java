@@ -23,6 +23,7 @@ public class UserManager {
 
     interface IUser {
 
+
         void getUserFromRemote();
 
         void clearUserStatus();
@@ -82,9 +83,6 @@ public class UserManager {
     public User getUser(Bundle outState) {
         if (outState != null) {
             user = outState.getParcelable(USER_SAVE);
-        }
-        if(user==null){
-            user=AccountHelper.getInstance().getUser();
         }
         return user;
     }

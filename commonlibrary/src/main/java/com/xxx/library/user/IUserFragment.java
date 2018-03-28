@@ -9,7 +9,7 @@ import com.xxx.library.network.exception.ExceptionHandle;
 
 public interface IUserFragment {
 
-    void onUserUpdateFailure(ExceptionHandle.ResponeThrowable responeThrowable);
+    void onUserUpdateFailure(ExceptionHandle.ResponseThrowable responseThrowable);
 
     void onUserUpdateSuccess(User user);
 

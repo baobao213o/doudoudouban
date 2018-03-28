@@ -1,6 +1,5 @@
 package com.xxx.douban.ui.main;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -19,24 +19,16 @@ import com.xxx.douban.entity.BookInfo;
 import com.xxx.library.entity.User;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.view.IView;
+import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.user.BaseUserActivity;
 import com.xxx.library.user.IUserFragment;
 import com.xxx.library.utils.BottomNavigationViewHelper;
 import com.xxx.library.utils.ColorUtil;
 import com.xxx.library.utils.FragmentUtil;
-
-import java.net.URL;
-
-import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleObserver;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import com.xxx.my.ui.user.UserFragment;
 
 @Route(path = "/main/main/MainActivity")
-public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> implements IView<BookInfo> {
+public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> implements IView<BookInfo>,UserFragment.IDrawerClose {
 
 
     private IUserFragment leftFragment;
@@ -44,16 +36,13 @@ public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> impl
     private Toolbar toolbar;
     private BottomNavigationView bottom_navigation;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onBaseUserActivityCreate(Bundle savedInstanceState) {
+
 //        if (!AccountHelper.getInstance().checkActiveAccount(this)) {
 //            return;
 //        }
-    }
-
-    @Override
-    public void initView() {
         setContentView(R.layout.main_activity_main);
         drawer = findViewById(R.id.drawer_main);
         toolbar = findViewById(R.id.toolbar_main);
@@ -64,10 +53,15 @@ public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> impl
                 drawer.openDrawer(Gravity.START);
             }
         });
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        bottom_navigation =  findViewById(R.id.navigation_main);
+        bottom_navigation = findViewById(R.id.navigation_main);
         BottomNavigationViewHelper.disableShiftMode(bottom_navigation);
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        bottom_navigation.setSelectedItemId(R.id.main_bottom_navi_diary);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -83,6 +77,7 @@ public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> impl
             });
         }
         leftFragment = FragmentUtil.findById(this, R.id.frgment_main_navigation);
+        ((UserFragment)leftFragment).setListener(this);
     }
 
 
@@ -129,35 +124,21 @@ public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> impl
     public void onUserUpdateSuccess(final User user) {
         super.onUserUpdateSuccess(user);
         leftFragment.onUserUpdateSuccess(user);
-
-
-        Single.create(new SingleOnSubscribe<Drawable>() {
-            @Override
-            public void subscribe(SingleEmitter<Drawable> emitter) throws Exception {
-                emitter.onSuccess(Drawable.createFromStream(new URL(user.large_avatar).openStream(), "icon_head.jpg"));
-            }
-        }).subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<Drawable>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onSuccess(Drawable drawable) {
-                toolbar.setNavigationIcon(drawable);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-        });
     }
 
+    @Override
+    public void onUserUpdateFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
+        super.onUserUpdateFailure(responseThrowable);
+        leftFragment.onUserUpdateFailure(responseThrowable);
+    }
 
     @Override
     public void clearUserStatus() {
         leftFragment.clearUserStatus();
+    }
+
+    @Override
+    public void closeDrawer() {
+        drawer.closeDrawer(Gravity.START);
     }
 }

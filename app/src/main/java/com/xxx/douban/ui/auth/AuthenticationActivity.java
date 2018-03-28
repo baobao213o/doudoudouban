@@ -102,7 +102,10 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
         String usr = etUser.getText().toString().trim();
         String pwd = etPwd.getText().toString().trim();
 
+        AccountHelper.getInstance().removeAllAccount();
+
         Account account = new Account(usr, Constant.AuthenticationAccount.ACCOUNT_TYPE);
+
 
         switch (authMode) {
             case AUTH_MODE_NEW:
@@ -134,9 +137,9 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponeThrowable responeThrowable) {
-        super.onFailure(responeThrowable);
-        tilPwd.setError(responeThrowable.message);
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
+        super.onFailure(responseThrowable);
+        tilPwd.setError(responseThrowable.message);
     }
 
     @Override

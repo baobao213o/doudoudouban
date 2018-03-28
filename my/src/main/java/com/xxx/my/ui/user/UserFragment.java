@@ -26,7 +26,14 @@ import com.xxx.my.R;
  * Created by gaoruochen on 18-3-20.
  */
 
-public class UserFragment extends BaseFragment implements IUserFragment{
+public class UserFragment extends BaseFragment implements IUserFragment {
+
+
+    public interface IDrawerClose {
+        void closeDrawer();
+    }
+
+    private IDrawerClose listener;
 
     private ImageView userHead;
     private TextView userName;
@@ -49,6 +56,9 @@ public class UserFragment extends BaseFragment implements IUserFragment{
         return view;
     }
 
+    public void setListener(IDrawerClose listener) {
+        this.listener = listener;
+    }
 
     private void initNavigationView(View view) {
         navigation = view.findViewById(R.id.navigation_my_user);
@@ -63,6 +73,7 @@ public class UserFragment extends BaseFragment implements IUserFragment{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.navigation_message) {
+                    RxBusManager.getInstance().post(AccountHelper.RXBUS_UPDATE_USER_STATUS);
                     System.out.println("message");
                 } else if (id == R.id.navigation_book) {
                     System.out.println("book");
@@ -73,8 +84,11 @@ public class UserFragment extends BaseFragment implements IUserFragment{
                 } else if (id == R.id.navigation_diary) {
                     System.out.println("diary");
                 } else if (id == R.id.navigation_exit) {
-                    AccountHelper.getInstance().setAccountExpired(true);
+                    AccountHelper.getInstance().removeAllAccount();
                     RxBusManager.getInstance().post(AccountHelper.RXBUS_CLEAR_USER_STATUS);
+                }
+                if (listener != null) {
+                    listener.closeDrawer();
                 }
                 return true;
             }
@@ -86,7 +100,7 @@ public class UserFragment extends BaseFragment implements IUserFragment{
         unloginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AccountHelper.getInstance().addAccount(getActivity(),null);
+                AccountHelper.getInstance().addAccount(getActivity(), null);
             }
         });
     }
@@ -130,7 +144,7 @@ public class UserFragment extends BaseFragment implements IUserFragment{
     }
 
     @Override
-    public void onUserUpdateFailure(ExceptionHandle.ResponeThrowable responeThrowable) {
+    public void onUserUpdateFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
 
     }
 

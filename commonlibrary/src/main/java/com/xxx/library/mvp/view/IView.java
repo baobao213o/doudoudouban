@@ -11,7 +11,7 @@ public interface IView<Entity> {
 
     void onSuccess(Entity data);
 
-    void onFailure(ExceptionHandle.ResponeThrowable responeThrowable);
+    void onFailure(ExceptionHandle.ResponseThrowable responseThrowable);
 
     void showLoading(Disposable disposable,boolean cancel);
 
