@@ -39,6 +39,6 @@ class AuthenticationPresenter extends BasePresenter<IView<AuthenticationResponse
             public void onNext(AuthenticationResponse response) {
                 mView.onSuccess(response);
             }
-        }.isShowError(false));
+        }.isShowError(false).ifNeedNetworkAvalible(false));
     }
 }

@@ -31,7 +31,6 @@ public class UserPresenter<Entity, V extends Contract.View<Entity>, M extends Ba
                     case ExceptionHandle.ERROR.PARSE_ERROR:
                     case ExceptionHandle.ERROR.NETWORD_ERROR:
                     case ExceptionHandle.ERROR.SSL_ERROR:
-                    case ExceptionHandle.ERROR.UNKNOWN_HOST:
                         User user = AccountHelper.getInstance().getUser();
                         if (user != null) {
                             mView.onUserUpdateSuccess(user);

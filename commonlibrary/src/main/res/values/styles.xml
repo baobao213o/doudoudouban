@@ -8,8 +8,16 @@
         <!-- 控件颜色 如edittext下划线 光标 -->
         <item name="colorAccent">@color/colorAccent</item>
 
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
-        <!--<item name="android:fitsSystemWindows">true</item>-->
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+
+
+    </style>
+
+    <style name="AnimationActivity"  parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/common_anim_fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/common_anim_fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/common_anim_fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/common_anim_fade_out</item>
     </style>
 
 
@@ -38,6 +46,7 @@
         <!-- 按钮字体颜色,全部一起改，单个改需要在Java代码中修改 -->
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
 
 
 </resources>

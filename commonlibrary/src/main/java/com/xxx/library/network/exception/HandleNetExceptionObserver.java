@@ -1,12 +1,12 @@
 package com.xxx.library.network.exception;
 
 
-import com.xxx.library.BaseApplication;
-import com.xxx.library.R;
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.entity.ErrorResponse;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.utils.NetUtil;
+
+import java.net.ConnectException;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -51,7 +51,7 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
         }
         presenter.addDisposable(d);
         if (ifNeedNetworkAvalible && !NetUtil.isNetworkAvalible()) {
-            presenter.getView().showErrorResult(BaseApplication.getInstance().getString(R.string.common_network_error));
+            onError(new ConnectException());
             d.dispose();
             return;
         }
@@ -70,7 +70,6 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
         if (e instanceof Exception) {
             //访问获得对应的Exception
             ExceptionHandle.ResponseThrowable responseThrowable = new ExceptionHandle().handleException(e);
-
             ErrorResponse error = responseThrowable.getResponseError();
             switch (error.code) {
                 case ErrorResponse.USER_LOCKED:
@@ -102,6 +101,10 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
     }
 
     private void showErrorDialog(ExceptionHandle.ResponseThrowable responseThrowable) {
+        if (ifNeedNetworkAvalible && responseThrowable.code == ExceptionHandle.ERROR.NETWORD_ERROR && presenter != null) {
+            presenter.getView().showErrorResult(responseThrowable.message);
+            return;
+        }
         if (showErrorDialog && presenter != null) {
             presenter.getView().showErrorResult(responseThrowable.message);
         }

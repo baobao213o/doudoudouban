@@ -2,7 +2,6 @@ package com.xxx.library.base;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,14 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.xxx.library.R;
-import com.xxx.library.account.AccountHelper;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.utils.dialog.CommonDialogFragment;
 import com.xxx.library.utils.dialog.DialogFragmentHelper;
-import com.xxx.library.utils.dialog.IDialogResultListener;
+import com.xxx.library.views.ToastHelper;
 
 import io.reactivex.disposables.Disposable;
 
@@ -92,18 +89,18 @@ public abstract class BaseActivity<Entity, P extends BasePresenter> extends AppC
 
     @Override
     public void showAuthError(String errorMsg) {
-        DialogFragmentHelper.showConfirmDialog(getSupportFragmentManager()
-                ,errorMsg,getString(R.string.common_dialog_login)
-                ,getString(R.string.common_dialog_cancel)
-                ,new IDialogResultListener<Integer>() {
-            @Override
-            public void onDataResult(Integer which) {
-                if (which == DialogInterface.BUTTON_POSITIVE) {
-                    AccountHelper.getInstance().addAccount(BaseActivity.this, null);
-                }
-            }
-        }, true, null);
-
+//        DialogFragmentHelper.showConfirmDialog(getSupportFragmentManager()
+//                ,errorMsg,getString(R.string.common_dialog_login)
+//                ,getString(R.string.common_dialog_cancel)
+//                ,new IDialogResultListener<Integer>() {
+//            @Override
+//            public void onDataResult(Integer which) {
+//                if (which == DialogInterface.BUTTON_POSITIVE) {
+//                    AccountHelper.getInstance().addAccount(BaseActivity.this, null);
+//                }
+//            }
+//        }, true, null);
+        ToastHelper.showToast(errorMsg);
     }
 
     @Override

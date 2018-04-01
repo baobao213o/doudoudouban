@@ -20,7 +20,10 @@ import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.rxjava.RxBusManager;
 import com.xxx.library.user.IUserFragment;
+import com.xxx.library.utils.CommonLogger;
 import com.xxx.my.R;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by gaoruochen on 18-3-20.
@@ -29,8 +32,15 @@ import com.xxx.my.R;
 public class UserFragment extends BaseFragment implements IUserFragment {
 
 
+    public final static int USER_NAVI_MESSAGE = 11;
+    public final static int USER_NAVI_BOOK = 12;
+    public final static int USER_NAVI_MOVIE = 13;
+    public final static int USER_NAVI_MUSIC = 14;
+    public final static int USER_NAVI_DIARY = 15;
+    public final static int USER_NAVI_EXIT = 16;
+
     public interface IDrawerClose {
-        void closeDrawer();
+        void closeDrawer(int closeType);
     }
 
     private IDrawerClose listener;
@@ -53,6 +63,40 @@ public class UserFragment extends BaseFragment implements IUserFragment {
         initUnLoginView(inflater);
         initLoginView(inflater);
         clearUserStatus();
+        RxBusManager.getInstance().registerEvent(Integer.class, new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) {
+                switch (integer) {
+                    case USER_NAVI_MESSAGE:
+                        RxBusManager.getInstance().post(AccountHelper.RXBUS_UPDATE_USER_STATUS);
+                        System.out.println("message");
+                        break;
+                    case USER_NAVI_BOOK:
+
+                        break;
+                    case USER_NAVI_MOVIE:
+
+                        break;
+                    case USER_NAVI_MUSIC:
+
+                        break;
+                    case USER_NAVI_DIARY:
+
+                        break;
+                    case USER_NAVI_EXIT:
+                        AccountHelper.getInstance().removeAllAccount();
+                        RxBusManager.getInstance().post(AccountHelper.RXBUS_CLEAR_USER_STATUS);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) {
+                CommonLogger.e(throwable.getMessage());
+            }
+        });
         return view;
     }
 
@@ -71,24 +115,23 @@ public class UserFragment extends BaseFragment implements IUserFragment {
         navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int selectedType = 0;
                 int id = item.getItemId();
                 if (id == R.id.navigation_message) {
-                    RxBusManager.getInstance().post(AccountHelper.RXBUS_UPDATE_USER_STATUS);
-                    System.out.println("message");
+                    selectedType = USER_NAVI_MESSAGE;
                 } else if (id == R.id.navigation_book) {
-                    System.out.println("book");
+                    selectedType = USER_NAVI_BOOK;
                 } else if (id == R.id.navigation_movie) {
-                    System.out.println("movie");
+                    selectedType = USER_NAVI_MOVIE;
                 } else if (id == R.id.navigation_music) {
-                    System.out.println("music");
+                    selectedType = USER_NAVI_MUSIC;
                 } else if (id == R.id.navigation_diary) {
-                    System.out.println("diary");
+                    selectedType = USER_NAVI_DIARY;
                 } else if (id == R.id.navigation_exit) {
-                    AccountHelper.getInstance().removeAllAccount();
-                    RxBusManager.getInstance().post(AccountHelper.RXBUS_CLEAR_USER_STATUS);
+                    selectedType = USER_NAVI_EXIT;
                 }
                 if (listener != null) {
-                    listener.closeDrawer();
+                    listener.closeDrawer(selectedType);
                 }
                 return true;
             }
@@ -154,6 +197,9 @@ public class UserFragment extends BaseFragment implements IUserFragment {
             navigation.removeHeaderView(navigation.getHeaderView(0));
         }
         navigation.addHeaderView(loginView);
+        MenuItem menuItem = navigation.getMenu().findItem(R.id.navigation_exit);
+        menuItem.setVisible(true);
+
         GlideApp.with(this).load(user.large_avatar).placeholder(R.drawable.my_user_head_normal).error(R.drawable.my_user_head_normal).into(userHead);
         userName.setText(user.name);
         userId.setText(user.id);
@@ -167,6 +213,8 @@ public class UserFragment extends BaseFragment implements IUserFragment {
             navigation.removeHeaderView(navigation.getHeaderView(0));
         }
         navigation.addHeaderView(unloginView);
+        MenuItem menuItem = navigation.getMenu().findItem(R.id.navigation_exit);
+        menuItem.setVisible(false);
     }
 
     @Override

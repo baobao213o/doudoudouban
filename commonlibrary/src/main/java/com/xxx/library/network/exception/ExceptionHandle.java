@@ -46,17 +46,13 @@ public class ExceptionHandle {
             ex = new ResponseThrowable(e, ERROR.PARSE_ERROR);
             ex.message = BaseApplication.getInstance().getString(R.string.common_network_parse_error);
             return ex;
-        } else if (e instanceof ConnectException) {
+        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
             ex = new ResponseThrowable(e, ERROR.NETWORD_ERROR);
             ex.message = BaseApplication.getInstance().getString(R.string.common_network_error);
             return ex;
         } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
             ex = new ResponseThrowable(e, ERROR.SSL_ERROR);
             ex.message = BaseApplication.getInstance().getString(R.string.common_network_ssl_error);
-            return ex;
-        } else if (e instanceof UnknownHostException) {
-            ex = new ResponseThrowable(e, ERROR.UNKNOWN_HOST);
-            ex.message = BaseApplication.getInstance().getString(R.string.common_network_unknow_error);
             return ex;
         } else {
             ex = new ResponseThrowable(e, ERROR.UNKNOW);
@@ -87,10 +83,6 @@ public class ExceptionHandle {
          * 证书出错
          */
         int SSL_ERROR = 10003;
-        /**
-         * 未知host
-         */
-        int UNKNOWN_HOST = 10004;
     }
 
     public class ResponseThrowable extends Exception {
