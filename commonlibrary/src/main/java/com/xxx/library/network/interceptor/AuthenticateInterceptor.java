@@ -11,6 +11,7 @@ import com.xxx.library.utils.CommonLogger;
 
 import java.io.IOException;
 
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -73,6 +74,18 @@ public class AuthenticateInterceptor implements Interceptor {
 
     private Request makeBearerAuthorizationRequest(Chain chain) {
         Request request = chain.request();
+        if (request.url().toString().equals(Constant.Authentication.URL)) {
+            String client_id = Constant.Authentication.KEY;
+            String client_secret = Constant.Authentication.SECRET;
+            String redirect_uri = Constant.Authentication.REDIRECT_URI;
+            HttpUrl httpUrl = request.url()
+                    .newBuilder()
+                    .addQueryParameter("client_id", client_id)
+                    .addQueryParameter("client_secret", client_secret)
+                    .addQueryParameter("redirect_uri", redirect_uri)
+                    .build();
+            request = request.newBuilder().url(httpUrl).build();
+        }
         String prefix = "Bearer ";
         if (TextUtils.isEmpty(token)) {
             try {

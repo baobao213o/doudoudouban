@@ -2,7 +2,9 @@ package com.xxx.library.user;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import com.xxx.library.BaseApplication;
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.entity.User;
 import com.xxx.library.rxjava.RxBusManager;

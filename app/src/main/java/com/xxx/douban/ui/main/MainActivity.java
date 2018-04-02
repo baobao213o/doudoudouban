@@ -71,7 +71,10 @@ public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> impl
             @Override
             public void onDrawerClosed(View drawerView) {
                 //FIXME
-                RxBusManager.getInstance().post(naviSelectType);
+                if (naviSelectType != -1) {
+                    RxBusManager.getInstance().post(naviSelectType);
+                }
+                naviSelectType = -1;
             }
         });
 
@@ -146,6 +149,6 @@ public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> impl
     @Override
     public void closeDrawer(int type) {
         drawer.closeDrawer(Gravity.START);
-        naviSelectType=type;
+        naviSelectType = type;
     }
 }

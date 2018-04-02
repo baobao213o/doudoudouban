@@ -15,16 +15,12 @@ public interface AuthenticationApi {
     @POST(Constant.Authentication.URL)
     @FormUrlEncoded
     Observable<AuthenticationResponse> authenticate(
-            @Field("client_id") String clientId, @Field("client_secret") String clientSecret,
-            @Field("redirect_uri") String redirectUri, @Field("grant_type") String grantType,
+            @Field("grant_type") String grantType,
             @Field("username") String username, @Field("password") String password);
 
     @POST(Constant.Authentication.URL)
     @FormUrlEncoded
     Call<AuthenticationResponse> authenticate(
-            @Field("client_id") String clientId, @Field("client_secret") String clientSecret,
-            @Field("redirect_uri") String redirectUri, @Field("grant_type") String grantType,
+            @Field("grant_type") String grantType,
             @Field("refresh_token") String refreshToken);
-
-
 }

@@ -3,7 +3,6 @@ package com.xxx.library.user;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.xxx.library.account.AccountHelper;
 import com.xxx.library.base.BaseActivity;
 import com.xxx.library.entity.ErrorResponse;
 import com.xxx.library.entity.User;
@@ -49,7 +48,7 @@ public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends 
 
     @Override
     public void onUserUpdateSuccess(User user) {
-        AccountHelper.getInstance().setUser(user);
+        UserManager.getInstance().setUser(user);
     }
 
     @Override

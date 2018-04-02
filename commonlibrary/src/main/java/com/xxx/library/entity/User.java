@@ -7,7 +7,9 @@ import android.os.Parcelable;
  * Created by gaoruochen on 18-3-15.
  */
 
-public class User extends SimpleUser {
+public class User implements Parcelable {
+
+
     /**
      * uid : 173108839
      * following_count : 0
@@ -33,18 +35,28 @@ public class User extends SimpleUser {
      * following : false
      */
 
+    public String uid;
     public int following_count;
+    public boolean is_suicide;
     public boolean is_follower;
+    public String alt;
     public int notes_count;
+    public String id;
     public boolean blocked;
     public int followers_count;
     public boolean logged_in;
+    public String type;
+    public String large_avatar;
     public String icon_avatar;
     public int statuses_count;
     public boolean blocking;
+    public String desc;
+    public String name;
+    public String created;
     public int albums_count;
+    public String avatar;
+    public String signature;
     public boolean following;
-
 
     @Override
     public int describeContents() {
@@ -53,16 +65,27 @@ public class User extends SimpleUser {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.uid);
         dest.writeInt(this.following_count);
+        dest.writeByte(this.is_suicide ? (byte) 1 : (byte) 0);
         dest.writeByte(this.is_follower ? (byte) 1 : (byte) 0);
+        dest.writeString(this.alt);
         dest.writeInt(this.notes_count);
+        dest.writeString(this.id);
         dest.writeByte(this.blocked ? (byte) 1 : (byte) 0);
         dest.writeInt(this.followers_count);
         dest.writeByte(this.logged_in ? (byte) 1 : (byte) 0);
+        dest.writeString(this.type);
+        dest.writeString(this.large_avatar);
         dest.writeString(this.icon_avatar);
         dest.writeInt(this.statuses_count);
         dest.writeByte(this.blocking ? (byte) 1 : (byte) 0);
+        dest.writeString(this.desc);
+        dest.writeString(this.name);
+        dest.writeString(this.created);
         dest.writeInt(this.albums_count);
+        dest.writeString(this.avatar);
+        dest.writeString(this.signature);
         dest.writeByte(this.following ? (byte) 1 : (byte) 0);
     }
 
@@ -70,16 +93,27 @@ public class User extends SimpleUser {
     }
 
     protected User(Parcel in) {
+        this.uid = in.readString();
         this.following_count = in.readInt();
+        this.is_suicide = in.readByte() != 0;
         this.is_follower = in.readByte() != 0;
+        this.alt = in.readString();
         this.notes_count = in.readInt();
+        this.id = in.readString();
         this.blocked = in.readByte() != 0;
         this.followers_count = in.readInt();
         this.logged_in = in.readByte() != 0;
+        this.type = in.readString();
+        this.large_avatar = in.readString();
         this.icon_avatar = in.readString();
         this.statuses_count = in.readInt();
         this.blocking = in.readByte() != 0;
+        this.desc = in.readString();
+        this.name = in.readString();
+        this.created = in.readString();
         this.albums_count = in.readInt();
+        this.avatar = in.readString();
+        this.signature = in.readString();
         this.following = in.readByte() != 0;
     }
 

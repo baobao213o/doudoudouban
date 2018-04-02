@@ -76,15 +76,12 @@ public class Authenticator extends AbstractAccountAuthenticator {
         }
 
         String authToken = AccountHelper.getInstance().peekAuthToken();
-        String client_id = Constant.Authentication.KEY;
-        String client_secret = Constant.Authentication.SECRET;
-        String redirect_uri = Constant.Authentication.REDIRECT_URI;
         String grant_type = Constant.Authentication.GrantType.GRANT_TYPE_REFRESH;
         if (TextUtils.isEmpty(authToken)) {
             String refreshToken = AccountHelper.getInstance().getRefreshToken();
             if (!TextUtils.isEmpty(refreshToken)) {
                 try {
-                    Call<AuthenticationResponse> call = RetrofitManager.getInstance().getService(AuthenticationApi.class).authenticate(client_id, client_secret, redirect_uri, grant_type, refreshToken);
+                    Call<AuthenticationResponse> call = RetrofitManager.getInstance().getService(AuthenticationApi.class).authenticate(grant_type, refreshToken);
                     AuthenticationResponse authenticationResponse = call.execute().body();
                     if (authenticationResponse != null) {
                         authToken = authenticationResponse.accessToken;
@@ -112,7 +109,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public String getAuthTokenLabel(String authTokenType) {
+    public String getAuthTokenLabel(String authTokenType)  {
         return null;
     }
 

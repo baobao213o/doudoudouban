@@ -45,7 +45,7 @@ public class UserPresenter<Entity, V extends Contract.View<Entity>, M extends Ba
 
             @Override
             public void onNext(User userInfo) {
-                UserManager.getInstance().setUser(userInfo);
+                AccountHelper.getInstance().setUser(userInfo);
                 mView.onUserUpdateSuccess(userInfo);
             }
         }.isShowLoading(false).isShowError(false));
