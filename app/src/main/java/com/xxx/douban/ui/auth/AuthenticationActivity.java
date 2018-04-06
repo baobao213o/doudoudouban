@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xxx.douban.R;
+import com.xxx.douban.entity.AuthStatus;
 import com.xxx.library.Constant;
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.account.AppCompatAccountAuthenticatorActivity;
@@ -63,10 +64,11 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
             }
         });
 
+
         etPwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int id, KeyEvent event) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                if (id == EditorInfo.IME_ACTION_SEND) {
                     authentication();
                     return true;
                 }
@@ -81,6 +83,7 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
     }
 
     private void authentication() {
+
         String usr = etUser.getText().toString().trim();
         String pwd = etPwd.getText().toString().trim();
         if (!FormUtil.checkEmail(usr) && !FormUtil.isValidPhoneNumber(usr)) {
@@ -101,6 +104,8 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
         super.onSuccess(data);
         String usr = etUser.getText().toString().trim();
         String pwd = etPwd.getText().toString().trim();
+        AuthStatus status = new AuthStatus();
+        status.username = usr;
 
         AccountHelper.getInstance().removeAllAccount();
 
@@ -127,6 +132,8 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
 
         RxBusManager.getInstance().post(AccountHelper.RXBUS_UPDATE_USER_STATUS);
 
+        presenter.saveAuthenticationResponse(status);
+
         Intent intent = new Intent();
         intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, data.userName);
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constant.AuthenticationAccount.ACCOUNT_TYPE);
@@ -142,10 +149,5 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
         tilPwd.setError(responseThrowable.message);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        etPwd = null;
-    }
 }
 

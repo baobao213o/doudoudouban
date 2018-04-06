@@ -17,6 +17,7 @@
             android:id="@+id/tv_main_auth_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
             android:hint="@string/main_auth_user"
             android:maxLines="1"
             android:singleLine="true" />
@@ -34,9 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/main_auth_pwd"
-            android:imeActionId="6"
+            android:imeActionId="4"
             android:imeActionLabel="@string/main_auth_sign_in"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionSend"
             android:inputType="textPassword"
             android:maxLines="1"
             android:singleLine="true" />

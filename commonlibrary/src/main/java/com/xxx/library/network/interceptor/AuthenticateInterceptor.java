@@ -1,5 +1,6 @@
 package com.xxx.library.network.interceptor;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -11,7 +12,7 @@ import com.xxx.library.utils.CommonLogger;
 
 import java.io.IOException;
 
-import okhttp3.HttpUrl;
+import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -23,13 +24,34 @@ import okhttp3.ResponseBody;
 
 public class AuthenticateInterceptor implements Interceptor {
 
-    private static String token;
     private static final int MaxNumRetries = 3;
+    private static String token;
 
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
 
-        Response response = chain.proceed(makeBearerAuthorizationRequest(chain));
+        Request request = chain.request();
+        if (request.url().toString().equals(Constant.Authentication.URL)) {
+
+            FormBody.Builder bodyBuilder = new FormBody.Builder();
+            FormBody formBody = (FormBody) request.body();
+            if (formBody != null) {
+                for (int i = 0; i < formBody.size(); i++) {
+                    bodyBuilder.addEncoded(formBody.encodedName(i), formBody.encodedValue(i));
+                }
+            }
+            String client_id = Constant.Authentication.KEY;
+            String client_secret = Constant.Authentication.SECRET;
+            String redirect_uri = Constant.Authentication.REDIRECT_URI;
+            formBody = bodyBuilder
+                    .addEncoded("client_id", client_id)
+                    .addEncoded("client_secret", client_secret)
+                    .addEncoded("redirect_uri", redirect_uri)
+                    .build();
+            request = request.newBuilder().post(formBody).build();
+        }
+
+        Response response = chain.proceed(makeBearerAuthorizationRequest(request));
         if (!response.isSuccessful()) {
             ResponseBody responseBody = response.peekBody(Long.MAX_VALUE);
             try {
@@ -54,9 +76,8 @@ public class AuthenticateInterceptor implements Interceptor {
                 while (!response.isSuccessful() && tryCount < MaxNumRetries) {
                     CommonLogger.d("intercept", "Request is not successful - " + tryCount);
                     tryCount++;
-                    response = chain.proceed(makeBearerAuthorizationRequest(chain));
+                    response = chain.proceed(makeBearerAuthorizationRequest(request));
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return response;
@@ -72,19 +93,9 @@ public class AuthenticateInterceptor implements Interceptor {
         return response;
     }
 
-    private Request makeBearerAuthorizationRequest(Chain chain) {
-        Request request = chain.request();
-        if (request.url().toString().equals(Constant.Authentication.URL)) {
-            String client_id = Constant.Authentication.KEY;
-            String client_secret = Constant.Authentication.SECRET;
-            String redirect_uri = Constant.Authentication.REDIRECT_URI;
-            HttpUrl httpUrl = request.url()
-                    .newBuilder()
-                    .addQueryParameter("client_id", client_id)
-                    .addQueryParameter("client_secret", client_secret)
-                    .addQueryParameter("redirect_uri", redirect_uri)
-                    .build();
-            request = request.newBuilder().url(httpUrl).build();
+    private Request makeBearerAuthorizationRequest(Request request) {
+        if (AccountHelper.getInstance().getActiveAccount() == null) {
+            return request;
         }
         String prefix = "Bearer ";
         if (TextUtils.isEmpty(token)) {

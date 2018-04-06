@@ -7,6 +7,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.squareup.leakcanary.LeakCanary;
 import com.xxx.library.appdelegate.Delegate;
 
+import io.realm.Realm;
+
 import static com.xxx.library.BuildConfig.DEBUG;
 
 
@@ -34,6 +36,7 @@ public class BaseApplication extends Application {
         }
         ARouter.init(this);
         LeakCanary.install(this);
+        Realm.init(this);
         Delegate.getInstance().onCreate(this);
     }
 

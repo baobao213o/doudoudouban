@@ -20,7 +20,7 @@ class TestPresenter extends UserPresenter<BookInfo,Contract.View<BookInfo>, Base
 
 
     void getBookInfo() {
-        mModel.getDataFromRemote(TestApi.class).getBookInfo("123123").subscribeOn(Schedulers.io())
+        mModel.postDataFromRemote(TestApi.class).getBookInfo("123123").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new HandleNetExceptionObserver<BookInfo>(this) {
             @Override
             public void onError(ExceptionHandle.ResponseThrowable responseThrowable) {

@@ -21,7 +21,7 @@ public class UserPresenter<Entity, V extends Contract.View<Entity>, M extends Ba
     }
 
     public final void getUserFromRemote() {
-        mModel.getDataFromRemote(UserApi.class).getUserInfo().subscribeOn(Schedulers.io())
+        mModel.postDataFromRemote(UserApi.class).getUserInfo().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new HandleNetExceptionObserver<User>(this) {
             @Override
             public void onError(ExceptionHandle.ResponseThrowable responseThrowable) {
