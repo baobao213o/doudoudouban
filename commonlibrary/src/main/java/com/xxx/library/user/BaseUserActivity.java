@@ -15,7 +15,7 @@ import com.xxx.library.network.exception.ExceptionHandle;
 public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends BaseActivity<Entity, P> implements UserManager.IUser, Contract.View<Entity> {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    final protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onBaseUserActivityCreate(savedInstanceState);
         UserManager.getInstance().register(this, this);

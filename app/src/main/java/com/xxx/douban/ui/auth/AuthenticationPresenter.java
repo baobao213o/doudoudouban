@@ -6,11 +6,13 @@ import com.xxx.library.account.AuthenticationApi;
 import com.xxx.library.entity.AuthenticationResponse;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.presenter.BasePresenter;
-import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.network.exception.HandleNetExceptionObserver;
 
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
@@ -19,10 +21,10 @@ import io.realm.Realm;
  * Created by gaoruochen on 18-3-11.
  */
 
-class AuthenticationPresenter extends BasePresenter<IView<AuthenticationResponse>, BaseModel> {
+class AuthenticationPresenter extends BasePresenter<AuthenticationContract.View<AuthenticationResponse>, BaseModel> {
 
 
-    AuthenticationPresenter(IView<AuthenticationResponse> mView, BaseModel mModel) {
+    AuthenticationPresenter(AuthenticationContract.View<AuthenticationResponse> mView, BaseModel mModel) {
         super(mView, mModel);
     }
 
@@ -51,25 +53,21 @@ class AuthenticationPresenter extends BasePresenter<IView<AuthenticationResponse
             public AuthStatus apply(Realm realm) throws Exception {
                 return realm.copyToRealmOrUpdate(auth);
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<AuthStatus>() {
+            @Override
+            public void accept(AuthStatus authStatus) throws Exception {
+                mView.saveAuthStatusSuccess();
+            }
+        });
     }
 
     void getAuthenticationResponse() {
-
-//        mModel.modifyDataFromLocal(new Function<Realm, AuthStatus>() {
-//            @Override
-//            public AuthStatus apply(Realm realm) throws Exception {
-//                realm.where(AuthStatus.class).findAll().;
-//                return saveAuth;
-//            }
-//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-//                new Consumer<AuthStatus>() {
-//                    @Override
-//                    public void accept(AuthStatus authStatus) throws Exception {
-//                        System.out.println(authStatus.username + "  " + authStatus.password);
-//                    }
-//                }
-//        );
+        mModel.getDataFromLocal(AuthStatus.class).subscribe(new Consumer<List<AuthStatus>>() {
+            @Override
+            public void accept(List<AuthStatus> authStatuses) {
+                mView.showAuthStatus(authStatuses);
+            }
+        }).dispose();
     }
 
 }

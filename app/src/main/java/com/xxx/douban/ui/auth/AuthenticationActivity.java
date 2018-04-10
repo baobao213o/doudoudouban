@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,10 +25,12 @@ import com.xxx.library.account.AccountHelper;
 import com.xxx.library.account.AppCompatAccountAuthenticatorActivity;
 import com.xxx.library.entity.AuthenticationResponse;
 import com.xxx.library.mvp.model.BaseModel;
-import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.rxjava.RxBusManager;
 import com.xxx.library.utils.FormUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.xxx.library.Constant.AuthenticationAccount.AUTH_MODE_CONFIRM;
 import static com.xxx.library.Constant.AuthenticationAccount.AUTH_MODE_NEW;
@@ -37,13 +41,15 @@ import static com.xxx.library.Constant.AuthenticationAccount.EXTRA_AUTH_MODE;
  *
  */
 @Route(path = "/main/auth/AuthenticationActivity")
-public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivity<AuthenticationResponse, AuthenticationPresenter> implements IView<AuthenticationResponse> {
+public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivity<AuthenticationResponse, AuthenticationPresenter> implements AuthenticationContract.View<AuthenticationResponse> {
 
     private AutoCompleteTextView etUser;
     private EditText etPwd;
     private TextInputLayout tilUser;
     private TextInputLayout tilPwd;
     private int authMode = -1;
+    private AuthStatus status;
+    private AuthenticationResponse data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,8 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
                 return false;
             }
         });
+
+        presenter.getAuthenticationResponse();
     }
 
     @Override
@@ -83,7 +91,6 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
     }
 
     private void authentication() {
-
         String usr = etUser.getText().toString().trim();
         String pwd = etPwd.getText().toString().trim();
         if (!FormUtil.checkEmail(usr) && !FormUtil.isValidPhoneNumber(usr)) {
@@ -96,51 +103,17 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
         }
         tilUser.setError("");
         tilPwd.setError("");
+        status = new AuthStatus();
+        status.username = usr;
+        status.password = pwd;
         presenter.authentication(usr, pwd);
     }
 
     @Override
     public void onSuccess(AuthenticationResponse data) {
         super.onSuccess(data);
-        String usr = etUser.getText().toString().trim();
-        String pwd = etPwd.getText().toString().trim();
-        AuthStatus status = new AuthStatus();
-        status.username = usr;
-
-        AccountHelper.getInstance().removeAllAccount();
-
-        Account account = new Account(usr, Constant.AuthenticationAccount.ACCOUNT_TYPE);
-
-
-        switch (authMode) {
-            case AUTH_MODE_NEW:
-                AccountHelper.getInstance().addAccountExplicitly(account, pwd);
-                break;
-            case AUTH_MODE_UPDATE:
-            case AUTH_MODE_CONFIRM:
-                AccountHelper.getInstance().setUserPwd(pwd);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-
-
-        AccountHelper.getInstance().setUserName(data.userName);
-        AccountHelper.getInstance().setUserId(data.userId);
-        AccountHelper.getInstance().setAuthToken(data.accessToken);
-        AccountHelper.getInstance().setRefreshToken(data.refreshToken);
-
-        RxBusManager.getInstance().post(AccountHelper.RXBUS_UPDATE_USER_STATUS);
-
+        this.data = data;
         presenter.saveAuthenticationResponse(status);
-
-        Intent intent = new Intent();
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, data.userName);
-        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constant.AuthenticationAccount.ACCOUNT_TYPE);
-        setAccountAuthenticatorResult(intent.getExtras());
-        setResult(Activity.RESULT_OK, intent);
-        finish();
-
     }
 
     @Override
@@ -149,5 +122,54 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
         tilPwd.setError(responseThrowable.message);
     }
 
+    @Override
+    public void showAuthStatus(final List<AuthStatus> authStatus) {
+        if (authStatus == null || authStatus.size() == 0) {
+            return;
+        }
+        ArrayList<String> strings = new ArrayList<>();
+        for (AuthStatus temp : authStatus) {
+            strings.add(temp.username);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, strings);
+        etUser.setAdapter(adapter);
+        etUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                etPwd.setText(authStatus.get(position).password);
+            }
+        });
+    }
+
+    @Override
+    public void saveAuthStatusSuccess() {
+
+        AccountHelper.getInstance().removeAllAccount();
+        Account account = new Account(status.username, Constant.AuthenticationAccount.ACCOUNT_TYPE);
+        switch (authMode) {
+            case AUTH_MODE_NEW:
+                AccountHelper.getInstance().addAccountExplicitly(account, status.password);
+                break;
+            case AUTH_MODE_UPDATE:
+            case AUTH_MODE_CONFIRM:
+                AccountHelper.getInstance().setUserPwd(status.password);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+        AccountHelper.getInstance().setUserName(data.userName);
+        AccountHelper.getInstance().setUserId(data.userId);
+        AccountHelper.getInstance().setAuthToken(data.accessToken);
+        AccountHelper.getInstance().setRefreshToken(data.refreshToken);
+
+        RxBusManager.getInstance().post(AccountHelper.RXBUS_UPDATE_USER_STATUS);
+
+        Intent intent = new Intent();
+        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, data.userName);
+        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Constant.AuthenticationAccount.ACCOUNT_TYPE);
+        setAccountAuthenticatorResult(intent.getExtras());
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
 }
 

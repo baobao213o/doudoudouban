@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.exceptions.RealmException;
 
 /**
@@ -13,10 +12,6 @@ import io.realm.exceptions.RealmException;
  */
 
 public abstract class RealmObserver<T> implements ObservableOnSubscribe<T> {
-
-    private final static String REALM_NAME = "doudoudouban.realm";
-
-    private Realm realm;
 
     private final AtomicBoolean canceled = new AtomicBoolean();
 
@@ -31,12 +26,9 @@ public abstract class RealmObserver<T> implements ObservableOnSubscribe<T> {
         }
         boolean withError = false;
         T object = null;
+        Realm realm = RealmConfig.getDefaultConfigReal();
         try {
             if (!canceled.get()) {
-                realm = Realm.getInstance(new RealmConfiguration.Builder()
-                        .name(REALM_NAME)
-                        .deleteRealmIfMigrationNeeded()
-                        .build());
                 realm.beginTransaction();
                 object = get(realm);
                 if (!canceled.get()) {

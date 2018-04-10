@@ -15,9 +15,11 @@
  */
 package com.xxx.library.utils;
 
-import android.os.Build;
+import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
+
+import com.xxx.library.BuildConfig;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -44,6 +46,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IOUtil {
+
+    public static String externalPath = Environment.getExternalStorageDirectory().getPath() + File.separator + BuildConfig.application_id;
 
     public static void closeQuietly(Closeable closeable) {
         if (closeable == null) return;
@@ -227,8 +231,19 @@ public class IOUtil {
         return list;
     }
 
-    public static void write(byte[] data, OutputStream output) throws IOException {
-        if (data != null) output.write(data);
+    public static void write(byte[] data, OutputStream output) {
+        if (data != null)
+            try {
+                output.write(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
     }
 
     public static void write(byte[] data, Writer output) throws IOException {
@@ -363,8 +378,7 @@ public class IOUtil {
             CommonLogger.printStackTrace(e);
             return 0;
         }
-        if (Build.VERSION.SDK_INT >= 18) return getStatFsSize(stat, "getBlockSizeLong", "getAvailableBlocksLong");
-        else return getStatFsSize(stat, "getBlockSize", "getAvailableBlocks");
+        return getStatFsSize(stat, "getBlockSizeLong", "getAvailableBlocksLong");
     }
 
     private static long getStatFsSize(StatFs statFs, String blockSizeMethod, String availableBlocksMethod) {
@@ -525,9 +539,6 @@ public class IOUtil {
         if (TextUtils.isEmpty(path)) return false;
         return delFileOrFolder(new File(path));
     }
-
-
-
 
 
     /**
