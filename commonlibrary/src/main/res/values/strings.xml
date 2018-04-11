@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">CommonLibrary</string>
 
-    <string name="common_dialog_login">登录</string>
+    <string name="common_dialog_confirm">确定</string>
     <string name="common_dialog_cancel">取消</string>
+    <string name="common_dialog_login">登录</string>
+    <string name="common_dialog_exit">退出</string>
 
     <!--通用错误码 -->
     <string name="common_network_error">网络连接失败,请检查网络</string>

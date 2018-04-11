@@ -142,7 +142,6 @@ public class UserFragment extends BaseFragment implements IUserFragment {
         unloginView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(1213213);
                 AccountHelper.getInstance().addAccount(getActivity(), null);
             }
         });

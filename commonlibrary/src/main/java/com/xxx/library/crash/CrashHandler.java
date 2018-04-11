@@ -7,12 +7,16 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xxx.library.BaseApplication;
+import com.xxx.library.R;
 import com.xxx.library.utils.IOUtil;
+import com.xxx.library.utils.dialog.DialogFragmentHelper;
+import com.xxx.library.utils.dialog.IDialogResultListener;
 import com.xxx.library.views.ToastHelper;
 
 import java.io.FileOutputStream;
@@ -71,32 +75,56 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private void saveExceptions(final Throwable e) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            new RxPermissions(BaseApplication.getCurrentActivity())
-                    .requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .subscribe(new Consumer<Permission>() {
-                        @Override
-                        public void accept(Permission permission) throws Exception {
-                            if (permission.granted) {
-                                try {
-                                    collectErrorMessages();
-                                    saveErrorMessages(e);
-                                } catch (Exception e1) {
-                                    e1.printStackTrace();
-                                } finally {
-                                    BaseApplication.exit();
+            final FragmentActivity activity = (FragmentActivity) BaseApplication.getCurrentActivity();
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new RxPermissions(activity)
+                            .requestEachCombined(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe(new Consumer<Permission>() {
+                                @Override
+                                public void accept(Permission permission) throws Exception {
+                                    if (permission.granted) {
+                                        try {
+                                            collectErrorMessages();
+                                            saveErrorMessages(e);
+                                        } catch (Exception e1) {
+                                            e1.printStackTrace();
+                                        } finally {
+                                            BaseApplication.exit();
+                                        }
+                                    } else if (permission.shouldShowRequestPermissionRationale) {
+                                        // At least one denied permission without ask never again
+                                        DialogFragmentHelper.showConfirmDialog(activity.getSupportFragmentManager()
+                                                , "please agree storage permission to collect crash"
+                                                , activity.getString(R.string.common_dialog_exit)
+                                                , null
+                                                , new IDialogResultListener<Integer>() {
+                                                    @Override
+                                                    public void onDataResult(Integer which) {
+                                                        BaseApplication.exit();
+                                                    }
+                                                }, false, null);
+                                    } else {
+                                        // At least one denied permission with ask never again
+                                        // Need to go to the settings
+                                        DialogFragmentHelper.showConfirmDialog(activity.getSupportFragmentManager()
+                                                , "please go to the settings to agree storage permission"
+                                                , activity.getString(R.string.common_dialog_exit)
+                                                , null
+                                                , new IDialogResultListener<Integer>() {
+                                                    @Override
+                                                    public void onDataResult(Integer which) {
+                                                        BaseApplication.exit();
+                                                    }
+                                                }, false, null);
+                                    }
                                 }
-                            } else if (permission.shouldShowRequestPermissionRationale) {
-                                // At least one denied permission without ask never again
-                                ToastHelper.showToast("please agree storage permission to collect crash");
-                                BaseApplication.exit();
-                            } else {
-                                // At least one denied permission with ask never again
-                                // Need to go to the settings
-                                ToastHelper.showToast("please go to the settings to agree storage permission");
-                                BaseApplication.exit();
-                            }
-                        }
-                    });
+                            });
+                }
+            });
+        } else {
+            BaseApplication.exit();
         }
     }
 

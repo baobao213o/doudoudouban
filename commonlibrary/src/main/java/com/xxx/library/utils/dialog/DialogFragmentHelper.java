@@ -19,14 +19,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.xxx.library.BaseApplication;
 import com.xxx.library.R;
 
 import java.util.Calendar;
 
 public class DialogFragmentHelper {
 
-    private static final String DIALOG_POSITIVE = "确定";
-    private static final String DIALOG_NEGATIVE = "取消";
+    private static final String DIALOG_POSITIVE = BaseApplication.getInstance().getString(R.string.common_dialog_confirm);
+    private static final String DIALOG_NEGATIVE = BaseApplication.getInstance().getString(R.string.common_dialog_cancel);
 
     private static final String TAG_HEAD = DialogFragmentHelper.class.getSimpleName();
 
@@ -36,7 +37,7 @@ public class DialogFragmentHelper {
     private static final int PROGRESS_THEME = R.style.Base_AlertDialog;
     public static final String PROGRESS_TAG = TAG_HEAD + ":progress";
 
-    public static CommonDialogFragment createProgrssDialog(final String message, boolean cancelable){
+    public static CommonDialogFragment createProgrssDialog(final String message, boolean cancelable) {
         return CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
             public Dialog getDialog(Context context) {
@@ -53,7 +54,7 @@ public class DialogFragmentHelper {
     private static final int TIPS_THEME = R.style.Base_AlertDialog;
     public static final String TIPS_TAG = TAG_HEAD + ":tips";
 
-    public static CommonDialogFragment createMessageDialog(final String message, boolean cancelable){
+    public static CommonDialogFragment createMessageDialog(final String message, boolean cancelable) {
 
         return CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
@@ -72,29 +73,31 @@ public class DialogFragmentHelper {
     private static final int CONFIRM_THEME = R.style.Base_AlertDialog;
     public static final String CONfIRM_TAG = TAG_HEAD + ":confirm";
 
-    public static void showConfirmDialog(FragmentManager fragmentManager, final String message,final String confirm,final String cancel,final IDialogResultListener<Integer> listener
-            , boolean cancelable, CommonDialogFragment.OnDialogCancelListener cancelListener){
+    public static void showConfirmDialog(FragmentManager fragmentManager, final String message, final String confirm, final String cancel, final IDialogResultListener<Integer> listener
+            , boolean cancelable, CommonDialogFragment.OnDialogCancelListener cancelListener) {
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
             public Dialog getDialog(Context context) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context, CONFIRM_THEME);
                 builder.setMessage(message);
-                builder.setPositiveButton(TextUtils.isEmpty(confirm)?DIALOG_POSITIVE:confirm, new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(TextUtils.isEmpty(confirm) ? DIALOG_POSITIVE : confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(listener != null){
+                        if (listener != null) {
                             listener.onDataResult(which);
                         }
                     }
                 });
-                builder.setNegativeButton(TextUtils.isEmpty(cancel)?DIALOG_NEGATIVE:cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(listener != null){
-                            listener.onDataResult(which);
+                if (cancel != null) {
+                    builder.setNegativeButton(TextUtils.isEmpty(cancel) ? DIALOG_NEGATIVE : cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (listener != null) {
+                                listener.onDataResult(which);
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 return builder.create();
             }
         }, cancelable, cancelListener);
@@ -109,7 +112,7 @@ public class DialogFragmentHelper {
     private static final String LIST_TAG = TAG_HEAD + ":list";
 
     public static DialogFragment showListDialog(FragmentManager fragmentManager, final String title, final String[] items
-            , final IDialogResultListener<Integer> resultListener, boolean cancelable ){
+            , final IDialogResultListener<Integer> resultListener, boolean cancelable) {
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
             public Dialog getDialog(Context context) {
@@ -118,7 +121,7 @@ public class DialogFragmentHelper {
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(resultListener != null){
+                        if (resultListener != null) {
                             resultListener.onDataResult(which);
                         }
                     }
@@ -137,7 +140,7 @@ public class DialogFragmentHelper {
     private static final String DATE_TAG = TAG_HEAD + ":date";
 
     public static DialogFragment showDateDialog(FragmentManager fragmentManager, final String title, final Calendar calendar
-            , final IDialogResultListener<Calendar> resultListener, final boolean cancelable){
+            , final IDialogResultListener<Calendar> resultListener, final boolean cancelable) {
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
             public Dialog getDialog(Context context) {
@@ -171,14 +174,15 @@ public class DialogFragmentHelper {
      */
     private static final int TIME_THEME = R.style.Base_AlertDialog;
     private static final String TIME_TAG = TAG_HEAD + ":time";
-    public static void showTimeDialog(FragmentManager manager, final String title, final Calendar calendar, final IDialogResultListener<Calendar> resultListener, final boolean cancelable){
+
+    public static void showTimeDialog(FragmentManager manager, final String title, final Calendar calendar, final IDialogResultListener<Calendar> resultListener, final boolean cancelable) {
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
             public Dialog getDialog(Context context) {
                 final TimePickerDialog dateDialog = new TimePickerDialog(context, TIME_THEME, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if(resultListener != null){
+                        if (resultListener != null) {
                             calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                             calendar.set(Calendar.MINUTE, minute);
                             resultListener.onDataResult(calendar);
@@ -205,9 +209,9 @@ public class DialogFragmentHelper {
      * 带输入框的弹出窗
      */
     private static final int INSERT_THEME = R.style.Base_AlertDialog;
-    private static final String INSERT_TAG  = TAG_HEAD + ":insert";
+    private static final String INSERT_TAG = TAG_HEAD + ":insert";
 
-    public static void showInsertDialog(FragmentManager manager, final String title, final IDialogResultListener<String> resultListener, final boolean cancelable){
+    public static void showInsertDialog(FragmentManager manager, final String title, final IDialogResultListener<String> resultListener, final boolean cancelable) {
 
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -222,7 +226,7 @@ public class DialogFragmentHelper {
                 builder.setPositiveButton(DIALOG_POSITIVE, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(resultListener != null){
+                        if (resultListener != null) {
                             resultListener.onDataResult(editText.getText().toString());
                         }
                     }
@@ -243,7 +247,7 @@ public class DialogFragmentHelper {
     private static final int PASSWORD_INSER_THEME = R.style.Base_AlertDialog;
     private static final String PASSWORD_INSERT_TAG = TAG_HEAD + ":insert";
 
-    public static void showPasswordInsertDialog(FragmentManager manager, final String title, final IDialogResultListener<String> resultListener, final boolean cancelable){
+    public static void showPasswordInsertDialog(FragmentManager manager, final String title, final IDialogResultListener<String> resultListener, final boolean cancelable) {
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
             public Dialog getDialog(Context context) {
@@ -256,7 +260,7 @@ public class DialogFragmentHelper {
                 builder.setPositiveButton(DIALOG_POSITIVE, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(resultListener != null){
+                        if (resultListener != null) {
                             resultListener.onDataResult(editText.getText().toString());
                         }
                     }
@@ -274,7 +278,7 @@ public class DialogFragmentHelper {
     private static final int INTERVAL_INSERT_THEME = R.style.Base_AlertDialog;
     private static final String INTERVAL_INSERT_TAG = TAG_HEAD + ":interval_insert";
 
-    public static void showIntervalInsertDialog(FragmentManager manager, final String title, final IDialogResultListener<String []> resultListener, final boolean cancelable){
+    public static void showIntervalInsertDialog(FragmentManager manager, final String title, final IDialogResultListener<String[]> resultListener, final boolean cancelable) {
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(new CommonDialogFragment.OnCallDialog() {
             @Override
             public Dialog getDialog(Context context) {
@@ -287,7 +291,7 @@ public class DialogFragmentHelper {
                         .setPositiveButton(DIALOG_POSITIVE, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if(resultListener != null){
+                                if (resultListener != null) {
                                     resultListener.onDataResult(new String[]{minEditText.getText().toString(), maxEditText.getText().toString()});
                                 }
                             }
