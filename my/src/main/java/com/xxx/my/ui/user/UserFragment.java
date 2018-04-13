@@ -116,17 +116,17 @@ public class UserFragment extends BaseFragment implements IUserFragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int selectedType = 0;
                 int id = item.getItemId();
-                if (id == R.id.navigation_message) {
+                if (id == R.id.my_menu_navigation_message) {
                     selectedType = USER_NAVI_MESSAGE;
-                } else if (id == R.id.navigation_book) {
+                } else if (id == R.id.my_menu_navigation_book) {
                     selectedType = USER_NAVI_BOOK;
-                } else if (id == R.id.navigation_movie) {
+                } else if (id == R.id.my_menu_navigation_movie) {
                     selectedType = USER_NAVI_MOVIE;
-                } else if (id == R.id.navigation_music) {
+                } else if (id == R.id.my_menu_navigation_music) {
                     selectedType = USER_NAVI_MUSIC;
-                } else if (id == R.id.navigation_diary) {
+                } else if (id == R.id.my_menu_navigation_diary) {
                     selectedType = USER_NAVI_DIARY;
-                } else if (id == R.id.navigation_exit) {
+                } else if (id == R.id.my_menu_navigation_exit) {
                     selectedType = USER_NAVI_EXIT;
                 }
                 if (listener != null) {
@@ -196,7 +196,7 @@ public class UserFragment extends BaseFragment implements IUserFragment {
             navigation.removeHeaderView(navigation.getHeaderView(0));
         }
         navigation.addHeaderView(loginView);
-        MenuItem menuItem = navigation.getMenu().findItem(R.id.navigation_exit);
+        MenuItem menuItem = navigation.getMenu().findItem(R.id.my_menu_navigation_exit);
         menuItem.setVisible(true);
 
         GlideApp.with(this).load(user.large_avatar).placeholder(R.drawable.my_user_head_normal).error(R.drawable.my_user_head_normal).into(userHead);
@@ -212,7 +212,7 @@ public class UserFragment extends BaseFragment implements IUserFragment {
             navigation.removeHeaderView(navigation.getHeaderView(0));
         }
         navigation.addHeaderView(unloginView);
-        MenuItem menuItem = navigation.getMenu().findItem(R.id.navigation_exit);
+        MenuItem menuItem = navigation.getMenu().findItem(R.id.my_menu_navigation_exit);
         menuItem.setVisible(false);
     }
 

@@ -32,6 +32,8 @@ dependencies {
         implementation project(':diary')
         implementation project(':syy')
         implementation project(':my')
+        implementation project(':broadcast')
+        implementation project(':group')
     }
 
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'

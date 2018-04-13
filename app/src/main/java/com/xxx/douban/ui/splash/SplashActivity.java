@@ -53,7 +53,6 @@ public class SplashActivity extends BaseActivity {
                         finish();
                     }
                 });
-
     }
 
     class InitCompletableOnSubscribe implements CompletableOnSubscribe {

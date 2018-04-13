@@ -12,7 +12,7 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/navigation_message"
+            android:id="@+id/my_menu_navigation_message"
             android:icon="@drawable/common_svg_message"
             android:title="@string/my_navigation_message" />
 
@@ -24,30 +24,30 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/navigation_book"
+            android:id="@+id/my_menu_navigation_book"
             android:icon="@drawable/common_svg_book"
             android:title="@string/my_navigation_book" />
 
         <item
-            android:id="@+id/navigation_movie"
+            android:id="@+id/my_menu_navigation_movie"
             android:icon="@drawable/common_svg_movie"
             android:title="@string/my_navigation_movie" />
 
         <item
-            android:id="@+id/navigation_music"
+            android:id="@+id/my_menu_navigation_music"
             android:icon="@drawable/common_svg_music"
             android:title="@string/my_navigation_music" />
 
         <item
-            android:id="@+id/navigation_diary"
+            android:id="@+id/my_menu_navigation_diary"
             android:icon="@drawable/common_svg_diary"
             android:title="@string/my_navigation_diary" />
     </group>
 
-    <group android:id="@+id/navigation_group_third" >
+    <group android:id="@+id/my_menu_navigation_group_third" >
 
         <item
-            android:id="@+id/navigation_exit"
+            android:id="@+id/my_menu_navigation_exit"
             android:icon="@drawable/common_svg_exit"
             android:title="@string/my_navigation_logout" />
 

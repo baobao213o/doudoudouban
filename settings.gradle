@@ -1,1 +1,1 @@
-include ':app', ':commonlibrary', ':diary', ':syy', ':my', ':broadcast'
+include ':app', ':commonlibrary', ':diary', ':syy', ':my', ':broadcast', ':group'
