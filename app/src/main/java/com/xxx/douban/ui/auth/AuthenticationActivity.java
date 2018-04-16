@@ -41,7 +41,7 @@ import static com.xxx.library.Constant.AuthenticationAccount.EXTRA_AUTH_MODE;
  *
  */
 @Route(path = "/main/auth/AuthenticationActivity")
-public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivity<AuthenticationResponse, AuthenticationPresenter> implements AuthenticationContract.View<AuthenticationResponse> {
+public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivity<AuthenticationPresenter> implements AuthenticationContract.View {
 
     private AutoCompleteTextView etUser;
     private EditText etPwd;
@@ -110,9 +110,9 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
     }
 
     @Override
-    public void onSuccess(AuthenticationResponse data) {
+    public void onSuccess(Object data) {
         super.onSuccess(data);
-        this.data = data;
+        this.data = (AuthenticationResponse) data;
         presenter.saveAuthenticationResponse(status);
     }
 

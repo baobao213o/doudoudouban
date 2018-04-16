@@ -19,7 +19,7 @@ import com.xxx.library.views.ToastHelper;
 import io.reactivex.disposables.Disposable;
 
 
-public abstract class BaseActivity<Entity, P extends BasePresenter> extends AppCompatActivity implements IView<Entity> {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView{
 
     protected P presenter;
     private CommonDialogFragment progessDialog;
@@ -65,7 +65,7 @@ public abstract class BaseActivity<Entity, P extends BasePresenter> extends AppC
     }
 
     @Override
-    public void onSuccess(Entity data) {
+    public void onSuccess(Object data) {
 
     }
 

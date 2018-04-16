@@ -12,9 +12,9 @@ import com.xxx.library.user.UserPresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-class TestPresenter extends UserPresenter<BookInfo,Contract.View<BookInfo>, BaseModel> {
+class TestPresenter extends UserPresenter<Contract.View, BaseModel> {
 
-    TestPresenter(Contract.View<BookInfo> mView, BaseModel model) {
+    TestPresenter(Contract.View mView, BaseModel model) {
         super(mView, model);
     }
 

@@ -7,9 +7,9 @@ import com.xxx.library.network.exception.ExceptionHandle;
 
 import io.reactivex.disposables.Disposable;
 
-public interface IView<Entity> {
+public interface IView {
 
-    void onSuccess(Entity data);
+    void onSuccess(Object data);
 
     void onFailure(ExceptionHandle.ResponseThrowable responseThrowable);
 

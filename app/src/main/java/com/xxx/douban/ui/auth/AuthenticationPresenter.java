@@ -21,10 +21,10 @@ import io.realm.Realm;
  * Created by gaoruochen on 18-3-11.
  */
 
-class AuthenticationPresenter extends BasePresenter<AuthenticationContract.View<AuthenticationResponse>, BaseModel> {
+class AuthenticationPresenter extends BasePresenter<AuthenticationContract.View, BaseModel> {
 
 
-    AuthenticationPresenter(AuthenticationContract.View<AuthenticationResponse> mView, BaseModel mModel) {
+    AuthenticationPresenter(AuthenticationContract.View mView, BaseModel mModel) {
         super(mView, mModel);
     }
 

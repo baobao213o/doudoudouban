@@ -10,7 +10,7 @@ import com.xxx.library.network.exception.ExceptionHandle;
 
 public interface Contract {
 
-    interface View<Entity> extends IView<Entity> {
+    interface View extends IView {
 
         void onUserUpdateSuccess(User user);
 

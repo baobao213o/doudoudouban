@@ -12,7 +12,7 @@ import com.xxx.library.network.exception.ExceptionHandle;
  * Created by 50640 on 2018/3/26.
  */
 
-public abstract class BaseUserActivity<Entity, P extends UserPresenter> extends BaseActivity<Entity, P> implements UserManager.IUser, Contract.View<Entity> {
+public abstract class BaseUserActivity<P extends UserPresenter> extends BaseActivity<P> implements UserManager.IUser, Contract.View{
 
     @Override
     final protected void onCreate(@Nullable Bundle savedInstanceState) {

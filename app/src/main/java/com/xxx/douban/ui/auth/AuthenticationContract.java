@@ -12,7 +12,7 @@ import java.util.List;
 
 public class AuthenticationContract {
 
-    interface View<Entity> extends IView<Entity> {
+    interface View extends IView {
 
         void showAuthStatus(List<AuthStatus> authStatus);
 

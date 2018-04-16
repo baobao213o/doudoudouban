@@ -14,13 +14,13 @@ import io.reactivex.schedulers.Schedulers;
  * Created by gaoruochen on 18-3-20.
  */
 
-public class UserPresenter<Entity, V extends Contract.View<Entity>, M extends BaseModel> extends BasePresenter<V, M> {
+public class UserPresenter<V extends Contract.View, M extends BaseModel> extends BasePresenter<V, M> {
 
     public UserPresenter(V mView, M model) {
         super(mView, model);
     }
 
-    public final void getUserFromRemote() {
+    final void getUserFromRemote() {
         mModel.postDataFromRemote(UserApi.class).getUserInfo().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new HandleNetExceptionObserver<User>(this) {
             @Override

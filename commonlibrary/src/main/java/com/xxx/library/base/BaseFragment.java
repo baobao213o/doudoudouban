@@ -2,8 +2,6 @@ package com.xxx.library.base;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
@@ -21,7 +19,7 @@ import io.reactivex.disposables.Disposable;
  * Created by gaoruochen on 18-3-20.
  */
 
-public abstract class BaseFragment <B, P extends BasePresenter> extends Fragment implements IView<B> {
+public abstract class BaseFragment <P extends BasePresenter> extends Fragment implements IView {
 
 
     protected P presenter;
@@ -30,12 +28,12 @@ public abstract class BaseFragment <B, P extends BasePresenter> extends Fragment
 
     protected abstract P createPresenter();
 
-
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         presenter = createPresenter();
     }
+
 
     @Override
     public void showLoading(final Disposable disposable, boolean cancel) {
@@ -68,7 +66,7 @@ public abstract class BaseFragment <B, P extends BasePresenter> extends Fragment
     }
 
     @Override
-    public void onSuccess(B data) {
+    public void onSuccess(Object data) {
 
     }
 

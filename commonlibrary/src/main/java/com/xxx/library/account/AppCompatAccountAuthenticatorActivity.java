@@ -27,7 +27,7 @@ import com.xxx.library.mvp.presenter.BasePresenter;
  * is never set or if it is set to null then error {@link AccountManager#ERROR_CODE_CANCELED}
  * will be called on the response.
  */
-public abstract class AppCompatAccountAuthenticatorActivity<Entity, P extends BasePresenter> extends BaseActivity<Entity, P> {
+public abstract class AppCompatAccountAuthenticatorActivity<P extends BasePresenter> extends BaseActivity<P> {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 

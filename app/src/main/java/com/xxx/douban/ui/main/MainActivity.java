@@ -18,7 +18,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xxx.broadcast.ui.container.BroadcastFragment;
 import com.xxx.diary.ui.container.DiaryFragment;
 import com.xxx.douban.R;
-import com.xxx.douban.entity.BookInfo;
 import com.xxx.group.ui.container.GroupFragment;
 import com.xxx.library.entity.User;
 import com.xxx.library.mvp.model.BaseModel;
@@ -34,7 +33,7 @@ import com.xxx.my.ui.user.UserFragment;
 import com.xxx.syy.ui.container.SyyFragment;
 
 @Route(path = "/main/main/MainActivity")
-public class MainActivity extends BaseUserActivity<BookInfo, TestPresenter> implements IView<BookInfo>, UserFragment.IDrawerClose {
+public class MainActivity extends BaseUserActivity<TestPresenter> implements IView, UserFragment.IDrawerClose {
 
 
     private IUserFragment leftFragment;
