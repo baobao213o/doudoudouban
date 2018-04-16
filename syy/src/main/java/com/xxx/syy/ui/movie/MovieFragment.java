@@ -19,7 +19,6 @@ import com.xxx.syy.entity.MovieInfo;
 
 public class MovieFragment extends BaseFragment<MoviePresenter> implements MovieContract.View {
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
