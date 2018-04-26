@@ -204,7 +204,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         // 循环取出Cause
         while (cause != null) {
             cause.printStackTrace(pw);
-            cause = e.getCause();
+            cause = cause.getCause();
         }
         pw.close();
         String result = writer.toString();

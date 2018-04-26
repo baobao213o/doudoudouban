@@ -60,7 +60,6 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
         }
     }
 
-    public abstract void onError(ExceptionHandle.ResponseThrowable responseThrowable);
 
     @Override
     public void onError(Throwable e) {
@@ -80,7 +79,6 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
                     showAuthError(responseThrowable);
                     break;
                 default:
-                    showErrorDialog(responseThrowable);
                     break;
             }
             onError(responseThrowable);
@@ -88,8 +86,16 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
         } else {
             //将Throwable 和 未知错误的status code返回
             ExceptionHandle.ResponseThrowable responseThrowable = new ExceptionHandle().new ResponseThrowable(e, ExceptionHandle.ERROR.UNKNOW);
-            showErrorDialog(responseThrowable);
             onError(responseThrowable);
+        }
+    }
+
+    public void onError(ExceptionHandle.ResponseThrowable responseThrowable) {
+        if (presenter != null) {
+            if ((ifNeedNetworkAvalible && responseThrowable.code == ExceptionHandle.ERROR.NETWORD_ERROR) || showErrorDialog) {
+                presenter.getView().showErrorResult(responseThrowable.message);
+            }
+            presenter.getView().onFailure(responseThrowable);
         }
     }
 
@@ -97,16 +103,6 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
     public void onComplete() {
         if (showLoadingDialog && presenter != null) {
             presenter.getView().hideLoading();
-        }
-    }
-
-    private void showErrorDialog(ExceptionHandle.ResponseThrowable responseThrowable) {
-        if (ifNeedNetworkAvalible && responseThrowable.code == ExceptionHandle.ERROR.NETWORD_ERROR && presenter != null) {
-            presenter.getView().showErrorResult(responseThrowable.message);
-            return;
-        }
-        if (showErrorDialog && presenter != null) {
-            presenter.getView().showErrorResult(responseThrowable.message);
         }
     }
 

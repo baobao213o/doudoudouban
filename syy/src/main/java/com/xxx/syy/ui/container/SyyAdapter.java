@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by gaoruochen on 18-4-13.
@@ -13,11 +13,11 @@ import java.util.HashMap;
 
 public class SyyAdapter extends FragmentPagerAdapter {
 
-    private HashMap<Fragment, String> map;
+    private LinkedHashMap<Fragment, String> map;
     private ArrayList<Fragment> list = new ArrayList<>();
 
 
-    SyyAdapter(FragmentManager fm, HashMap<Fragment, String> map) {
+    SyyAdapter(FragmentManager fm, LinkedHashMap<Fragment, String> map) {
         super(fm);
         this.map = map;
         list.addAll(map.keySet());

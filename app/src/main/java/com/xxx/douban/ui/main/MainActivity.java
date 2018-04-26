@@ -141,6 +141,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
 
     private void showFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.common_anim_fade_in,R.anim.common_anim_fade_out);
         hideFragment(fragmentTransaction);
         switch (index) {
             case R.id.main_menu_bottom_navi_diary:

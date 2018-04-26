@@ -18,7 +18,7 @@ import com.xxx.syy.ui.book.BookFragment;
 import com.xxx.syy.ui.movie.MovieFragment;
 import com.xxx.syy.ui.music.MusicFragment;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by gaoruochen on 18-4-12.
@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 public class SyyFragment extends BaseFragment {
 
-    private HashMap<Fragment, String> map = new HashMap<>();
+    private LinkedHashMap<Fragment, String> map = new LinkedHashMap<>();
 
     private MusicFragment musicFragment;
     private BookFragment bookFragment;
@@ -58,5 +58,6 @@ public class SyyFragment extends BaseFragment {
         map.put(musicFragment, getString(R.string.syy_container_music));
         FragmentPagerAdapter adapter = new SyyAdapter(getFragmentManager(), map);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(map.size());
     }
 }

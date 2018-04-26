@@ -10,6 +10,7 @@ import android.os.Process;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.squareup.leakcanary.LeakCanary;
 import com.xxx.library.appdelegate.Delegate;
+import com.xxx.library.crash.CrashHandler;
 
 import java.util.LinkedList;
 
@@ -45,7 +46,7 @@ public class BaseApplication extends Application {
         ARouter.init(this);
         LeakCanary.install(this);
         Realm.init(this);
-//        CrashHandler.getInstance().init();
+        CrashHandler.getInstance().init();
         Delegate.getInstance().onCreate(this);
         registerActivityListener();
     }

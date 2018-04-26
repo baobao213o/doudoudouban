@@ -19,7 +19,7 @@ import io.reactivex.disposables.Disposable;
  * Created by gaoruochen on 18-3-20.
  */
 
-public abstract class BaseFragment <P extends BasePresenter> extends Fragment implements IView {
+public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IView {
 
 
     protected P presenter;
@@ -72,12 +72,12 @@ public abstract class BaseFragment <P extends BasePresenter> extends Fragment im
 
     @Override
     public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
+        //始终显示最新信息
 
     }
 
     @Override
     public void showErrorResult(String errorMsg) {
-        //始终显示最新信息
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         Fragment fragment = getChildFragmentManager().findFragmentByTag(DialogFragmentHelper.TIPS_TAG);
         if (null != fragment) {
@@ -90,7 +90,7 @@ public abstract class BaseFragment <P extends BasePresenter> extends Fragment im
 
     @Override
     public void showAuthError(String errorMsg) {
-        DialogFragmentHelper.showConfirmDialog(getChildFragmentManager(), errorMsg,null,null, new IDialogResultListener<Integer>() {
+        DialogFragmentHelper.showConfirmDialog(getChildFragmentManager(), errorMsg, null, null, new IDialogResultListener<Integer>() {
             @Override
             public void onDataResult(Integer which) {
                 if (which == DialogInterface.BUTTON_POSITIVE) {

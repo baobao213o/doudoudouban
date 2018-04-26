@@ -19,7 +19,7 @@ import com.xxx.library.views.ToastHelper;
 import io.reactivex.disposables.Disposable;
 
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView{
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView {
 
     protected P presenter;
     private CommonDialogFragment progessDialog;

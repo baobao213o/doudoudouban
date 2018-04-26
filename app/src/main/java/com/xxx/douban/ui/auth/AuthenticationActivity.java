@@ -81,7 +81,6 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
                 return false;
             }
         });
-
         presenter.getAuthenticationResponse();
     }
 
