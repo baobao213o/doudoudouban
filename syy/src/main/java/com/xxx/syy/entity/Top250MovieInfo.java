@@ -6,7 +6,7 @@ import java.util.List;
  * Created by gaoruochen on 18-4-16.
  */
 
-public class MovieInfo {
+public class Top250MovieInfo {
 
     /**
      * start : 0
@@ -19,6 +19,7 @@ public class MovieInfo {
     public int count;
     public String title;
     public int total;
+    public String date;
 
     public List<Subjects> subjects;
 

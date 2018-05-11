@@ -3,15 +3,16 @@ package com.xxx.library.base;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
-import com.xxx.library.utils.dialog.CommonDialogFragment;
-import com.xxx.library.utils.dialog.DialogFragmentHelper;
-import com.xxx.library.utils.dialog.IDialogResultListener;
+import com.xxx.library.views.dialog.CommonDialogFragment;
+import com.xxx.library.views.dialog.DialogFragmentHelper;
+import com.xxx.library.views.dialog.IDialogResultListener;
 
 import io.reactivex.disposables.Disposable;
 
@@ -78,14 +79,16 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public void showErrorResult(String errorMsg) {
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        Fragment fragment = getChildFragmentManager().findFragmentByTag(DialogFragmentHelper.TIPS_TAG);
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        Fragment fragment = fm.findFragmentByTag(DialogFragmentHelper.TIPS_TAG);
         if (null != fragment) {
             ft.remove(fragment);
         }
         CommonDialogFragment errorDialog = DialogFragmentHelper.createMessageDialog(errorMsg, true);
         ft.add(errorDialog, DialogFragmentHelper.TIPS_TAG);
         ft.commit();
+        fm.executePendingTransactions();
     }
 
     @Override

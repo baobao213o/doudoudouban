@@ -1,18 +1,15 @@
-package com.xxx.library.utils.dialog;
+package com.xxx.library.views.dialog;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.util.DisplayMetrics;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
+
 
 
 public class CommonDialogFragment extends DialogFragment {
@@ -27,6 +24,8 @@ public class CommonDialogFragment extends DialogFragment {
      */
     private OnCallDialog mOnCallDialog;
 
+    private String style;
+
     public interface OnDialogCancelListener {
         void onCancel();
     }
@@ -35,15 +34,16 @@ public class CommonDialogFragment extends DialogFragment {
         Dialog getDialog(Context context);
     }
 
-    public static CommonDialogFragment newInstance(OnCallDialog callDialog, boolean cancelable) {
-        return newInstance(callDialog, cancelable, null);
+    public static CommonDialogFragment newInstance(OnCallDialog callDialog, boolean cancelable, String style) {
+        return newInstance(callDialog, cancelable, null, style);
     }
 
-    public static CommonDialogFragment newInstance(OnCallDialog callDialog, boolean cancelable, OnDialogCancelListener cancelListener) {
+    public static CommonDialogFragment newInstance(OnCallDialog callDialog, boolean cancelable, OnDialogCancelListener cancelListener, String style) {
         CommonDialogFragment instance = new CommonDialogFragment();
         instance.setCancelable(cancelable);
         instance.mCancelListener = cancelListener;
         instance.mOnCallDialog = callDialog;
+        instance.style = style;
         return instance;
     }
 
@@ -65,19 +65,12 @@ public class CommonDialogFragment extends DialogFragment {
         super.onStart();
         Dialog dialog = getDialog();
         if (dialog != null) {
-
-            // 在 5.0 以下的版本会出现白色背景边框，若在 5.0 以上设置则会造成文字部分的背景也变成透明
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                // 目前只有这两个 dialog 会出现边框
-                if (dialog instanceof ProgressDialog || dialog instanceof DatePickerDialog) {
-                    getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                }
-            }
-
-            Window window = getDialog().getWindow();
-            WindowManager.LayoutParams windowParams = window.getAttributes();
-            windowParams.dimAmount = 0.0f;
-            window.setAttributes(windowParams);
+//            if (style.equals(DialogFragmentHelper.TIPS_TAG)) {
+                Window window = getDialog().getWindow();
+                DisplayMetrics dm = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+                window.setLayout((int) (dm.widthPixels * 0.6), ViewGroup.LayoutParams.WRAP_CONTENT);
+//            }
         }
     }
 
@@ -94,5 +87,5 @@ public class CommonDialogFragment extends DialogFragment {
         super.onDestroyView();
         mCancelListener = null;
     }
-}
 
+}

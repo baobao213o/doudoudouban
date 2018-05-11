@@ -1,4 +1,4 @@
-package com.xxx.library.utils.dialog;
+package com.xxx.library.views.dialog;
 
 /**
  * Created by Haoz on 2017/4/6 0006.

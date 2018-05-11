@@ -3,4 +3,11 @@
     <string name="syy_container_movie">电影</string>
     <string name="syy_container_music">音乐</string>
     <string name="syy_container_book">读书</string>
+
+    <string-array name="syy_movie_type">
+        <item>Top250</item>
+        <item>北美票房榜</item>
+    </string-array>
+
+
 </resources>

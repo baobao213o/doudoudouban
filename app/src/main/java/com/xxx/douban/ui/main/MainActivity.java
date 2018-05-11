@@ -62,6 +62,12 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
 //            return;
 //        }
         setContentView(R.layout.main_activity_main);
+        if (savedInstanceState != null) {
+            diaryFragment = (DiaryFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_DIARY);
+            syyFragment = (SyyFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_SYY);
+            broadcastFragment = (BroadcastFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_BROADCAST);
+            groupFragment = (GroupFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_GROUP);
+        }
         drawer = findViewById(R.id.drawer_main);
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
@@ -105,13 +111,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
 
         leftFragment = (IUserFragment) getSupportFragmentManager().findFragmentById(R.id.frgment_main_navigation);
         ((UserFragment) leftFragment).setListener(this);
-        if (savedInstanceState != null) {
-            diaryFragment = (DiaryFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_DIARY);
-            syyFragment = (SyyFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_SYY);
-            broadcastFragment = (BroadcastFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_BROADCAST);
-            groupFragment = (GroupFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_GROUP);
-        }
-        showFragment();
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -141,13 +141,13 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
 
     private void showFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.common_anim_fade_in,R.anim.common_anim_fade_out);
+        fragmentTransaction.setCustomAnimations(R.anim.common_anim_fade_in, R.anim.common_anim_fade_out);
         hideFragment(fragmentTransaction);
         switch (index) {
             case R.id.main_menu_bottom_navi_diary:
                 if (diaryFragment == null) {
                     diaryFragment = new DiaryFragment();
-                    fragmentTransaction.add(R.id.container_main,diaryFragment, FRAG_TAG_DIARY);
+                    fragmentTransaction.add(R.id.container_main, diaryFragment, FRAG_TAG_DIARY);
                 } else {
                     fragmentTransaction.show(diaryFragment);
                 }
@@ -155,7 +155,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
             case R.id.main_menu_bottom_navi_syy:
                 if (syyFragment == null) {
                     syyFragment = new SyyFragment();
-                    fragmentTransaction.add(R.id.container_main,syyFragment, FRAG_TAG_SYY);
+                    fragmentTransaction.add(R.id.container_main, syyFragment, FRAG_TAG_SYY);
                 } else {
                     fragmentTransaction.show(syyFragment);
                 }
@@ -163,7 +163,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
             case R.id.main_menu_bottom_navi_broadcast:
                 if (broadcastFragment == null) {
                     broadcastFragment = new BroadcastFragment();
-                    fragmentTransaction.add(R.id.container_main,broadcastFragment, FRAG_TAG_BROADCAST);
+                    fragmentTransaction.add(R.id.container_main, broadcastFragment, FRAG_TAG_BROADCAST);
                 } else {
                     fragmentTransaction.show(broadcastFragment);
                 }
@@ -171,7 +171,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
             case R.id.main_menu_bottom_navi_group:
                 if (groupFragment == null) {
                     groupFragment = new GroupFragment();
-                    fragmentTransaction.add(R.id.container_main,groupFragment, FRAG_TAG_GROUP);
+                    fragmentTransaction.add(R.id.container_main, groupFragment, FRAG_TAG_GROUP);
                 } else {
                     fragmentTransaction.show(groupFragment);
                 }

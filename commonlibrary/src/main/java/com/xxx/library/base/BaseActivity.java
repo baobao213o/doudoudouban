@@ -12,8 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
-import com.xxx.library.utils.dialog.CommonDialogFragment;
-import com.xxx.library.utils.dialog.DialogFragmentHelper;
+import com.xxx.library.views.dialog.CommonDialogFragment;
+import com.xxx.library.views.dialog.DialogFragmentHelper;
 import com.xxx.library.views.ToastHelper;
 
 import io.reactivex.disposables.Disposable;
