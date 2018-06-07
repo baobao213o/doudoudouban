@@ -2,7 +2,10 @@ package com.xxx.douban.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xxx.douban.R;
 import com.xxx.douban.ui.main.MainActivity;
 import com.xxx.douban.view.HeartView;
@@ -17,12 +20,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
-
+@Route(path = "/main/splash/SplashActivity")
 public class SplashActivity extends BaseActivity {
 
     private boolean aniFinished = false;
     private HeartView heartView;
     private Disposable disposable;
+    private TextView tv_main_skip;
+    private boolean isClicked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +47,29 @@ public class SplashActivity extends BaseActivity {
             }
         });
 
+        tv_main_skip = findViewById(R.id.tv_main_skip);
+        tv_main_skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isClicked = true;
+                heartView.destroy();
+                Intent it = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(it);
+                finish();
+            }
+        });
+
         disposable = Completable.create(observerable)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Exception {
-                        Intent it = new Intent(SplashActivity.this, MainActivity.class);
-                        startActivity(it);
-                        finish();
+                        if(!isClicked){
+                            Intent it = new Intent(SplashActivity.this, MainActivity.class);
+                            startActivity(it);
+                            finish();
+                        }
                     }
                 });
     }
@@ -78,6 +97,12 @@ public class SplashActivity extends BaseActivity {
 
     private void init() {
         RetrofitManager.getInstance().init();
+        tv_main_skip.post(new Runnable() {
+            @Override
+            public void run() {
+                tv_main_skip.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override

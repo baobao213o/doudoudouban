@@ -8,7 +8,7 @@ import com.xxx.syy.entity.USBoxMovieInfo;
  * Created by gaoruochen on 18-4-16.
  */
 
-interface MovieContract {
+public interface MovieContract {
 
     interface View extends IView{
 

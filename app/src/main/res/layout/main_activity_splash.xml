@@ -17,5 +17,22 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <TextView
+        android:id="@+id/tv_main_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/dark_30_percent"
+        android:textColor="@color/white"
+        android:text="skip"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="10dp"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp"
+        android:paddingBottom="6dp"
+        android:paddingTop="6dp"
+        android:visibility="gone"
+        />
+
 
 </android.support.constraint.ConstraintLayout>

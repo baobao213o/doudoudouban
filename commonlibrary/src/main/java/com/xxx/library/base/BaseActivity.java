@@ -2,6 +2,7 @@ package com.xxx.library.base;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,12 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
+import com.xxx.library.views.ToastHelper;
 import com.xxx.library.views.dialog.CommonDialogFragment;
 import com.xxx.library.views.dialog.DialogFragmentHelper;
-import com.xxx.library.views.ToastHelper;
 
 import io.reactivex.disposables.Disposable;
 
@@ -27,8 +29,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        if (savedInstanceState != null && !isTaskRoot()) {
+            ARouter.getInstance().build("/main/splash/SplashActivity").withFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).navigation();
+            finish();
+        }
         presenter = createPresenter();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
     }
 

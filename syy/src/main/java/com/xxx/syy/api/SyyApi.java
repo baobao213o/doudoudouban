@@ -1,11 +1,13 @@
 package com.xxx.syy.api;
 
 import com.xxx.library.Constant;
+import com.xxx.syy.entity.MovieDetailInfo;
 import com.xxx.syy.entity.Top250MovieInfo;
 import com.xxx.syy.entity.USBoxMovieInfo;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -16,11 +18,13 @@ public interface SyyApi {
 
     interface MovieApi{
         @GET(Constant.BASE_URL + "v2/movie/top250")
-        Observable<Top250MovieInfo> getMovieTop250(@Query("start") String start, @Query("count") String count);
+        Observable<Top250MovieInfo> getMovieTop250(@Query("start") int start, @Query("count") int count);
 
         @GET(Constant.BASE_URL + "/v2/movie/us_box")
         Observable<USBoxMovieInfo> getMovieUSbox();
 
+        @GET(Constant.BASE_URL + "/v2/movie/subject/{id}")
+        Observable<MovieDetailInfo> getMovieDetail(@Path("id") String id);
     }
 
 

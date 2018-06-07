@@ -4,10 +4,20 @@
     <string name="syy_container_music">音乐</string>
     <string name="syy_container_book">读书</string>
 
+
     <string-array name="syy_movie_type">
         <item>Top250</item>
         <item>北美票房榜</item>
     </string-array>
 
+    <string name="syy_movie_item_noscore">暂无评分</string>
+
+    <string name="syy_movie_detail_oldname">原名：%s</string>
+    <string name="syy_movie_detail_nickname">又名：%s</string>
+    <string name="syy_movie_detail_area">制片地区：%s</string>
+
+    <string name="syy_movie_score">豆瓣评分</string>
+    <string name="syy_movie_intro">影片信息</string>
+    <string name="syy_movie_link">查看评论</string>
 
 </resources>

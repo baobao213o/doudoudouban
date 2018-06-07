@@ -63,7 +63,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public Context getContext() {
-        return getActivity();
+        return super.getContext();
     }
 
     @Override

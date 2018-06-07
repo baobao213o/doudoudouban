@@ -14,6 +14,7 @@ import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.xxx.library.BaseApplication;
 import com.xxx.library.R;
+import com.xxx.library.utils.CommonLogger;
 import com.xxx.library.utils.IOUtil;
 import com.xxx.library.views.dialog.DialogFragmentHelper;
 import com.xxx.library.views.dialog.IDialogResultListener;
@@ -74,7 +75,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
 
     private void saveExceptions(final Throwable e) {
-        e.printStackTrace();
+        CommonLogger.e(e);
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             final FragmentActivity activity = (FragmentActivity) BaseApplication.getCurrentActivity();
             activity.runOnUiThread(new Runnable() {

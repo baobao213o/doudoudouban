@@ -30,12 +30,12 @@ public class Subjects {
     public String original_title;
     public String subtype;
     public String year;
-    public ImagesBean images;
+    public AvatarsBean images;
     public String alt;
     public String id;
     public List<String> genres;
-    public List<CastsBean> casts;
-    public List<DirectorsBean> directors;
+    public List<Character> casts;
+    public List<Character> directors;
 
     public static class RatingBean {
         /**
@@ -45,25 +45,13 @@ public class Subjects {
          * min : 0
          */
 
-        public int max;
-        public double average;
+        public float max;
+        public float average;
         public String stars;
-        public int min;
+        public float min;
     }
 
-    public static class ImagesBean {
-        /**
-         * small : https://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.webp
-         * large : https://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.webp
-         * medium : https://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.webp
-         */
-
-        public String small;
-        public String large;
-        public String medium;
-    }
-
-    public static class CastsBean {
+    public static class Character {
         /**
          * alt : https://movie.douban.com/celebrity/1054521/
          * avatars : {"small":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp","large":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp","medium":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp"}
@@ -76,42 +64,17 @@ public class Subjects {
         public String name;
         public String id;
 
-        public static class AvatarsBean {
-            /**
-             * small : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
-             * large : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
-             * medium : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
-             */
-
-            public String small;
-            public String large;
-            public String medium;
-        }
     }
 
-    public static class DirectorsBean {
+    public static class AvatarsBean {
         /**
-         * alt : https://movie.douban.com/celebrity/1047973/
-         * avatars : {"small":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.webp","large":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.webp","medium":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.webp"}
-         * name : 弗兰克·德拉邦特
-         * id : 1047973
+         * small : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
+         * large : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
+         * medium : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
          */
 
-        public String alt;
-        public AvatarsBeanX avatars;
-        public String name;
-        public String id;
-
-        public static class AvatarsBeanX {
-            /**
-             * small : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.webp
-             * large : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.webp
-             * medium : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p230.webp
-             */
-
-            public String small;
-            public String large;
-            public String medium;
-        }
+        public String small;
+        public String large;
+        public String medium;
     }
 }

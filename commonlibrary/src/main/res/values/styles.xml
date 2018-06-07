@@ -9,11 +9,10 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
-
-
+        <item name="android:windowBackground">@color/activity_bg</item>
     </style>
 
-    <style name="AnimationActivity"  parent="@android:style/Animation.Activity">
+    <style name="AnimationActivity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/common_anim_fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/common_anim_fade_out</item>
         <item name="android:activityCloseEnterAnimation">@anim/common_anim_fade_in</item>
@@ -21,9 +20,10 @@
     </style>
 
 
-    <!-- 与v21不同的写在这. -->
     <style name="AppTheme" parent="BaseAppTheme">
-
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="Base_AlertDialog" parent="Base.Theme.AppCompat.Light.Dialog">
@@ -47,10 +47,16 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-    <style name="divider">
+    <!-- toolbar菜单样式 -->
+    <style name="toolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
+        <!--<item name="android:textColorPrimary">@color/green_5</item>-->
+    </style>
+
+    <style name="Divider">
+        <item name="android:background">@color/grey_2</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/grey_4</item>
     </style>
+
 
 </resources>

@@ -21,8 +21,8 @@ class MoviePresenter extends BasePresenter<MovieContract.View, BaseModel> {
     }
 
 
-    void getTop250() {
-        mModel.postDataFromRemote(SyyApi.MovieApi.class).getMovieTop250("0", "10").subscribeOn(Schedulers.io())
+    void getTop250(int start, int count) {
+        mModel.postDataFromRemote(SyyApi.MovieApi.class).getMovieTop250(start, count).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new HandleNetExceptionObserver<Top250MovieInfo>(this) {
             @Override
             public void onNext(Top250MovieInfo info) {

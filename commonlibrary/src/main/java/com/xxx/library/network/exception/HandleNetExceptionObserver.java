@@ -1,6 +1,8 @@
 package com.xxx.library.network.exception;
 
 
+import android.text.TextUtils;
+
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.entity.ErrorResponse;
 import com.xxx.library.mvp.presenter.BasePresenter;
@@ -93,7 +95,11 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
     public void onError(ExceptionHandle.ResponseThrowable responseThrowable) {
         if (presenter != null) {
             if ((ifNeedNetworkAvalible && responseThrowable.code == ExceptionHandle.ERROR.NETWORD_ERROR) || showErrorDialog) {
-                presenter.getView().showErrorResult(responseThrowable.message);
+                String errorMsg = responseThrowable.message;
+                if (TextUtils.isEmpty(errorMsg)) {
+                    errorMsg = responseThrowable.getResponseError().msg;
+                }
+                presenter.getView().showErrorResult(errorMsg);
             }
             presenter.getView().onFailure(responseThrowable);
         }

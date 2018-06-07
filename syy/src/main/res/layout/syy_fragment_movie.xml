@@ -1,16 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/srl_syy_movie"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_syy_movie"
+    <lumenghz.com.pullrefresh.PullToRefreshView
+        android:id="@+id/srl_syy_movie"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:orientation="vertical"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_syy_movie"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </lumenghz.com.pullrefresh.PullToRefreshView>
+
+    <com.nightonke.boommenu.BoomMenuButton
+        android:id="@+id/menu_syy_movie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:bmb_buttonEnum="ham"
+        app:bmb_buttonPlaceEnum="buttonPlace_ham_2"
+        app:bmb_hamHeight="0dp"
+        app:bmb_hamWidth="0dp"
+        app:bmb_highlightedColor="@color/dark_10_percent"
+        app:bmb_normalColor="@color/white"
+        app:bmb_piecePlaceEnum="piecePlace_ham_2"
+        app:layout_constraintBottom_toBottomOf="@id/srl_syy_movie"
+        app:layout_constraintEnd_toEndOf="@id/srl_syy_movie">
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="-5dp"
+            android:drawableTop="@drawable/common_svg_menu"
+            android:gravity="center"
+            android:text="menu"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </com.nightonke.boommenu.BoomMenuButton>
 
 
-</android.support.v4.widget.SwipeRefreshLayout>
+</android.support.constraint.ConstraintLayout>
+
 

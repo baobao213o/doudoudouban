@@ -206,8 +206,10 @@ public class HeartView extends View {
             candyAni.cancel();
             candyAni = null;
         }
-        heartAni.cancel();
-        heartAni = null;
+        if (heartAni != null) {
+            heartAni.cancel();
+            heartAni = null;
+        }
     }
 
 

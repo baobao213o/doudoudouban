@@ -5,7 +5,8 @@
     android:id="@+id/drawer_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity">
+    tools:context=".ui.main.MainActivity"
+    >
 
 
     <android.support.constraint.ConstraintLayout
@@ -14,17 +15,16 @@
 
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
+            android:id="@+id/abl_main"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:theme="@style/toolbarTheme"
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:title="@string/app_name" />
 
         </android.support.design.widget.AppBarLayout>
@@ -33,22 +33,10 @@
             android:id="@+id/container_main"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/navigation_main"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"/>
-
-
-        <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navigation_main"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:menu="@menu/main_bottom_navigation" />
-
+            app:layout_constraintTop_toBottomOf="@+id/abl_main"/>
 
     </android.support.constraint.ConstraintLayout>
 

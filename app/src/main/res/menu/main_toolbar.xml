@@ -8,6 +8,11 @@
         android:title=""
         app:showAsAction="ifRoom" />
 
-
+    <item
+        android:id="@+id/context_menu"
+        android:title=""
+        android:icon="@drawable/main_svg_bottom_add"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
 
 </menu>

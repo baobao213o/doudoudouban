@@ -5,10 +5,15 @@
     <application
         android:allowBackup="false"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        >
-        <meta-data android:name="com.xxx.syy.SyyApplication"
-            android:value="APP_DELEGATE"/>
+        android:supportsRtl="true">
+        <meta-data
+            android:name="com.xxx.syy.SyyApplication"
+            android:value="APP_DELEGATE" />
+
+        <activity android:name=".ui.movie.detail.MovieDetailActivity"
+            android:theme="@style/DetailMovieTheme"
+            />
+
     </application>
 
 </manifest>

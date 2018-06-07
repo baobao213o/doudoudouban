@@ -5,20 +5,25 @@ buildscript {
     repositories {
         google()
         jcenter()
+
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
         classpath "io.realm:realm-gradle-plugin:5.0.0"
     }
 }
-
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
 
 
 ext {
     versions = [
             'compileSdk': 26,
             'targetSdk' : 26,
-            'minSdk'    : 19,
+            'minSdk'    : 21,
             'buildTools': '27.0.3',
     ]
     compiles = [
@@ -32,7 +37,10 @@ ext {
             'gson'            : '2.8.2',
             'leakcanary'      : '1.5.4',
             'glide'           : '4.6.1',
-            'rxpermissions'   : '0.9.5@aar'
+            'rxpermissions'   : '0.9.5@aar',
+            'boommenu'        : '2.1.1',
+            'PullToRefresh'   : '1.0.2',
+            'loading'         : '2.1.3',
 
     ]
 }

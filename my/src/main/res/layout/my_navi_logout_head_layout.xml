@@ -4,7 +4,7 @@
     android:id="@+id/cl_my_gotologin"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:background="@drawable/my_user_head_bg"
+    android:background="@color/grey_2"
     android:layout_marginBottom="8dp"
     android:gravity="center">
 
