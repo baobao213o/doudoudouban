@@ -5,24 +5,29 @@
     android:id="@+id/srl_syy_movie_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:transitionGroup="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar_syy_movie_detail"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:theme="@style/toolbarTheme">
+            android:theme="@style/toolbarTheme"
+            >
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/ctoolbar_syy_movie_detail_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 app:collapsedTitleGravity="left"
-                app:contentScrim="@color/colorPrimary"
                 app:expandedTitleGravity="bottom"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -53,16 +58,37 @@
         </android.support.design.widget.AppBarLayout>
 
 
+
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/srcoll_syy_movie_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
+            android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/content_syy_movie_detail"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="30dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_syy_movie_detail_intro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/syy_movie_intro"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textColor="@color/grey_8"
+                    android:textSize="16sp"
+                    />
+
 
                 <LinearLayout
                     android:id="@+id/ll_syy_movie_detail_score"
@@ -70,7 +96,7 @@
                     android:layout_height="90dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:background="@color/white"
                     android:elevation="5dp"
                     android:gravity="center"
@@ -80,7 +106,7 @@
                     android:paddingStart="5dp"
                     android:paddingTop="8dp"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/tv_syy_movie_detail_intro">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -132,11 +158,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="8dp"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toStartOf="@id/ll_syy_movie_detail_score"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_syy_movie_detail_intro"
                     tools:text="123123123" />
 
                 <TextView
@@ -194,13 +220,13 @@
                     style="@style/Divider"/>
 
                 <TextView
-                    android:id="@+id/tv_syy_movie_detail_intro"
+                    android:id="@+id/tv_syy_movie_detail_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="@string/syy_movie_intro"
+                    android:text="@string/syy_movie_info"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider_1"
                     android:textColor="@color/grey_8"
@@ -217,7 +243,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     tools:text="啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦"
-                    app:layout_constraintTop_toBottomOf="@id/tv_syy_movie_detail_intro"
+                    app:layout_constraintTop_toBottomOf="@id/tv_syy_movie_detail_info"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:lineSpacingExtra="2dp"
@@ -243,8 +269,65 @@
                     android:layout_height="8dp"
                     style="@style/Divider"/>
 
-                <include layout="@layout/common_loading_layout" />
 
+                <TextView
+                    android:id="@+id/tv_syy_movie_detail_director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/syy_movie_director"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_2"
+                    android:textColor="@color/grey_8"
+                    android:textSize="16sp"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_syy_movie_detail_director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_syy_movie_detail_director"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    />
+
+                <View
+                    android:id="@+id/divider_3"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintTop_toBottomOf="@id/rv_syy_movie_detail_director"
+                    android:layout_height="8dp"
+                    style="@style/Divider"/>
+
+                <TextView
+                    android:id="@+id/tv_syy_movie_detail_casts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/syy_movie_casts"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_3"
+                    android:textColor="@color/grey_8"
+                    android:textSize="16sp"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_syy_movie_detail_casts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_syy_movie_detail_casts"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -254,17 +337,17 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_syy_movie_detail_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/common_svg_share"
             app:backgroundTint="@color/white"
             app:borderWidth="0dp"
             app:fabSize="normal"
-            app:layout_anchor="@id/srcoll_syy_movie_detail"
+            app:layout_anchor="@id/appbar_syy_movie_detail"
             app:layout_anchorGravity="end|bottom|right"
             app:pressedTranslationZ="10dp"
             app:rippleColor="@color/dark_10_percent"
-            app:useCompatPadding="true" />
+            app:useCompatPadding="true"
+            />
     </android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

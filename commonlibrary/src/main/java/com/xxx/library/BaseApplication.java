@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Process;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 import com.xxx.library.appdelegate.Delegate;
 import com.xxx.library.crash.CrashHandler;
@@ -47,6 +48,7 @@ public class BaseApplication extends Application {
         LeakCanary.install(this);
         Realm.init(this);
         CrashHandler.getInstance().init();
+        Fresco.initialize(this);
         Delegate.getInstance().onCreate(this);
         registerActivityListener();
     }

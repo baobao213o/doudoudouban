@@ -116,8 +116,8 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
-        super.onFailure(responseThrowable);
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable,int requestCode) {
+        super.onFailure(responseThrowable,requestCode);
         tilPwd.setError(responseThrowable.message);
     }
 

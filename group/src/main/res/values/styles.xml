@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="BaseGroupTheme" parent="AppTheme">
+    <style name="BaseGroupTheme" parent="BaseAppTheme.Common">
 
     </style>
 

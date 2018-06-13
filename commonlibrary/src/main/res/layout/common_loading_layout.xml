@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fl_loading"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_bg"
-    android:elevation="6dp"
-    android:visibility="gone">
+    android:elevation="6dp">
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/view_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="80dp"
         app:indicatorColor="@color/grey_4"
         app:indicatorName="PacmanIndicator" />
+
+    <TextView
+        android:id="@+id/tv_loading_fail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="80dp"
+        android:drawableTop="@drawable/common_svg_warn"
+        android:text="@string/common_loading_fail"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:drawablePadding="8dp"
+        />
 
 </FrameLayout>
 

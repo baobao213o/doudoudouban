@@ -10,19 +10,23 @@
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="5dp"
     app:cardElevation="2dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp">
 
-        <ImageView
+
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/iv_syy_movie_item_avatar"
             android:layout_width="80dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:background="@drawable/common_round_solid_grey2"
+            android:scaleType="center"
+            app:placeholderImage="@drawable/common_image_user_default"
+            app:roundedCornerRadius="4dp" />
 
         <TextView
             android:id="@+id/tv_syy_movie_item_name"

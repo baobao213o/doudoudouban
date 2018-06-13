@@ -72,7 +72,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable,int requestCode) {
         //始终显示最新信息
 
     }

@@ -11,7 +11,7 @@ public interface IView {
 
     void onSuccess(Object data);
 
-    void onFailure(ExceptionHandle.ResponseThrowable responseThrowable);
+    void onFailure(ExceptionHandle.ResponseThrowable responseThrowable,int requestCode);
 
     void showLoading(Disposable disposable,boolean cancel);
 

@@ -6,7 +6,6 @@ import com.xxx.library.account.AuthenticationApi;
 import com.xxx.library.entity.AuthenticationResponse;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.presenter.BasePresenter;
-import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.network.exception.HandleNetExceptionObserver;
 
 import java.util.List;
@@ -32,11 +31,6 @@ class AuthenticationPresenter extends BasePresenter<AuthenticationContract.View,
         String grant_type = Constant.Authentication.GrantType.GRANT_TYPE_PASSWORD;
         mModel.postDataFromRemote(AuthenticationApi.class).authenticate(grant_type, user, pwd).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new HandleNetExceptionObserver<AuthenticationResponse>(this) {
-            @Override
-            public void onError(ExceptionHandle.ResponseThrowable responseThrowable) {
-                mView.onFailure(responseThrowable);
-            }
-
             @Override
             public void onNext(AuthenticationResponse response) {
                 mView.onSuccess(response);

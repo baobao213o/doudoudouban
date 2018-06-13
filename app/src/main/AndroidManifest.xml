@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/BaseMainTheme"
+        android:theme="@style/BaseAppTheme.Common.BaseMainTheme"
         >
         <activity
             android:name=".ui.main.MainActivity"
@@ -31,7 +31,8 @@
         </activity>
         <activity
             android:name=".ui.auth.AuthenticationActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            />
 
         <meta-data
             android:name="com.xxx.douban.App"

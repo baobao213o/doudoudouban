@@ -9,13 +9,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.base.BaseFragment;
 import com.xxx.library.entity.User;
-import com.xxx.library.glide.GlideApp;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.rxjava.RxBusManager;
@@ -45,7 +44,7 @@ public class UserFragment extends BaseFragment implements IUserFragment {
 
     private IDrawerClose listener;
 
-    private ImageView userHead;
+    private SimpleDraweeView userHead;
     private TextView userName;
     private TextView userId;
     private TextView follow;
@@ -199,7 +198,7 @@ public class UserFragment extends BaseFragment implements IUserFragment {
         MenuItem menuItem = navigation.getMenu().findItem(R.id.my_menu_navigation_exit);
         menuItem.setVisible(true);
 
-        GlideApp.with(this).load(user.large_avatar).placeholder(R.drawable.my_user_head_normal).error(R.drawable.my_user_head_normal).into(userHead);
+        userHead.setImageURI(user.large_avatar);
         userName.setText(user.name);
         userId.setText(user.id);
         follow.setText(String.format(getString(R.string.my_follow), user.following_count));

@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.xxx.library.Constant;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
@@ -30,8 +31,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && !isTaskRoot()) {
-            ARouter.getInstance().build("/main/splash/SplashActivity").withFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).navigation();
-            finish();
+            ARouter.getInstance().build(Constant.ARouter.AROUTER_MAIN_SPLASH).withFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).navigation();
         }
         presenter = createPresenter();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -76,7 +76,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable, int requestCode) {
 
     }
 

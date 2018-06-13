@@ -47,7 +47,7 @@ public class Subjects {
 
         public float max;
         public float average;
-        public String stars;
+        public String stars = "";
         public float min;
     }
 
@@ -59,10 +59,10 @@ public class Subjects {
          * id : 1054521
          */
 
-        public String alt;
+        public String alt = "";
         public AvatarsBean avatars;
-        public String name;
-        public String id;
+        public String name = "";
+        public String id = "";
 
     }
 
@@ -73,8 +73,8 @@ public class Subjects {
          * medium : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
          */
 
-        public String small;
-        public String large;
-        public String medium;
+        public String small = "";
+        public String large = "";
+        public String medium = "";
     }
 }

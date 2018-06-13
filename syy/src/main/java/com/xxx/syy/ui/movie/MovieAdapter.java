@@ -2,17 +2,18 @@ package com.xxx.syy.ui.movie;
 
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.xxx.library.glide.GlideApp;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.xxx.syy.R;
 import com.xxx.syy.entity.Subjects;
 import com.xxx.syy.ui.movie.detail.MovieDetailActivity;
@@ -53,7 +54,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
     @Override
     public void onBindViewHolder(@NonNull final MovieHolder holder, int position) {
         final Subjects subjects = mDatas.get(position);
-        GlideApp.with(mContext).load(subjects.images.large).into(holder.iv_syy_movie_item_avatar);
+        holder.iv_syy_movie_item_avatar.setImageURI(subjects.images.large);
         holder.tv_syy_movie_item_name.setText(subjects.title);
         StringBuilder sb = new StringBuilder(subjects.year);
         for (Subjects.Character cast : subjects.casts) {
@@ -68,10 +69,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
         float rate = ratingBean.average / ratingBean.max * 5;
 
         holder.rating_syy_movie_item_score.setRating(rate);
-        holder.rating_syy_movie_item_score.setVisibility((int)rate == 0 ? View.INVISIBLE : View.VISIBLE);
-        holder.tv_syy_movie_item_noscore.setVisibility((int)rate == 0 ? View.VISIBLE : View.GONE);
+        holder.rating_syy_movie_item_score.setVisibility((int) rate == 0 ? View.INVISIBLE : View.VISIBLE);
+        holder.tv_syy_movie_item_noscore.setVisibility((int) rate == 0 ? View.VISIBLE : View.GONE);
 
-        holder.tv_syy_movie_item_score.setText(ratingBean.average + "");
+        holder.tv_syy_movie_item_score.setText(String.valueOf(ratingBean.average));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +81,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
                 intent.putExtra("id", subjects.id);
                 intent.putExtra("url", subjects.images.large);
                 intent.putExtra("title", subjects.title);
-                mContext.startActivity(intent);
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(mContext,
+                        Pair.create(view, mContext.getString(R.string.syy_transition_movie_detail_img)));
+
+//                final Pair<View, String>[] pairs = TransitionHelper.createSafeTransitionParticipants(mContext, false);
+//                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(mContext);
+                mContext.startActivity(intent, options.toBundle());
             }
         });
     }
@@ -92,7 +98,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
 
     class MovieHolder extends RecyclerView.ViewHolder {
 
-        private ImageView iv_syy_movie_item_avatar;
+        private SimpleDraweeView iv_syy_movie_item_avatar;
         private TextView tv_syy_movie_item_name, tv_syy_movie_item_detail, tv_syy_movie_item_score, tv_syy_movie_item_noscore;
         private RatingBar rating_syy_movie_item_score;
 

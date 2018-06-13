@@ -15,6 +15,9 @@
             android:id="@+id/rv_syy_movie"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:orientation="vertical"
             />
 
     </lumenghz.com.pullrefresh.PullToRefreshView>
@@ -26,26 +29,11 @@
         android:layout_margin="10dp"
         app:bmb_buttonEnum="ham"
         app:bmb_buttonPlaceEnum="buttonPlace_ham_2"
-        app:bmb_hamHeight="0dp"
-        app:bmb_hamWidth="0dp"
+        app:bmb_piecePlaceEnum="piecePlace_ham_2"
         app:bmb_highlightedColor="@color/dark_10_percent"
         app:bmb_normalColor="@color/white"
-        app:bmb_piecePlaceEnum="piecePlace_ham_2"
         app:layout_constraintBottom_toBottomOf="@id/srl_syy_movie"
-        app:layout_constraintEnd_toEndOf="@id/srl_syy_movie">
-
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawablePadding="-5dp"
-            android:drawableTop="@drawable/common_svg_menu"
-            android:gravity="center"
-            android:text="menu"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-    </com.nightonke.boommenu.BoomMenuButton>
-
+        app:layout_constraintEnd_toEndOf="@id/srl_syy_movie"/>
 
 </android.support.constraint.ConstraintLayout>
 

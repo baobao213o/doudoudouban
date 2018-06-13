@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:padding="8dp"
-    android:background="@drawable/common_round_color_primary"
+    android:background="@drawable/common_round_solid_primary"
     android:textColor="@color/white"
     tools:text="123123" />
 

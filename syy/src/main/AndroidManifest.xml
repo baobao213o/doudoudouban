@@ -11,7 +11,7 @@
             android:value="APP_DELEGATE" />
 
         <activity android:name=".ui.movie.detail.MovieDetailActivity"
-            android:theme="@style/DetailMovieTheme"
+            android:theme="@style/BaseAppTheme.Common.BaseSyyTheme.MovieDetail"
             />
 
     </application>

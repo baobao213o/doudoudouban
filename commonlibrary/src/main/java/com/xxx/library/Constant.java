@@ -13,7 +13,7 @@ public interface Constant {
 
         String REDIRECT_URI = "frodo://app/oauth/callback/";
 
-        interface GrantType{
+        interface GrantType {
 
             String GRANT_TYPE_PASSWORD = "password";
 
@@ -21,7 +21,7 @@ public interface Constant {
 
         }
 
-        interface Header{
+        interface Header {
 
             String AUTHORIZATION = "Authorization";
 
@@ -56,5 +56,14 @@ public interface Constant {
 
     String BASE_URL = "https://api.douban.com/";
 
+
+    interface ARouter {
+
+        String AROUTER_MAIN_SPLASH = "/main/splash/SplashActivity";
+
+        String AROUTER_MAIN_AUTH_AUTHENTICATION = "/main/auth/AuthenticationActivity";
+
+        String AROUTER_MAIN_MAIN = "/main/main/MainActivity";
+    }
 
 }

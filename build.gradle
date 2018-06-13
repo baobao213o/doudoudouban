@@ -8,7 +8,7 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.1.3'
         classpath "io.realm:realm-gradle-plugin:5.0.0"
     }
 }
@@ -28,7 +28,7 @@ ext {
     ]
     compiles = [
             'supportLibrary'  : '27.1.1',
-            'constraintLayout': '1.1.0',
+            'constraintLayout': '1.1.1',
             'arouterCompiler' : '1.1.4',
             'arouterApi'      : '1.3.1',
             'rxjava'          : '2.1.9',
@@ -36,7 +36,6 @@ ext {
             'retrofit'        : '2.3.0',
             'gson'            : '2.8.2',
             'leakcanary'      : '1.5.4',
-            'glide'           : '4.6.1',
             'rxpermissions'   : '0.9.5@aar',
             'boommenu'        : '2.1.1',
             'PullToRefresh'   : '1.0.2',

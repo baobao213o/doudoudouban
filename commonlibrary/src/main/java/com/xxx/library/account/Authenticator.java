@@ -45,9 +45,9 @@ public class Authenticator extends AbstractAccountAuthenticator {
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
         Postcard postcard;
         if (AccountHelper.getInstance().getActiveAccount() != null) {
-            postcard = ARouter.getInstance().build("/main/main/MainActivity");
+            postcard = ARouter.getInstance().build(Constant.ARouter.AROUTER_MAIN_MAIN);
         } else {
-            postcard = ARouter.getInstance().build("/main/auth/AuthenticationActivity");
+            postcard = ARouter.getInstance().build(Constant.ARouter.AROUTER_MAIN_AUTH_AUTHENTICATION);
         }
         LogisticsCenter.completion(postcard);
         Class destination = postcard.getDestination();

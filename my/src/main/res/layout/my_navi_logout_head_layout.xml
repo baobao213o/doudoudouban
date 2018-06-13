@@ -4,12 +4,11 @@
     android:id="@+id/cl_my_gotologin"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:background="@color/grey_2"
     android:layout_marginBottom="8dp"
+    android:background="@color/grey_2"
     android:gravity="center">
 
-
-    <com.xxx.library.views.CircleImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_my_logout_head"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -18,21 +17,22 @@
         app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline"
-        android:src="@drawable/my_user_head_normal" />
-
+        app:placeholderImage="@drawable/my_user_head_normal"
+        app:placeholderImageScaleType="centerCrop"
+        app:roundAsCircle="true" />
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
+        android:drawableEnd="@drawable/common_arrow_right"
+        android:text="@string/my_user_gotologin"
         android:textColor="@color/dark_70_percent"
         android:textSize="@dimen/common_text_large"
-        android:drawableEnd="@drawable/common_arrow_right"
-        app:layout_constraintStart_toEndOf="@+id/iv_my_logout_head"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
         app:layout_constraintBottom_toBottomOf="@id/guideline"
-        android:text="@string/my_user_gotologin" />
+        app:layout_constraintStart_toEndOf="@+id/iv_my_logout_head"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -41,8 +41,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5"
         app:layout_constraintStart_toStartOf="parent" />
-
-
 
 
 </android.support.constraint.ConstraintLayout>

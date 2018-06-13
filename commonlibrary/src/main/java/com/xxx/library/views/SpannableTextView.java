@@ -64,7 +64,7 @@ public class SpannableTextView extends AppCompatTextView {
         }
         int sourceLength = explicitText.length();
         String showMore = "显示更多";
-        explicitText = explicitText + "..." + showMore;
+        explicitText = explicitText + "  " + showMore;
         final SpannableString mSpan = new SpannableString(explicitText);
 
 

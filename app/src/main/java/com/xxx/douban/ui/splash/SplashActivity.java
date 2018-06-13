@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xxx.douban.R;
 import com.xxx.douban.ui.main.MainActivity;
 import com.xxx.douban.view.HeartView;
+import com.xxx.library.Constant;
 import com.xxx.library.base.BaseActivity;
 import com.xxx.library.mvp.presenter.BasePresenter;
 import com.xxx.library.network.RetrofitManager;
@@ -20,7 +21,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
-@Route(path = "/main/splash/SplashActivity")
+
+@Route(path = Constant.ARouter.AROUTER_MAIN_SPLASH)
 public class SplashActivity extends BaseActivity {
 
     private boolean aniFinished = false;
@@ -65,7 +67,7 @@ public class SplashActivity extends BaseActivity {
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Exception {
-                        if(!isClicked){
+                        if (!isClicked) {
                             Intent it = new Intent(SplashActivity.this, MainActivity.class);
                             startActivity(it);
                             finish();

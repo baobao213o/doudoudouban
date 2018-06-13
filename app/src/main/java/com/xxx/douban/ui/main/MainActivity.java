@@ -17,6 +17,7 @@ import com.xxx.broadcast.ui.container.BroadcastFragment;
 import com.xxx.diary.ui.container.DiaryFragment;
 import com.xxx.douban.R;
 import com.xxx.group.ui.container.GroupFragment;
+import com.xxx.library.Constant;
 import com.xxx.library.entity.User;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.view.IView;
@@ -37,7 +38,7 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(path = "/main/main/MainActivity")
+@Route(path = Constant.ARouter.AROUTER_MAIN_MAIN)
 public class MainActivity extends BaseUserActivity<TestPresenter> implements IView, UserFragment.IDrawerClose, OnMenuItemClickListener {
 
 

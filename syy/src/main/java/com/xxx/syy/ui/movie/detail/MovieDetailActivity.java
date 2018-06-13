@@ -2,14 +2,16 @@ package com.xxx.syy.ui.movie.detail;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,21 +19,20 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.wang.avi.AVLoadingIndicatorView;
 import com.xxx.library.base.BaseActivity;
-import com.xxx.library.glide.GlideApp;
+import com.xxx.library.fresco.FrescoBitmapCallback;
+import com.xxx.library.fresco.FrescoLoadUtil;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
+import com.xxx.library.views.LoadingLayoutHelper;
 import com.xxx.library.views.SpannableTextView;
 import com.xxx.library.views.ToastHelper;
 import com.xxx.syy.R;
 import com.xxx.syy.entity.MovieDetailInfo;
 import com.xxx.syy.entity.Subjects;
+
+import java.util.ArrayList;
 
 public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> implements IView {
 
@@ -40,10 +41,14 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
     private TextView tv_syy_movie_detail_info1, tv_syy_movie_detail_info2, tv_syy_movie_detail_info3, tv_syy_movie_detail_info4;
     private TextView tv_syy_movie_detail_score, tv_syy_movie_detail_scorenum, tv_syy_movie_detail_noscore;
     private RatingBar rating_syy_movie_detail_score;
-    private AVLoadingIndicatorView view_loading;
-    private View fl_loading;
     private SwipeRefreshLayout srl_syy_movie_detail;
     private SpannableTextView stv_syy_movie_detail_intro;
+    private ConstraintLayout content_syy_movie_detail;
+
+    private RecyclerView rv_syy_movie_detail_director, rv_syy_movie_detail_casts;
+    private MovieCharatersAdapter directorAdapter, castsAdapter;
+    private ArrayList<Subjects.Character> directors = new ArrayList<>();
+    private ArrayList<Subjects.Character> casts = new ArrayList<>();
 
     private static final int Loading_success = 0;
     private static final int Loading_fail = 1;
@@ -68,34 +73,8 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
                     ToastHelper.showToast("share");
                 }
             });
-            final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.ctoolbar_syy_movie_detail_title);
-            String title = getIntent().getStringExtra("title");
-            collapsingToolbarLayout.setTitle(title);
-
-            iv_syy_movie_detail_avator = findViewById(R.id.iv_syy_movie_detail_avator);
-
-            String url = getIntent().getStringExtra("url");
-
-            GlideApp.with(this).asBitmap().load(url).listener(new RequestListener<Bitmap>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                    return false;
-                }
-
-                @Override
-                public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                    Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                        public void onGenerated(@NonNull Palette palette) {
-                            Palette.Swatch vibrant = palette.getMutedSwatch();//有活力的
-                            if (vibrant != null) {
-                                collapsingToolbarLayout.setContentScrimColor(vibrant.getRgb());
-                            }
-                        }
-                    });
-                    return false;
-                }
-            }).into(iv_syy_movie_detail_avator);
-
+            initToolbar();
+            initRecyclerView();
 
             tv_syy_movie_detail_info1 = findViewById(R.id.tv_syy_movie_detail_info1);
             tv_syy_movie_detail_info2 = findViewById(R.id.tv_syy_movie_detail_info2);
@@ -109,50 +88,101 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
 
             stv_syy_movie_detail_intro = findViewById(R.id.stv_syy_movie_detail_intro);
 
-            view_loading = findViewById(R.id.view_loading);
-            fl_loading = findViewById(R.id.fl_loading);
+            content_syy_movie_detail=findViewById(R.id.content_syy_movie_detail);
 
-            srl_syy_movie_detail = findViewById(R.id.srl_syy_movie_detail);
-            srl_syy_movie_detail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    loadingShade(Loading_loading);
-                    presenter.getMovieDetail(getIntent().getStringExtra("id"));
-                }
-            });
-
-            AppBarLayout appbar_syy_movie_detail = findViewById(R.id.appbar_syy_movie_detail);
-            appbar_syy_movie_detail.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    if (verticalOffset >= 0) {
-                        srl_syy_movie_detail.setEnabled(true);
-                    } else {
-                        srl_syy_movie_detail.setEnabled(false);
-                    }
-                }
-            });
-            view_loading.show();
-            loadingShade(Loading_loading);
-            presenter.getMovieDetail(getIntent().getStringExtra("id"));
-
+            LoadingData();
         }
+    }
+
+    private void initToolbar() {
+        final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.ctoolbar_syy_movie_detail_title);
+        String title = getIntent().getStringExtra("title");
+        collapsingToolbarLayout.setTitle(title);
+
+        iv_syy_movie_detail_avator = findViewById(R.id.iv_syy_movie_detail_avator);
+
+        String url = getIntent().getStringExtra("url");
+
+        FrescoLoadUtil.getInstance().loadImageBitmap(url, new FrescoBitmapCallback<Bitmap>() {
+            @Override
+            public void onSuccess(Uri uri, Bitmap result) {
+                Palette.from(result).generate(new Palette.PaletteAsyncListener() {
+                    public void onGenerated(@NonNull Palette palette) {
+                        Palette.Swatch vibrant = palette.getMutedSwatch();//有活力的
+                        if (vibrant != null) {
+                            collapsingToolbarLayout.setContentScrimColor(vibrant.getRgb());
+                            iv_syy_movie_detail_avator.setBackgroundColor(vibrant.getBodyTextColor());
+                        }
+                    }
+                });
+                iv_syy_movie_detail_avator.setImageBitmap(result);
+
+            }
+
+            @Override
+            public void onFailure(Uri uri, Throwable throwable) {
+                iv_syy_movie_detail_avator.setBackgroundColor(getResources().getColor(R.color.red_3));
+            }
+
+            @Override
+            public void onCancel(Uri uri) {
+
+            }
+        });
+    }
+
+    private void initRecyclerView() {
+        rv_syy_movie_detail_director = findViewById(R.id.rv_syy_movie_detail_director);
+        rv_syy_movie_detail_director.setAdapter(directorAdapter = new MovieCharatersAdapter(this, directors));
+
+        rv_syy_movie_detail_casts = findViewById(R.id.rv_syy_movie_detail_casts);
+        rv_syy_movie_detail_casts.setAdapter(castsAdapter = new MovieCharatersAdapter(this, casts));
+    }
+
+
+    private void LoadingData() {
+        srl_syy_movie_detail = findViewById(R.id.srl_syy_movie_detail);
+        srl_syy_movie_detail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadingShade(Loading_loading);
+                presenter.getMovieDetail(getIntent().getStringExtra("id"));
+            }
+        });
+
+        AppBarLayout appbar_syy_movie_detail = findViewById(R.id.appbar_syy_movie_detail);
+        appbar_syy_movie_detail.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset >= 0) {
+                    srl_syy_movie_detail.setEnabled(true);
+                } else {
+                    srl_syy_movie_detail.setEnabled(false);
+                }
+            }
+        });
+        loadingShade(Loading_loading);
+        presenter.getMovieDetail(getIntent().getStringExtra("id"));
     }
 
     private void loadingShade(int type) {
         switch (type) {
             case Loading_success:
                 srl_syy_movie_detail.setRefreshing(false);
-                fl_loading.setVisibility(View.GONE);
+                LoadingLayoutHelper.removeLoadingView(content_syy_movie_detail);
                 break;
             case Loading_fail:
                 srl_syy_movie_detail.setRefreshing(false);
-                fl_loading.setVisibility(View.VISIBLE);
-                view_loading.setVisibility(View.GONE);
+                LoadingLayoutHelper.addFailureView(content_syy_movie_detail, null, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadingShade(Loading_loading);
+                        presenter.getMovieDetail(getIntent().getStringExtra("id"));
+                    }
+                });
                 break;
             case Loading_loading:
-                fl_loading.setVisibility(View.VISIBLE);
-                view_loading.setVisibility(View.VISIBLE);
+                LoadingLayoutHelper.addLoadingView(content_syy_movie_detail);
                 break;
             default:
                 break;
@@ -198,25 +228,20 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
         float rate = ratingBean.average / ratingBean.max * 5;
 
         rating_syy_movie_detail_score.setRating(rate);
-        tv_syy_movie_detail_score.setText(ratingBean.average + "");
+        tv_syy_movie_detail_score.setText(String.valueOf(ratingBean.average));
         rating_syy_movie_detail_score.setVisibility((int) rate == 0 ? View.GONE : View.VISIBLE);
         tv_syy_movie_detail_noscore.setVisibility((int) rate == 0 ? View.VISIBLE : View.GONE);
         tv_syy_movie_detail_scorenum.setText(String.format(getString(R.string.common_people), info.ratings_count));
 
-        stv_syy_movie_detail_intro.limitTextViewString(info.summary,140);
+        stv_syy_movie_detail_intro.limitTextViewString(info.summary, 140);
+        directorAdapter.setList((ArrayList<Subjects.Character>) info.directors);
+        castsAdapter.setList((ArrayList<Subjects.Character>) info.casts);
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
-        super.onFailure(responseThrowable);
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable,int requestCode) {
+        super.onFailure(responseThrowable,requestCode);
         loadingShade(Loading_fail);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (view_loading != null) {
-            view_loading.hide();
-        }
-    }
 }

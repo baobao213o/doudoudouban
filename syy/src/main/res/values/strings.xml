@@ -16,8 +16,13 @@
     <string name="syy_movie_detail_nickname">又名：%s</string>
     <string name="syy_movie_detail_area">制片地区：%s</string>
 
+    <string name="syy_movie_intro">关于影片</string>
     <string name="syy_movie_score">豆瓣评分</string>
-    <string name="syy_movie_intro">影片信息</string>
+    <string name="syy_movie_info">简介</string>
     <string name="syy_movie_link">查看评论</string>
+    <string name="syy_movie_director">导演</string>
+    <string name="syy_movie_casts">主要演员</string>
+
+    <string name="syy_transition_movie_detail_img">syy_movie_detail_img</string>
 
 </resources>

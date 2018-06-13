@@ -62,4 +62,6 @@
     <string name="common_network_title_missing">题目为空</string>
     <string name="common_network_desc_missing">描述为空</string>
 
+    <string name="common_loading_fail">加载失败，请点击重试</string>
+
 </resources>

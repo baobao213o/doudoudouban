@@ -20,9 +20,15 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
     private boolean cancelDialog = true;
     private boolean showErrorDialog = true;
     private boolean ifNeedNetworkAvalible = true;   //可能有缓存 忽略网络检测
+    private int requestCode = -1;   //请求码
 
     protected HandleNetExceptionObserver(BasePresenter presenter) {
         this.presenter = presenter;
+    }
+
+    protected HandleNetExceptionObserver(BasePresenter presenter, int requestCode) {
+        this.presenter = presenter;
+        this.requestCode = requestCode;
     }
 
     public HandleNetExceptionObserver<T> isShowLoading(boolean showLoadingDialog) {
@@ -101,7 +107,7 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
                 }
                 presenter.getView().showErrorResult(errorMsg);
             }
-            presenter.getView().onFailure(responseThrowable);
+            presenter.getView().onFailure(responseThrowable, requestCode);
         }
     }
 

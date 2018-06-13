@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.xxx.library.views.CircleImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_my_user_head"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -28,7 +28,10 @@
         app:layout_constraintHorizontal_bias="0.086"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideline"
-        android:src="@drawable/my_user_head_normal" />
+        app:placeholderImage="@drawable/my_user_head_normal"
+        app:placeholderImageScaleType="centerCrop"
+        app:roundAsCircle="true"
+        />
 
 
     <TextView

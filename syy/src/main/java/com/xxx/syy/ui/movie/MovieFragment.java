@@ -1,6 +1,5 @@
 package com.xxx.syy.ui.movie;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,7 +37,7 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     private ArrayList<Subjects> list = new ArrayList<>();
     private int type;
     private static final int TOP250 = 0;
-    private static final int UXBOX = 1;
+    private static final int USBOX = 1;
     private boolean isBoomCLick = false;
     private int start = 0;
     private final static int pageSize = 10;
@@ -61,12 +60,12 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
                 menuButton.addBuilder(new HamButton.Builder()
                         .normalImageRes(colorRes[(int) (Math.random() * colorRes.length)])
                         .normalText(array[i])
-                        .subNormalText(array[i])
-                        .pieceColor(Color.WHITE));
+                        .subNormalText(array[i]));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         menuButton.setOnBoomListener(new OnBoomListenerAdapter() {
             @Override
             public void onClicked(int index, BoomButton boomButton) {
@@ -80,10 +79,10 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
                             type = TOP250;
                             break;
                         case "北美票房榜":
-                            if (type == UXBOX) {
+                            if (type == USBOX) {
                                 throw new Exception();
                             }
-                            type = UXBOX;
+                            type = USBOX;
                             break;
                         default:
                             return;
@@ -104,10 +103,10 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     private void requestData() {
         switch (type) {
             case TOP250:
-                presenter.getTop250(start, pageSize);
+                presenter.getTop250(TOP250, start, pageSize);
                 break;
-            case UXBOX:
-                presenter.getUSbox();
+            case USBOX:
+                presenter.getUSbox(USBOX);
                 break;
             default:
                 break;
@@ -117,10 +116,6 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     private void initRecyclerview(View view) {
         rv_syy_movie = view.findViewById(R.id.rv_syy_movie);
         srl_syy_movie = view.findViewById(R.id.srl_syy_movie);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rv_syy_movie.setLayoutManager(layoutManager);
         adapter = new MovieAdapter(getActivity(), list);
         rv_syy_movie.setAdapter(adapter);
 
@@ -167,9 +162,19 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
 
 
     @Override
-    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable) {
-        super.onFailure(responseThrowable);
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable, int requestCode) {
+        super.onFailure(responseThrowable, requestCode);
         srl_syy_movie.setRefreshing(false);
+        switch (requestCode) {
+            case TOP250:
+                type = USBOX;
+                break;
+            case USBOX:
+                type = TOP250;
+                break;
+            default:
+                break;
+        }
     }
 
 
