@@ -45,11 +45,6 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-    <!-- toolbar菜单样式 -->
-    <style name="toolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
-        <!--<item name="android:textColorPrimary">@color/green_5</item>-->
-    </style>
-
     <style name="Divider">
         <item name="android:background">@color/grey_2</item>
         <item name="android:layout_width">match_parent</item>

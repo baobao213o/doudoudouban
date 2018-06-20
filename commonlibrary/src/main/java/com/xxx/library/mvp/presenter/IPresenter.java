@@ -7,8 +7,12 @@ public interface IPresenter {
 
     void addDisposable(Disposable disposable);
 
-    void destroy();
+    void clearDisposable();
 
     void cancelRequest(Disposable disposable);
+
+    boolean isDestroy();
+
+    void detachView();
 
 }

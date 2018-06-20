@@ -1,5 +1,8 @@
 package com.xxx.syy.ui.movie.detail;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -8,23 +11,27 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.xxx.library.base.BaseActivity;
+import com.xxx.library.base.WebViewActivity;
 import com.xxx.library.fresco.FrescoBitmapCallback;
 import com.xxx.library.fresco.FrescoLoadUtil;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.view.IView;
 import com.xxx.library.network.exception.ExceptionHandle;
+import com.xxx.library.utils.ViewUtils;
+import com.xxx.library.views.FocusableFloatingActionButton;
 import com.xxx.library.views.LoadingLayoutHelper;
 import com.xxx.library.views.SpannableTextView;
 import com.xxx.library.views.ToastHelper;
@@ -36,16 +43,16 @@ import java.util.ArrayList;
 
 public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> implements IView {
 
-    private FloatingActionButton fab_syy_movie_detail_share;
+    private FocusableFloatingActionButton fab_syy_movie_detail_share;
     private ImageView iv_syy_movie_detail_avator;
     private TextView tv_syy_movie_detail_info1, tv_syy_movie_detail_info2, tv_syy_movie_detail_info3, tv_syy_movie_detail_info4;
-    private TextView tv_syy_movie_detail_score, tv_syy_movie_detail_scorenum, tv_syy_movie_detail_noscore;
+    private TextView tv_syy_movie_detail_score, tv_syy_movie_detail_scorenum, tv_syy_movie_detail_noscore, tv_syy_movie_detail_link;
     private RatingBar rating_syy_movie_detail_score;
     private SwipeRefreshLayout srl_syy_movie_detail;
     private SpannableTextView stv_syy_movie_detail_intro;
     private ConstraintLayout content_syy_movie_detail;
 
-    private RecyclerView rv_syy_movie_detail_director, rv_syy_movie_detail_casts;
+
     private MovieCharatersAdapter directorAdapter, castsAdapter;
     private ArrayList<Subjects.Character> directors = new ArrayList<>();
     private ArrayList<Subjects.Character> casts = new ArrayList<>();
@@ -53,6 +60,8 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
     private static final int Loading_success = 0;
     private static final int Loading_fail = 1;
     private static final int Loading_loading = 2;
+
+    private int toolbarColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +72,6 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.TRANSPARENT);
-
         setContentView(R.layout.syy_activity_movie_detail);
         if (savedInstanceState == null) {
             fab_syy_movie_detail_share = findViewById(R.id.fab_syy_movie_detail_share);
@@ -88,11 +96,12 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
 
             stv_syy_movie_detail_intro = findViewById(R.id.stv_syy_movie_detail_intro);
 
-            content_syy_movie_detail=findViewById(R.id.content_syy_movie_detail);
-
+            content_syy_movie_detail = findViewById(R.id.content_syy_movie_detail);
+            tv_syy_movie_detail_link = findViewById(R.id.tv_syy_movie_detail_link);
             LoadingData();
         }
     }
+
 
     private void initToolbar() {
         final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.ctoolbar_syy_movie_detail_title);
@@ -100,6 +109,7 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
         collapsingToolbarLayout.setTitle(title);
 
         iv_syy_movie_detail_avator = findViewById(R.id.iv_syy_movie_detail_avator);
+        iv_syy_movie_detail_avator.setBackgroundColor(getResources().getColor(R.color.red_3));
 
         String url = getIntent().getStringExtra("url");
 
@@ -110,7 +120,8 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
                     public void onGenerated(@NonNull Palette palette) {
                         Palette.Swatch vibrant = palette.getMutedSwatch();//有活力的
                         if (vibrant != null) {
-                            collapsingToolbarLayout.setContentScrimColor(vibrant.getRgb());
+                            toolbarColor = vibrant.getRgb();
+                            collapsingToolbarLayout.setContentScrimColor(toolbarColor);
                             iv_syy_movie_detail_avator.setBackgroundColor(vibrant.getBodyTextColor());
                         }
                     }
@@ -121,7 +132,7 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
 
             @Override
             public void onFailure(Uri uri, Throwable throwable) {
-                iv_syy_movie_detail_avator.setBackgroundColor(getResources().getColor(R.color.red_3));
+
             }
 
             @Override
@@ -132,21 +143,47 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
     }
 
     private void initRecyclerView() {
-        rv_syy_movie_detail_director = findViewById(R.id.rv_syy_movie_detail_director);
+        final RecyclerView rv_syy_movie_detail_director = findViewById(R.id.rv_syy_movie_detail_director);
         rv_syy_movie_detail_director.setAdapter(directorAdapter = new MovieCharatersAdapter(this, directors));
 
-        rv_syy_movie_detail_casts = findViewById(R.id.rv_syy_movie_detail_casts);
+        final RecyclerView rv_syy_movie_detail_casts = findViewById(R.id.rv_syy_movie_detail_casts);
         rv_syy_movie_detail_casts.setAdapter(castsAdapter = new MovieCharatersAdapter(this, casts));
-    }
+
+        NestedScrollView srcoll_syy_movie_detail = findViewById(R.id.srcoll_syy_movie_detail);
+
+        final ObjectAnimator disappear = ObjectAnimator.ofPropertyValuesHolder(
+                fab_syy_movie_detail_share,
+                PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f),
+                PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0f));
+        disappear.setInterpolator(new LinearInterpolator());
+        disappear.setDuration(300);
 
 
-    private void LoadingData() {
-        srl_syy_movie_detail = findViewById(R.id.srl_syy_movie_detail);
-        srl_syy_movie_detail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        srcoll_syy_movie_detail.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onRefresh() {
-                loadingShade(Loading_loading);
-                presenter.getMovieDetail(getIntent().getStringExtra("id"));
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (fab_syy_movie_detail_share.getScaleX() == 0) {
+                    if (!ViewUtils.viewsIntersect(rv_syy_movie_detail_director, fab_syy_movie_detail_share)
+                            && !ViewUtils.viewsIntersect(rv_syy_movie_detail_casts, fab_syy_movie_detail_share)) {
+                        if (!disappear.isRunning()) {
+                            disappear.reverse();
+                            fab_syy_movie_detail_share.isFocus = true;
+                            return;
+                        }
+                    }
+                }
+                if (fab_syy_movie_detail_share.getScaleX() != 0) {
+                    if (ViewUtils.viewsIntersect(rv_syy_movie_detail_director, fab_syy_movie_detail_share)
+                            || ViewUtils.viewsIntersect(rv_syy_movie_detail_casts, fab_syy_movie_detail_share)) {
+                        if (!disappear.isRunning()) {
+                            disappear.start();
+                            fab_syy_movie_detail_share.isFocus = false;
+                        }
+                    }
+
+                }
+
             }
         });
 
@@ -159,6 +196,38 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
                 } else {
                     srl_syy_movie_detail.setEnabled(false);
                 }
+                if (fab_syy_movie_detail_share.getScaleX() == 0) {
+                    if (!ViewUtils.viewsIntersect(rv_syy_movie_detail_director, fab_syy_movie_detail_share)
+                            && !ViewUtils.viewsIntersect(rv_syy_movie_detail_casts, fab_syy_movie_detail_share)) {
+                        if (!disappear.isRunning()) {
+                            disappear.reverse();
+                            fab_syy_movie_detail_share.isFocus = true;
+                            return;
+                        }
+                    }
+                }
+                if (fab_syy_movie_detail_share.getScaleX() != 0) {
+                    if (ViewUtils.viewsIntersect(rv_syy_movie_detail_director, fab_syy_movie_detail_share)
+                            || ViewUtils.viewsIntersect(rv_syy_movie_detail_casts, fab_syy_movie_detail_share)) {
+                        if (!disappear.isRunning()) {
+                            disappear.start();
+                            fab_syy_movie_detail_share.isFocus = false;
+                        }
+                    }
+
+                }
+            }
+        });
+
+    }
+
+    private void LoadingData() {
+        srl_syy_movie_detail = findViewById(R.id.srl_syy_movie_detail);
+        srl_syy_movie_detail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadingShade(Loading_loading);
+                presenter.getMovieDetail(getIntent().getStringExtra("id"));
             }
         });
         loadingShade(Loading_loading);
@@ -198,7 +267,7 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
     public void onSuccess(Object data) {
         super.onSuccess(data);
         loadingShade(Loading_success);
-        MovieDetailInfo info = ((MovieDetailInfo) data);
+        final MovieDetailInfo info = ((MovieDetailInfo) data);
         StringBuilder str = new StringBuilder(info.year);
         for (String genre : info.genres) {
             str.append("/").append(genre);
@@ -236,11 +305,20 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
         stv_syy_movie_detail_intro.limitTextViewString(info.summary, 140);
         directorAdapter.setList((ArrayList<Subjects.Character>) info.directors);
         castsAdapter.setList((ArrayList<Subjects.Character>) info.casts);
+        tv_syy_movie_detail_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(MovieDetailActivity.this, WebViewActivity.class);
+                it.putExtra(WebViewActivity.TAG_TITLE, getString(R.string.syy_movie_link));
+                it.putExtra(WebViewActivity.TAG_URL, info.mobile_url);
+                startActivity(it);
+            }
+        });
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable,int requestCode) {
-        super.onFailure(responseThrowable,requestCode);
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable, int requestCode) {
+        super.onFailure(responseThrowable, requestCode);
         loadingShade(Loading_fail);
     }
 

@@ -108,7 +108,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     public void onStop() {
         super.onStop();
         if (presenter != null) {
-            presenter.destroy();
+            presenter.clearDisposable();
         }
     }
 

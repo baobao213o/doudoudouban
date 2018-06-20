@@ -1,5 +1,8 @@
 package com.xxx.syy.ui.movie;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.app.SharedElementCallback;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -22,6 +26,7 @@ import com.xxx.syy.entity.Top250MovieInfo;
 import com.xxx.syy.entity.USBoxMovieInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lumenghz.com.pullrefresh.PullToRefreshView;
 
@@ -34,6 +39,7 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     private PullToRefreshView srl_syy_movie;
     private RecyclerView rv_syy_movie;
     private MovieAdapter adapter;
+    private BoomMenuButton menuButton;
     private ArrayList<Subjects> list = new ArrayList<>();
     private int type;
     private static final int TOP250 = 0;
@@ -47,14 +53,18 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.syy_fragment_movie, container, false);
-        BoomMenuButton menuButton = view.findViewById(R.id.menu_syy_movie);
+        initMenu(view);
+        initRecyclerview(view);
+        return view;
+    }
 
+    private void initMenu(View view) {
+
+        menuButton = view.findViewById(R.id.menu_syy_movie);
         final String[] array = getResources().getStringArray(R.array.syy_movie_type);
-
         int[] colorRes = {R.drawable.common_image_bat, R.drawable.common_image_bear, R.drawable.common_image_bee,
                 R.drawable.common_image_butterfly, R.drawable.common_image_cat, R.drawable.common_image_deer,
                 R.drawable.common_image_dolphin, R.drawable.common_image_eagle, R.drawable.common_image_elephant};
-
         try {
             for (int i = 0; i < menuButton.getPiecePlaceEnum().pieceNumber(); i++) {
                 menuButton.addBuilder(new HamButton.Builder()
@@ -65,7 +75,6 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         menuButton.setOnBoomListener(new OnBoomListenerAdapter() {
             @Override
             public void onClicked(int index, BoomButton boomButton) {
@@ -96,28 +105,31 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
                 }
             }
         });
-        initRecyclerview(view);
-        return view;
-    }
 
-    private void requestData() {
-        switch (type) {
-            case TOP250:
-                presenter.getTop250(TOP250, start, pageSize);
-                break;
-            case USBOX:
-                presenter.getUSbox(USBOX);
-                break;
-            default:
-                break;
-        }
+
+        final ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(
+                menuButton,
+                PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
+                PropertyValuesHolder.ofFloat(View.SCALE_X, 0f, 1f),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f, 1f));
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(300);
+        animator.start();
+
+        getActivity().setExitSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onSharedElementStart(List<String> sharedElementNames, List<View>
+                    sharedElements, List<View> sharedElementSnapshots) {
+                animator.start();
+            }
+        });
+
     }
 
     private void initRecyclerview(View view) {
         rv_syy_movie = view.findViewById(R.id.rv_syy_movie);
         srl_syy_movie = view.findViewById(R.id.srl_syy_movie);
-        adapter = new MovieAdapter(getActivity(), list);
-        rv_syy_movie.setAdapter(adapter);
+        rv_syy_movie.setAdapter(adapter = new MovieAdapter(getActivity(), list,menuButton));
 
         srl_syy_movie.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
@@ -152,8 +164,21 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
                 }
             }
         });
+
     }
 
+    private void requestData() {
+        switch (type) {
+            case TOP250:
+                presenter.getTop250(TOP250, start, pageSize);
+                break;
+            case USBOX:
+                presenter.getUSbox(USBOX);
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     protected MoviePresenter createPresenter() {

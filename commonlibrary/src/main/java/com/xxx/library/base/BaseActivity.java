@@ -33,7 +33,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         if (savedInstanceState != null && !isTaskRoot()) {
             ARouter.getInstance().build(Constant.ARouter.AROUTER_MAIN_SPLASH).withFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).navigation();
         }
-        presenter = createPresenter();
+        if (presenter == null) {
+            presenter = createPresenter();
+        }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
     }
@@ -109,19 +111,16 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         ToastHelper.showToast(errorMsg);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (presenter != null) {
-            presenter.destroy();
-        }
-    }
 
     @Override
     protected void onDestroy() {
         if (progessDialog != null) {
             progessDialog.dismiss();
             progessDialog = null;
+        }
+        if (presenter != null) {
+            presenter.clearDisposable();
+            presenter.detachView();
         }
         super.onDestroy();
     }

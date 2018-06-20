@@ -25,20 +25,24 @@
             android:duration="350"
             android:interpolator="@android:interpolator/linear_out_slow_in"
             android:startDelay="350" />
+
+    </transitionSet>
+
+
+    <transitionSet android:transitionOrdering="together">
+        <targets>
+            <target android:excludeId="@id/fab_syy_movie_detail_share" />
+        </targets>
         <slide
             android:duration="360"
             android:interpolator="@android:interpolator/linear_out_slow_in"
             android:slideEdge="bottom"
             android:startDelay="100" />
-    </transitionSet>
+        <fade
+            android:duration="350"
+            android:interpolator="@android:interpolator/linear" />
 
-    <fade
-        android:duration="350"
-        android:interpolator="@android:interpolator/linear">
-        <targets>
-            <target android:excludeId="@id/fab_syy_movie_detail_share" />
-        </targets>
-    </fade>
+    </transitionSet>
 
 
 </transitionSet>

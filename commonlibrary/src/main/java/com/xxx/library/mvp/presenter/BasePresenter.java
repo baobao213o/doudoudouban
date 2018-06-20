@@ -1,24 +1,33 @@
 package com.xxx.library.mvp.presenter;
 
 
+import android.support.annotation.Nullable;
+
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.mvp.view.IView;
+
+import java.lang.ref.WeakReference;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BasePresenter<V extends IView, M extends BaseModel> implements IPresenter {
 
+
+    private WeakReference<V> weakReferenceView;
     protected V mView;
     protected M mModel;
+    private boolean isDestroy = false;
 
     private CompositeDisposable compositeDisposable;
 
     public BasePresenter(V mView, M mModel) {
-        this.mView = mView;
+        weakReferenceView = new WeakReference<>(mView);
+        this.mView = weakReferenceView.get();
         this.mModel = mModel;
     }
 
+    @Nullable
     public V getView() {
         return mView;
     }
@@ -32,12 +41,17 @@ public abstract class BasePresenter<V extends IView, M extends BaseModel> implem
     }
 
     @Override
-    public void destroy() {
+    public void clearDisposable() {
         if (compositeDisposable != null) {
             compositeDisposable.clear();
             compositeDisposable = null;
-//            mView = null;
         }
+        isDestroy = true;
+    }
+
+    @Override
+    public boolean isDestroy() {
+        return isDestroy;
     }
 
     @Override
@@ -46,4 +60,12 @@ public abstract class BasePresenter<V extends IView, M extends BaseModel> implem
             d.dispose();
         }
     }
+
+    @Override
+    public void detachView() {
+        weakReferenceView.clear();
+        weakReferenceView = null;
+        mView = null;
+    }
+
 }

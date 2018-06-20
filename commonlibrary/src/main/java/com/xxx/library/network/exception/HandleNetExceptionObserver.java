@@ -22,6 +22,12 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
     private boolean ifNeedNetworkAvalible = true;   //可能有缓存 忽略网络检测
     private int requestCode = -1;   //请求码
 
+    private final int ACTION_SHOW_LOADING = 0;
+    private final int ACTION_HIDE_LOADING = 1;
+    private final int ACTION_SHOW_ERRORMSG = 2;
+    private final int ACTION_SHOW_AUTHERROR = 3;
+    private final int ACTION_ON_FAILURE = 4;
+
     protected HandleNetExceptionObserver(BasePresenter presenter) {
         this.presenter = presenter;
     }
@@ -64,7 +70,7 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
             return;
         }
         if (showLoadingDialog) {
-            presenter.getView().showLoading(d, cancelDialog);
+            safeShowView(ACTION_SHOW_LOADING, null, d);
         }
     }
 
@@ -72,7 +78,7 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
     @Override
     public void onError(Throwable e) {
         if (showLoadingDialog && presenter != null) {
-            presenter.getView().hideLoading();
+            safeShowView(ACTION_HIDE_LOADING);
         }
         if (e instanceof Exception) {
             //访问获得对应的Exception
@@ -101,27 +107,64 @@ public abstract class HandleNetExceptionObserver<T> implements Observer<T> {
     public void onError(ExceptionHandle.ResponseThrowable responseThrowable) {
         if (presenter != null) {
             if ((ifNeedNetworkAvalible && responseThrowable.code == ExceptionHandle.ERROR.NETWORD_ERROR) || showErrorDialog) {
-                String errorMsg = responseThrowable.message;
-                if (TextUtils.isEmpty(errorMsg)) {
-                    errorMsg = responseThrowable.getResponseError().msg;
-                }
-                presenter.getView().showErrorResult(errorMsg);
+                safeShowView(ACTION_SHOW_ERRORMSG, responseThrowable);
             }
-            presenter.getView().onFailure(responseThrowable, requestCode);
+            safeShowView(ACTION_ON_FAILURE, responseThrowable);
         }
     }
 
     @Override
     public void onComplete() {
         if (showLoadingDialog && presenter != null) {
-            presenter.getView().hideLoading();
+            safeShowView(ACTION_HIDE_LOADING);
         }
     }
 
     private void showAuthError(ExceptionHandle.ResponseThrowable responseThrowable) {
         if (presenter != null) {
-            presenter.getView().showAuthError(responseThrowable.message);
+            safeShowView(ACTION_SHOW_AUTHERROR, responseThrowable);
         }
+    }
+
+    private void safeShowView(int action) {
+        this.safeShowView(action, null);
+    }
+
+    private void safeShowView(int action, ExceptionHandle.ResponseThrowable responseThrowable) {
+        this.safeShowView(action, responseThrowable, null);
+    }
+
+    private void safeShowView(int action, ExceptionHandle.ResponseThrowable responseThrowable, Disposable d) {
+        if (presenter.isDestroy()) {
+            return;
+        }
+        if (presenter.getView() == null) {
+            return;
+        }
+        switch (action) {
+            case ACTION_SHOW_LOADING:
+                presenter.getView().showLoading(d, cancelDialog);
+                break;
+            case ACTION_HIDE_LOADING:
+                presenter.getView().hideLoading();
+                break;
+            case ACTION_SHOW_ERRORMSG:
+                String errorMsg = responseThrowable.message;
+                if (TextUtils.isEmpty(errorMsg)) {
+                    errorMsg = responseThrowable.getResponseError().msg;
+                }
+                presenter.getView().showErrorResult(errorMsg);
+                break;
+            case ACTION_SHOW_AUTHERROR:
+                presenter.getView().showAuthError(responseThrowable.message);
+                break;
+            case ACTION_ON_FAILURE:
+                presenter.getView().onFailure(responseThrowable, requestCode);
+                break;
+            default:
+                break;
+        }
+
     }
 
 }

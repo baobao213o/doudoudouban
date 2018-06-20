@@ -5,15 +5,12 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Process;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 import com.xxx.library.appdelegate.Delegate;
 import com.xxx.library.crash.CrashHandler;
-
-import java.util.LinkedList;
 
 import io.realm.Realm;
 
@@ -22,9 +19,6 @@ import static com.xxx.library.BuildConfig.DEBUG;
 public class BaseApplication extends Application {
 
     private static BaseApplication instance;
-
-    private static LinkedList<Activity> activityList = new LinkedList<>();
-
 
     public static BaseApplication getInstance() {
         return instance;
@@ -59,35 +53,12 @@ public class BaseApplication extends Application {
         Delegate.getInstance().onTerminate(this);
     }
 
-    public static void exit() {
-        for (int i = 0; i < activityList.size(); i++) {
-            activityList.get(i).finish();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }finally {
-                    Process.killProcess(Process.myPid());
-                }
-            }
-        }).start();
-
-    }
-
-    public static Activity getCurrentActivity() {
-        return activityList.getLast();
-
-    }
 
     private void registerActivityListener() {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                activityList.add(activity);
+                AppManager.getInstance().addActivity(activity);
             }
 
             @Override
@@ -117,10 +88,7 @@ public class BaseApplication extends Application {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-                if (activityList.size() == 0) {
-                    return;
-                }
-                activityList.remove(activity);
+                AppManager.getInstance().removeActivity(activity);
             }
         });
     }
