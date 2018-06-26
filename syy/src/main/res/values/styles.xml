@@ -7,9 +7,10 @@
 
     <style name="BaseAppTheme.Common.BaseSyyTheme.MovieDetail">
         <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowEnterTransition">@transition/transition_syy_movie_detail_enter</item>
-        <item name="android:windowReturnTransition">@transition/transition_syy_movie_detail_return</item>
+        <item name="android:windowEnterTransition">@transition/syy_transition_movie_detail_enter</item>
+        <item name="android:windowReturnTransition">@transition/syy_transition_movie_detail_return</item>
     </style>
+
 
     <style name="RatingBar" parent="@style/Theme.AppCompat">
         <item name="android:indeterminateOnly">false</item>

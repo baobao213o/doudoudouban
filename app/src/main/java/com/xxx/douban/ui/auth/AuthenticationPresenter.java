@@ -1,5 +1,7 @@
 package com.xxx.douban.ui.auth;
 
+import android.annotation.SuppressLint;
+
 import com.xxx.douban.entity.AuthStatus;
 import com.xxx.library.Constant;
 import com.xxx.library.account.AuthenticationApi;
@@ -20,7 +22,7 @@ import io.realm.Realm;
  * Created by gaoruochen on 18-3-11.
  */
 
-class AuthenticationPresenter extends BasePresenter<AuthenticationContract.View, BaseModel> {
+class AuthenticationPresenter extends BasePresenter<AuthenticationContract.View> {
 
 
     AuthenticationPresenter(AuthenticationContract.View mView, BaseModel mModel) {
@@ -40,6 +42,7 @@ class AuthenticationPresenter extends BasePresenter<AuthenticationContract.View,
     }
 
 
+    @SuppressLint("CheckResult")
     void saveAuthenticationResponse(final AuthStatus auth) {
 
         mModel.modifyDataFromLocal(new Function<Realm, AuthStatus>() {

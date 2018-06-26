@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fl_loading"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_bg"
@@ -13,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="60dp"
         app:indicatorColor="@color/grey_4"
         app:indicatorName="PacmanIndicator" />
 
@@ -22,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="60dp"
         android:drawableTop="@drawable/common_svg_warn"
         android:text="@string/common_loading_fail"
         android:visibility="gone"

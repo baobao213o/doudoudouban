@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xxx.library.views.ElasticDragDismissFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/eddf_syy_movie_celebrity_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    app:dragDismissDistance="112dp"
+    app:dragDismissScale="0.95"
+    tools:context=".ui.movie.celebrity.MovieCelebrityActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_syy_movie_celebrity"
+        style="@style/Toolbar"
+        app:contentInsetStart="0dp">
+
+        <TextView
+            style="@style/Textview_Toolbar_Inner"
+            android:text="@string/syy_movie_character" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_syy_movie_celebrity_avator"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:transitionName="@string/syy_transition_movie_detail_img"
+                    app:backgroundImage="@color/grey_2"
+                    app:placeholderImage="@drawable/common_image_user_default"
+                    app:placeholderImageScaleType="center"
+                    app:roundAsCircle="true" />
+
+                <TextView
+                    android:id="@+id/tv_syy_movie_celebrity_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    android:textColor="@color/grey_7"
+                    android:textSize="24sp"
+                    tools:text="11111" />
+
+                <LinearLayout
+                    android:id="@+id/ll_syy_movie_celebrity_anim_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="invisible"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_syy_movie_celebrity_name_en"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/grey_4"
+                        tools:text="11111" />
+
+                    <TextView
+                        android:id="@+id/tv_syy_movie_celebrity_addr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@color/grey_4"
+                        tools:text="11111" />
+
+                    <TextView
+                        android:id="@+id/tv_syy_movie_celebrity_roles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="3dp"
+                        android:textColor="@color/grey_4"
+                        tools:text="11111" />
+
+                    <View
+                        style="@style/Divider"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/syy_movie"
+                        android:textColor="@color/grey_8"
+                        android:textSize="16sp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_syy_movie_celebrity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="6dp"
+                        android:orientation="vertical"
+                        android:paddingEnd="0dp"
+                        android:paddingStart="5dp"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/tv_syy_movie_detail_director" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
+
+</com.xxx.library.views.ElasticDragDismissFrameLayout>

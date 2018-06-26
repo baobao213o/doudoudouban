@@ -10,10 +10,12 @@
             android:name="com.xxx.syy.SyyApplication"
             android:value="APP_DELEGATE" />
 
-        <activity android:name=".ui.movie.detail.MovieDetailActivity"
-            android:theme="@style/BaseAppTheme.Common.BaseSyyTheme.MovieDetail"
+        <activity
+            android:name=".ui.movie.detail.MovieDetailActivity"
+            android:theme="@style/BaseAppTheme.Common.BaseSyyTheme.MovieDetail" />
+        <activity android:name=".ui.movie.celebrity.MovieCelebrityActivity"
+            android:theme="@style/BaseAppTheme.Common.Translucent"
             />
-
     </application>
 
 </manifest>

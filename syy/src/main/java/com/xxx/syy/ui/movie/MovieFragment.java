@@ -116,20 +116,22 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
         animator.setDuration(300);
         animator.start();
 
-        getActivity().setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onSharedElementStart(List<String> sharedElementNames, List<View>
-                    sharedElements, List<View> sharedElementSnapshots) {
-                animator.start();
-            }
-        });
+        if (getActivity() != null) {
+            getActivity().setExitSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onSharedElementStart(List<String> sharedElementNames, List<View>
+                        sharedElements, List<View> sharedElementSnapshots) {
+                    animator.start();
+                }
+            });
+        }
 
     }
 
     private void initRecyclerview(View view) {
         rv_syy_movie = view.findViewById(R.id.rv_syy_movie);
         srl_syy_movie = view.findViewById(R.id.srl_syy_movie);
-        rv_syy_movie.setAdapter(adapter = new MovieAdapter(getActivity(), list,menuButton));
+        rv_syy_movie.setAdapter(adapter = new MovieAdapter(getActivity(), list, menuButton));
 
         srl_syy_movie.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override

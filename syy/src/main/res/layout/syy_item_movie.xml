@@ -23,8 +23,8 @@
             android:id="@+id/iv_syy_movie_item_avatar"
             android:layout_width="80dp"
             android:layout_height="100dp"
-            android:background="@drawable/common_round_solid_grey2"
             android:scaleType="center"
+            app:backgroundImage="@color/grey_2"
             app:placeholderImage="@drawable/common_image_user_default"
             app:roundedCornerRadius="4dp" />
 

@@ -5,6 +5,8 @@ import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,12 +36,16 @@ import com.xxx.library.utils.ViewUtils;
 import com.xxx.library.views.FocusableFloatingActionButton;
 import com.xxx.library.views.LoadingLayoutHelper;
 import com.xxx.library.views.SpannableTextView;
-import com.xxx.library.views.ToastHelper;
 import com.xxx.syy.R;
+import com.xxx.syy.entity.Character;
 import com.xxx.syy.entity.MovieDetailInfo;
 import com.xxx.syy.entity.Subjects;
 
 import java.util.ArrayList;
+
+import static com.xxx.library.views.LoadingLayoutHelper.Loading_fail;
+import static com.xxx.library.views.LoadingLayoutHelper.Loading_loading;
+import static com.xxx.library.views.LoadingLayoutHelper.Loading_success;
 
 public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> implements IView {
 
@@ -51,15 +57,13 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
     private SwipeRefreshLayout srl_syy_movie_detail;
     private SpannableTextView stv_syy_movie_detail_intro;
     private ConstraintLayout content_syy_movie_detail;
+    private RecyclerView rv_syy_movie_detail_director, rv_syy_movie_detail_casts;
 
 
     private MovieCharatersAdapter directorAdapter, castsAdapter;
-    private ArrayList<Subjects.Character> directors = new ArrayList<>();
-    private ArrayList<Subjects.Character> casts = new ArrayList<>();
-
-    private static final int Loading_success = 0;
-    private static final int Loading_fail = 1;
-    private static final int Loading_loading = 2;
+    private ArrayList<Character> directors = new ArrayList<>();
+    private ArrayList<Character> casts = new ArrayList<>();
+    private MovieDetailInfo info;
 
     private int toolbarColor;
 
@@ -74,13 +78,17 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
         window.setStatusBarColor(Color.TRANSPARENT);
         setContentView(R.layout.syy_activity_movie_detail);
         if (savedInstanceState == null) {
+            final Drawable drawable = getDrawable(R.drawable.common_avd_share);
             fab_syy_movie_detail_share = findViewById(R.id.fab_syy_movie_detail_share);
+            fab_syy_movie_detail_share.setImageDrawable(drawable);
             fab_syy_movie_detail_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToastHelper.showToast("share");
+                    if (drawable == null) return;
+                    ((AnimatedVectorDrawable) drawable).start();
                 }
             });
+
             initToolbar();
             initRecyclerView();
 
@@ -123,11 +131,16 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
                             toolbarColor = vibrant.getRgb();
                             collapsingToolbarLayout.setContentScrimColor(toolbarColor);
                             iv_syy_movie_detail_avator.setBackgroundColor(vibrant.getBodyTextColor());
+                            if (castsAdapter != null) {
+                                castsAdapter.setColor(toolbarColor);
+                            }
+                            if (directorAdapter != null) {
+                                directorAdapter.setColor(toolbarColor);
+                            }
                         }
                     }
                 });
                 iv_syy_movie_detail_avator.setImageBitmap(result);
-
             }
 
             @Override
@@ -143,10 +156,10 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
     }
 
     private void initRecyclerView() {
-        final RecyclerView rv_syy_movie_detail_director = findViewById(R.id.rv_syy_movie_detail_director);
+        rv_syy_movie_detail_director = findViewById(R.id.rv_syy_movie_detail_director);
         rv_syy_movie_detail_director.setAdapter(directorAdapter = new MovieCharatersAdapter(this, directors));
 
-        final RecyclerView rv_syy_movie_detail_casts = findViewById(R.id.rv_syy_movie_detail_casts);
+        rv_syy_movie_detail_casts = findViewById(R.id.rv_syy_movie_detail_casts);
         rv_syy_movie_detail_casts.setAdapter(castsAdapter = new MovieCharatersAdapter(this, casts));
 
         NestedScrollView srcoll_syy_movie_detail = findViewById(R.id.srcoll_syy_movie_detail);
@@ -163,6 +176,9 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
         srcoll_syy_movie_detail.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (LoadingLayoutHelper.isViewAdded(content_syy_movie_detail)) {
+                    return;
+                }
                 if (fab_syy_movie_detail_share.getScaleX() == 0) {
                     if (!ViewUtils.viewsIntersect(rv_syy_movie_detail_director, fab_syy_movie_detail_share)
                             && !ViewUtils.viewsIntersect(rv_syy_movie_detail_casts, fab_syy_movie_detail_share)) {
@@ -195,6 +211,9 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
                     srl_syy_movie_detail.setEnabled(true);
                 } else {
                     srl_syy_movie_detail.setEnabled(false);
+                }
+                if (LoadingLayoutHelper.isViewAdded(content_syy_movie_detail)) {
+                    return;
                 }
                 if (fab_syy_movie_detail_share.getScaleX() == 0) {
                     if (!ViewUtils.viewsIntersect(rv_syy_movie_detail_director, fab_syy_movie_detail_share)
@@ -245,7 +264,6 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
                 LoadingLayoutHelper.addFailureView(content_syy_movie_detail, null, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        loadingShade(Loading_loading);
                         presenter.getMovieDetail(getIntent().getStringExtra("id"));
                     }
                 });
@@ -267,7 +285,7 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
     public void onSuccess(Object data) {
         super.onSuccess(data);
         loadingShade(Loading_success);
-        final MovieDetailInfo info = ((MovieDetailInfo) data);
+        info = ((MovieDetailInfo) data);
         StringBuilder str = new StringBuilder(info.year);
         for (String genre : info.genres) {
             str.append("/").append(genre);
@@ -303,14 +321,15 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
         tv_syy_movie_detail_scorenum.setText(String.format(getString(R.string.common_people), info.ratings_count));
 
         stv_syy_movie_detail_intro.limitTextViewString(info.summary, 140);
-        directorAdapter.setList((ArrayList<Subjects.Character>) info.directors);
-        castsAdapter.setList((ArrayList<Subjects.Character>) info.casts);
+        directorAdapter.setList((ArrayList<Character>) info.directors);
+        castsAdapter.setList((ArrayList<Character>) info.casts);
         tv_syy_movie_detail_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent it = new Intent(MovieDetailActivity.this, WebViewActivity.class);
                 it.putExtra(WebViewActivity.TAG_TITLE, getString(R.string.syy_movie_link));
                 it.putExtra(WebViewActivity.TAG_URL, info.mobile_url);
+                it.putExtra(WebViewActivity.TAG_COLOR, toolbarColor);
                 startActivity(it);
             }
         });

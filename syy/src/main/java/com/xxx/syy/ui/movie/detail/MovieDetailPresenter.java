@@ -14,13 +14,13 @@ import io.reactivex.schedulers.Schedulers;
  * Created by gaoruochen on 18-6-2.
  */
 
-class MovieDetailPresenter extends BasePresenter<IView, BaseModel> {
+class MovieDetailPresenter extends BasePresenter<IView> {
 
     MovieDetailPresenter(IView mView, BaseModel mModel) {
         super(mView, mModel);
     }
 
-    void getMovieDetail(String id) {
+    protected void getMovieDetail(String id) {
         mModel.postDataFromRemote(SyyApi.MovieApi.class).getMovieDetail(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new HandleNetExceptionObserver<MovieDetailInfo>(this) {
             @Override

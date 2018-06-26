@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.StrictMode;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -37,6 +38,14 @@ public class BaseApplication extends Application {
         if (DEBUG) {
             ARouter.openLog();
             ARouter.openDebug();
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
         }
         ARouter.init(this);
         LeakCanary.install(this);

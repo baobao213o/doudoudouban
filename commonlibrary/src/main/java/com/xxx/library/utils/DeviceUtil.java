@@ -27,4 +27,8 @@ public class DeviceUtil {
         return (int) (dpValue * scale + 0.5f);
     }
 
+    public static int getScreenHeaightWithoutToolbar() {
+        return getScreenHeight() - dip2px(50);
+    }
+
 }

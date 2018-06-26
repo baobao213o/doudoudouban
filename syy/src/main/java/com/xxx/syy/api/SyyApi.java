@@ -1,6 +1,7 @@
 package com.xxx.syy.api;
 
 import com.xxx.library.Constant;
+import com.xxx.syy.entity.CelebrityInfo;
 import com.xxx.syy.entity.MovieDetailInfo;
 import com.xxx.syy.entity.Top250MovieInfo;
 import com.xxx.syy.entity.USBoxMovieInfo;
@@ -20,12 +21,17 @@ public interface SyyApi {
         @GET(Constant.BASE_URL + "v2/movie/top250")
         Observable<Top250MovieInfo> getMovieTop250(@Query("start") int start, @Query("count") int count);
 
-        @GET(Constant.BASE_URL + "/v2/movie/us_box")
+        @GET(Constant.BASE_URL + "v2/movie/us_box")
         Observable<USBoxMovieInfo> getMovieUSbox();
 
-        @GET(Constant.BASE_URL + "/v2/movie/subject/{id}")
+        @GET(Constant.BASE_URL + "v2/movie/subject/{id}")
         Observable<MovieDetailInfo> getMovieDetail(@Path("id") String id);
+
+        @GET(Constant.BASE_URL + "v2/movie/celebrity/{id}")
+        Observable<CelebrityInfo> getCelebrityInfo(@Path("id") String id);
     }
+
+
 
 
 }

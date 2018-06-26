@@ -30,7 +30,7 @@ public class Subjects {
     public String original_title;
     public String subtype;
     public String year;
-    public AvatarsBean images;
+    public Avatars images;
     public String alt;
     public String id;
     public List<String> genres;
@@ -51,30 +51,5 @@ public class Subjects {
         public float min;
     }
 
-    public static class Character {
-        /**
-         * alt : https://movie.douban.com/celebrity/1054521/
-         * avatars : {"small":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp","large":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp","medium":"https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp"}
-         * name : 蒂姆·罗宾斯
-         * id : 1054521
-         */
 
-        public String alt = "";
-        public AvatarsBean avatars;
-        public String name = "";
-        public String id = "";
-
-    }
-
-    public static class AvatarsBean {
-        /**
-         * small : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
-         * large : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
-         * medium : https://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p17525.webp
-         */
-
-        public String small = "";
-        public String large = "";
-        public String medium = "";
-    }
 }

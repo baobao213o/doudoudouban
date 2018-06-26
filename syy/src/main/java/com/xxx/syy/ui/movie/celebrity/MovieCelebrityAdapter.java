@@ -1,5 +1,4 @@
-package com.xxx.syy.ui.movie;
-
+package com.xxx.syy.ui.movie.celebrity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -20,21 +19,15 @@ import com.xxx.syy.ui.movie.detail.MovieDetailActivity;
 
 import java.util.ArrayList;
 
-/**
- * Created by gaoruochen on 18-5-9.
- */
-
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder> {
+public class MovieCelebrityAdapter extends RecyclerView.Adapter<MovieCelebrityAdapter.MovieHolder> {
 
     private Activity mContext;
     private ArrayList<Subjects> mDatas;
-    private View view;
 
-    MovieAdapter(Activity context, ArrayList<Subjects> datas, View transview) {
+    MovieCelebrityAdapter(Activity context, ArrayList<Subjects> datas) {
         super();
         this.mContext = context;
         this.mDatas = datas;
-        this.view = transview;
     }
 
     public void setList(ArrayList<Subjects> datas) {
@@ -49,21 +42,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
     @NonNull
     @Override
     public MovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.syy_item_movie, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.syy_item_celebrity_movie, parent, false);
         return new MovieHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MovieHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MovieCelebrityAdapter.MovieHolder holder, int position) {
         final Subjects subjects = mDatas.get(position);
-        holder.iv_syy_movie_item_avatar.setImageURI(subjects.images.large);
-        holder.tv_syy_movie_item_name.setText(subjects.title);
+        holder.iv_syy_celebrity_movie_item_avatar.setImageURI(subjects.images.large);
+        holder.tv_syy_celebrity_movie_item_name.setText(subjects.title);
         StringBuilder sb = new StringBuilder(subjects.year);
         for (Character cast : subjects.casts) {
             if (sb.toString().length() > 40) {
                 break;
             }
             sb.append("/").append(cast.name);
+
         }
         for (Character director : subjects.directors) {
             if (sb.toString().length() > 40) {
@@ -71,22 +65,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
             }
             sb.append("/").append(director.name);
         }
-        holder.tv_syy_movie_item_detail.setText(sb.toString());
+        holder.tv_syy_celebrity_movie_item_detail.setText(sb.toString());
 
         Subjects.RatingBean ratingBean = subjects.rating;
         float rate = ratingBean.average / ratingBean.max * 5;
 
-        holder.rating_syy_movie_item_score.setRating(rate);
-        holder.rating_syy_movie_item_score.setVisibility((int) rate == 0 ? View.INVISIBLE : View.VISIBLE);
-        holder.tv_syy_movie_item_noscore.setVisibility((int) rate == 0 ? View.VISIBLE : View.GONE);
+        holder.rating_syy_celebrity_movie_item_score.setRating(rate);
+        holder.rating_syy_celebrity_movie_item_score.setVisibility((int) rate == 0 ? View.INVISIBLE : View.VISIBLE);
+        holder.tv_syy_celebrity_movie_item_noscore.setVisibility((int) rate == 0 ? View.VISIBLE : View.GONE);
 
-        holder.tv_syy_movie_item_score.setText(String.valueOf(ratingBean.average));
+        holder.tv_syy_celebrity_movie_item_score.setText(String.valueOf(ratingBean.average));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                MovieAdapter.this.view.setAlpha(0f);
 
                 Intent intent = new Intent(mContext, MovieDetailActivity.class);
                 intent.putExtra("id", subjects.id);
@@ -105,18 +97,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
 
     class MovieHolder extends RecyclerView.ViewHolder {
 
-        private SimpleDraweeView iv_syy_movie_item_avatar;
-        private TextView tv_syy_movie_item_name, tv_syy_movie_item_detail, tv_syy_movie_item_score, tv_syy_movie_item_noscore;
-        private RatingBar rating_syy_movie_item_score;
+        private SimpleDraweeView iv_syy_celebrity_movie_item_avatar;
+        private TextView tv_syy_celebrity_movie_item_name, tv_syy_celebrity_movie_item_detail, tv_syy_celebrity_movie_item_score, tv_syy_celebrity_movie_item_noscore;
+        private RatingBar rating_syy_celebrity_movie_item_score;
 
         MovieHolder(View view) {
             super(view);
-            iv_syy_movie_item_avatar = view.findViewById(R.id.iv_syy_movie_item_avatar);
-            tv_syy_movie_item_name = view.findViewById(R.id.tv_syy_movie_item_name);
-            rating_syy_movie_item_score = view.findViewById(R.id.rating_syy_movie_item_score);
-            tv_syy_movie_item_detail = view.findViewById(R.id.tv_syy_movie_item_detail);
-            tv_syy_movie_item_score = view.findViewById(R.id.tv_syy_movie_item_score);
-            tv_syy_movie_item_noscore = view.findViewById(R.id.tv_syy_movie_item_noscore);
+            iv_syy_celebrity_movie_item_avatar = view.findViewById(R.id.iv_syy_celebrity_movie_item_avatar);
+            tv_syy_celebrity_movie_item_name = view.findViewById(R.id.tv_syy_celebrity_movie_item_name);
+            rating_syy_celebrity_movie_item_score = view.findViewById(R.id.rating_syy_celebrity_movie_item_score);
+            tv_syy_celebrity_movie_item_detail = view.findViewById(R.id.tv_syy_celebrity_movie_item_detail);
+            tv_syy_celebrity_movie_item_score = view.findViewById(R.id.tv_syy_celebrity_movie_item_score);
+            tv_syy_celebrity_movie_item_noscore = view.findViewById(R.id.tv_syy_celebrity_movie_item_noscore);
         }
     }
 

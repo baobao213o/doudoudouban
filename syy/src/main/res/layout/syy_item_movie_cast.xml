@@ -5,15 +5,16 @@
     android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iv_syy_movie_cast_avatar"
         android:layout_width="90dp"
         android:layout_height="110dp"
-        android:background="@drawable/common_round_solid_grey2"
         android:scaleType="center"
+        fresco:backgroundImage="@color/grey_2"
         fresco:placeholderImage="@drawable/common_image_user_default"
         fresco:roundedCornerRadius="4dp" />
 

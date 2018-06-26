@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by gaoruochen on 18-3-20.
  */
 
-public class UserPresenter<V extends Contract.View, M extends BaseModel> extends BasePresenter<V, M> {
+public class UserPresenter<V extends Contract.View, M extends BaseModel> extends BasePresenter<V> {
 
     public UserPresenter(V mView, M model) {
         super(mView, model);

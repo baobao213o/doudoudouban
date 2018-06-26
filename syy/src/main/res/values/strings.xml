@@ -22,6 +22,8 @@
     <string name="syy_movie_link">查看评论</string>
     <string name="syy_movie_director">导演</string>
     <string name="syy_movie_casts">主要演员</string>
+    <string name="syy_movie_character">影人</string>
+    <string name="syy_movie">影视</string>
 
     <string name="syy_transition_movie_detail_img">syy_movie_detail_img</string>
 

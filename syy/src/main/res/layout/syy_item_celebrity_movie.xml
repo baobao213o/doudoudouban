@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="10dp">
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_syy_celebrity_movie_item_avatar"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:scaleType="center"
+        app:backgroundImage="@color/grey_2"
+        app:placeholderImage="@drawable/common_image_user_default"
+        app:roundedCornerRadius="4dp" />
+
+    <TextView
+        android:id="@+id/tv_syy_celebrity_movie_item_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/grey_7"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_syy_celebrity_movie_item_avatar"
+        app:layout_constraintTop_toTopOf="@+id/iv_syy_celebrity_movie_item_avatar"
+        tools:text="awwwwwwwwsdasd" />
+
+    <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/rating_syy_celebrity_movie_item_score"
+        style="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:isIndicator="true"
+        app:layout_constraintStart_toStartOf="@id/tv_syy_celebrity_movie_item_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_syy_celebrity_movie_item_name" />
+
+    <TextView
+        android:id="@+id/tv_syy_celebrity_movie_item_noscore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2.5dp"
+        android:text="@string/syy_movie_item_noscore"
+        android:textColor="@color/grey_5"
+        app:layout_constraintStart_toStartOf="@id/tv_syy_celebrity_movie_item_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_syy_celebrity_movie_item_name" />
+
+
+    <TextView
+        android:id="@+id/tv_syy_celebrity_movie_item_score"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2.5dp"
+        android:textColor="@color/grey_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rating_syy_celebrity_movie_item_score"
+        app:layout_constraintTop_toBottomOf="@id/tv_syy_celebrity_movie_item_name"
+        tools:text="213123" />
+
+    <TextView
+        android:id="@+id/tv_syy_celebrity_movie_item_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:lineSpacingExtra="3dp"
+        android:textColor="@color/grey_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rating_syy_celebrity_movie_item_score"
+        app:layout_constraintTop_toBottomOf="@+id/rating_syy_celebrity_movie_item_score"
+        tools:text="awwwwwwwwwwwwwwwwwwwwwwwwwsdasd" />
+
+
+</android.support.constraint.ConstraintLayout>
+

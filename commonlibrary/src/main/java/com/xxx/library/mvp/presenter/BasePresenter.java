@@ -11,17 +11,22 @@ import java.lang.ref.WeakReference;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public abstract class BasePresenter<V extends IView, M extends BaseModel> implements IPresenter {
+public abstract class BasePresenter<V extends IView> implements IPresenter {
 
 
     private WeakReference<V> weakReferenceView;
     protected V mView;
-    protected M mModel;
+    protected BaseModel mModel;
     private boolean isDestroy = false;
 
     private CompositeDisposable compositeDisposable;
 
-    public BasePresenter(V mView, M mModel) {
+    public BasePresenter(V mView) {
+        this(mView, new BaseModel());
+    }
+
+
+    public BasePresenter(V mView, BaseModel mModel) {
         weakReferenceView = new WeakReference<>(mView);
         this.mView = weakReferenceView.get();
         this.mModel = mModel;

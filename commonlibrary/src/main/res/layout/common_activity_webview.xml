@@ -1,25 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.xxx.library.views.ElasticDragDismissFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/eddf_common_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    app:dragDismissDistance="112dp"
+    app:dragDismissScale="0.95"
+    android:background="@color/activity_bg"
     tools:context=".base.WebViewActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_common_webview"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        android:background="@color/colorPrimary"
-        />
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_common_webview"
+                style="@style/Toolbar"
+                app:contentInsetStart="0dp">
+
+                <TextView
+                    android:id="@+id/tv_common_webview_tb_inner"
+                    style="@style/Textview_Toolbar_Inner" />
+            </android.support.v7.widget.Toolbar>
 
 
-    <com.xxx.library.views.ProgressWebView
-        android:id="@+id/webview_common"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            <com.xxx.library.views.ProgressWebView
+                android:id="@+id/webview_common"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </LinearLayout>
 
 
-</LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</com.xxx.library.views.ElasticDragDismissFrameLayout>

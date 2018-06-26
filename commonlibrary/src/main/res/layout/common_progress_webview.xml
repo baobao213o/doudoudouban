@@ -5,8 +5,9 @@
     android:layout_height="3dp"
     android:minHeight="3dp"
     android:indeterminate="false"
-    android:progress="0"
-    android:indeterminateDrawable="@drawable/common_progress_style" />
+    android:progress="20"
+    android:progressDrawable="@drawable/common_progress_style"
+    />
 
 
 

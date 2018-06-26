@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by gaoruochen on 18-4-13.
  */
 
-class MoviePresenter extends BasePresenter<MovieContract.View, BaseModel> {
+class MoviePresenter extends BasePresenter<MovieContract.View> {
 
     MoviePresenter(MovieContract.View mView, BaseModel mModel) {
         super(mView, mModel);

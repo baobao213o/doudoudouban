@@ -51,5 +51,6 @@
 
     <color name="pink">#FF99CC</color>
     <color name="activity_bg">@color/grey_1</color>
+    <color name="translucent">#00000000</color>
 
 </resources>

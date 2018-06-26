@@ -104,13 +104,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (presenter != null) {
-            presenter.clearDisposable();
-        }
-    }
 
     @Override
     public void onDestroyView() {
@@ -118,7 +111,10 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
             progessDialog.dismiss();
             progessDialog = null;
         }
+        if (presenter != null) {
+            presenter.clearDisposable();
+            presenter.detachView();
+        }
         super.onDestroyView();
     }
-
 }

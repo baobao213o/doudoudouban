@@ -89,7 +89,6 @@ public class AuthenticateInterceptor implements Interceptor {
             AuthenticationResponse authenticationResponse = new Gson().fromJson(responseBody.string(), AuthenticationResponse.class);
             token = authenticationResponse.accessToken;
         }
-
         return response;
     }
 

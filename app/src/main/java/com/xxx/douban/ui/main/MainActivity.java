@@ -128,7 +128,8 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
 
     private void showFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.common_anim_fade_in, R.anim.common_anim_fade_out);
+//        fragmentTransaction.setTransitionStyle(R.transition.common_transition_slide_enter);
+//        fragmentTransaction.setCustomAnimations(R.anim.common_anim_slide_in,R.anim.common_anim_slide_out);
         hideFragment(fragmentTransaction);
         switch (index) {
             case FRAG_DIARY:
@@ -170,6 +171,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
         }
         fragmentTransaction.commit();
     }
+
 
 
     private void hideFragment(FragmentTransaction fragmentTransaction) {

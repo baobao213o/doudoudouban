@@ -29,7 +29,9 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <activity android:name=".base.WebViewActivity"/>
+        <activity android:name=".base.WebViewActivity"
+            android:theme="@style/BaseAppTheme.Common.Translucent"
+            />
     </application>
 
 </manifest>
