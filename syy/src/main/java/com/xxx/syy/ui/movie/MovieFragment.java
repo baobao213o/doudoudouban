@@ -1,8 +1,5 @@
 package com.xxx.syy.ui.movie;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.app.SharedElementCallback;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
@@ -26,7 +22,6 @@ import com.xxx.syy.entity.Top250MovieInfo;
 import com.xxx.syy.entity.USBoxMovieInfo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import lumenghz.com.pullrefresh.PullToRefreshView;
 
@@ -75,6 +70,12 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
         } catch (Exception e) {
             e.printStackTrace();
         }
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         menuButton.setOnBoomListener(new OnBoomListenerAdapter() {
             @Override
             public void onClicked(int index, BoomButton boomButton) {
@@ -105,33 +106,12 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
                 }
             }
         });
-
-
-        final ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(
-                menuButton,
-                PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
-                PropertyValuesHolder.ofFloat(View.SCALE_X, 0f, 1f),
-                PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f, 1f));
-        animator.setInterpolator(new LinearInterpolator());
-        animator.setDuration(300);
-        animator.start();
-
-        if (getActivity() != null) {
-            getActivity().setExitSharedElementCallback(new SharedElementCallback() {
-                @Override
-                public void onSharedElementStart(List<String> sharedElementNames, List<View>
-                        sharedElements, List<View> sharedElementSnapshots) {
-                    animator.start();
-                }
-            });
-        }
-
     }
 
     private void initRecyclerview(View view) {
         rv_syy_movie = view.findViewById(R.id.rv_syy_movie);
         srl_syy_movie = view.findViewById(R.id.srl_syy_movie);
-        rv_syy_movie.setAdapter(adapter = new MovieAdapter(getActivity(), list, menuButton));
+        rv_syy_movie.setAdapter(adapter = new MovieAdapter(getActivity(), list));
 
         srl_syy_movie.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
@@ -208,12 +188,12 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     @Override
     public void showTop250Movies(Top250MovieInfo top250MovieInfo) {
         srl_syy_movie.setRefreshing(false);
-        ArrayList<Subjects> datas = adapter.getList();
+        ArrayList<Subjects> datas = (ArrayList<Subjects>) adapter.getData();
         if (isRefresh) {
             datas.clear();
         }
         datas.addAll(top250MovieInfo.subjects);
-        adapter.setList(datas);
+        adapter.setNewData(datas);
         if (isBoomCLick) {
             rv_syy_movie.scrollToPosition(0);
             isBoomCLick = false;
@@ -227,7 +207,7 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
         for (USBoxMovieInfo.SubjectsBean bean : movieInfo.subjects) {
             subjects.add(bean.subject);
         }
-        adapter.setList(subjects);
+        adapter.setNewData(subjects);
         if (isBoomCLick) {
             rv_syy_movie.scrollToPosition(0);
             isBoomCLick = false;

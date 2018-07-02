@@ -1,0 +1,15 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_syy_search_item_q"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:textColor="@color/grey_8"
+    android:textSize="16sp"
+    tools:text="asdjahsdkjhaskdhjasd"
+    android:foreground="?android:attr/selectableItemBackground"
+    />
+
+
+
+

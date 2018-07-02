@@ -13,9 +13,14 @@
         <activity
             android:name=".ui.movie.detail.MovieDetailActivity"
             android:theme="@style/BaseAppTheme.Common.BaseSyyTheme.MovieDetail" />
-        <activity android:name=".ui.movie.celebrity.MovieCelebrityActivity"
+        <activity
+            android:name=".ui.movie.celebrity.MovieCelebrityActivity"
+            android:theme="@style/BaseAppTheme.Common.Translucent" />
+        <activity
+            android:name=".ui.search.SearchActivity"
             android:theme="@style/BaseAppTheme.Common.Translucent"
             />
+        <!--android:windowSoftInputMode="adjustResize"-->
     </application>
 
 </manifest>

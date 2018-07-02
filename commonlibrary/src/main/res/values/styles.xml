@@ -9,8 +9,8 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:windowBackground">@color/activity_bg</item>
-        <!--禁用共享元素视图的过渡效果-->
-        <item name="android:windowSharedElementsUseOverlay">false</item>
+        <!--是否禁用共享元素视图的过渡效果-->
+        <item name="android:windowSharedElementsUseOverlay">true</item>
         <!-- 允许使用transitions -->
         <item name="android:windowContentTransitions">true</item>
         <!--是否覆盖执行，其实可以理解成是否同步执行还是顺序执行-->
@@ -32,7 +32,6 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:windowSharedElementsUseOverlay">true</item>
         <item name="colorPrimary">@color/grey_3</item>
     </style>
 

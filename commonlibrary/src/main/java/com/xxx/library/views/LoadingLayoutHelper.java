@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
@@ -38,28 +39,30 @@ public class LoadingLayoutHelper {
         if (viewGroup.getVisibility() == View.GONE || viewGroup.getVisibility() == View.INVISIBLE) {
             viewGroup.setVisibility(View.VISIBLE);
         }
-        int childCount = viewGroup.getChildCount();
-        if (childCount > 0) {
-            for (int i = 0; i < childCount; i++) {
-                View child = viewGroup.getChildAt(i);
-                switch (child.getVisibility()) {
-                    case View.VISIBLE:
-                        if (child.getTag() != TAG) {
+        if (viewGroup instanceof LinearLayout) {
+            int childCount = viewGroup.getChildCount();
+            if (childCount > 0) {
+                for (int i = 0; i < childCount; i++) {
+                    View child = viewGroup.getChildAt(i);
+                    switch (child.getVisibility()) {
+                        case View.VISIBLE:
+                            if (child.getTag() != TAG) {
+                                child.setVisibility(View.GONE);
+                                child.setTag(TAG_MANUAL_GONE);
+                            }
+                            break;
+                        case View.INVISIBLE:
                             child.setVisibility(View.GONE);
-                            child.setTag(TAG_MANUAL_GONE);
-                        }
-                        break;
-                    case View.INVISIBLE:
-                        child.setVisibility(View.GONE);
-                        child.setTag(TAG_INVISIBLE);
-                        break;
-                    case View.GONE:
-                        if (child.getTag() != TAG_MANUAL_GONE) {
-                            child.setTag(TAG_GONE);
-                        }
-                        break;
-                    default:
-                        break;
+                            child.setTag(TAG_INVISIBLE);
+                            break;
+                        case View.GONE:
+                            if (child.getTag() != TAG_MANUAL_GONE) {
+                                child.setTag(TAG_GONE);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -122,28 +125,30 @@ public class LoadingLayoutHelper {
         if (viewGroup.getVisibility() == View.GONE || viewGroup.getVisibility() == View.INVISIBLE) {
             viewGroup.setVisibility(View.VISIBLE);
         }
-        int childCount = viewGroup.getChildCount();
-        if (childCount > 0) {
-            for (int i = 0; i < childCount; i++) {
-                View child = viewGroup.getChildAt(i);
-                switch (child.getVisibility()) {
-                    case View.VISIBLE:
-                        if (child.getTag() != TAG) {
+        if (viewGroup instanceof LinearLayout) {
+            int childCount = viewGroup.getChildCount();
+            if (childCount > 0) {
+                for (int i = 0; i < childCount; i++) {
+                    View child = viewGroup.getChildAt(i);
+                    switch (child.getVisibility()) {
+                        case View.VISIBLE:
+                            if (child.getTag() != TAG) {
+                                child.setVisibility(View.GONE);
+                                child.setTag(TAG_MANUAL_GONE);
+                            }
+                            break;
+                        case View.INVISIBLE:
                             child.setVisibility(View.GONE);
-                            child.setTag(TAG_MANUAL_GONE);
-                        }
-                        break;
-                    case View.INVISIBLE:
-                        child.setVisibility(View.GONE);
-                        child.setTag(TAG_INVISIBLE);
-                        break;
-                    case View.GONE:
-                        if (child.getTag() != TAG_MANUAL_GONE) {
-                            child.setTag(TAG_GONE);
-                        }
-                        break;
-                    default:
-                        break;
+                            child.setTag(TAG_INVISIBLE);
+                            break;
+                        case View.GONE:
+                            if (child.getTag() != TAG_MANUAL_GONE) {
+                                child.setTag(TAG_GONE);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
@@ -200,5 +205,13 @@ public class LoadingLayoutHelper {
         return loadingView != null;
     }
 
-
+    public static boolean isLoading(ViewGroup viewGroup) {
+        View loadingView = viewGroup.findViewWithTag(TAG);
+        if (loadingView != null) {
+            AVLoadingIndicatorView view_loading = loadingView.findViewById(R.id.view_loading);
+            return view_loading.getVisibility() == View.VISIBLE;
+        } else {
+            return false;
+        }
+    }
 }

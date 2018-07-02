@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg"
+    android:orientation="vertical"
+    tools:context=".ui.search.SearchActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_syy_search"
+        style="@style/Toolbar"
+        app:contentInsetStart="0dp">
+
+        <TextView
+            style="@style/Textview_Toolbar_Inner"
+            android:text="@string/syy_search" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/ll_syy_search_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/sp_syy_search_type"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1.9"
+            android:background="@drawable/common_left_round_solid_white" />
+
+        <com.xxx.library.views.EditTextWithDel
+            android:id="@+id/et_syy_search_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="9"
+            android:background="@drawable/common_right_round_solid_white"
+            android:gravity="center_vertical"
+            android:hint="@string/syy_search_hint"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/iv_syy_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.5"
+            android:scaleType="center"
+            android:src="@drawable/common_svg_search"
+            android:transitionName="@string/syy_transition_search_img"
+            tools:ignore="ContentDescription" />
+
+
+    </LinearLayout>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_syy_search_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="4dp">
+
+
+        <TextView
+            android:id="@+id/tv_syy_search_history"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@color/grey_2"
+            android:gravity="center_vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="10dp"
+            android:text="@string/syy_search_history"
+            app:layout_constraintEnd_toStartOf="@id/tv_syy_search_history_clear"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_syy_search_history_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/grey_2"
+            android:gravity="center_vertical"
+            android:paddingEnd="10dp"
+            android:paddingStart="0dp"
+            android:text="@string/syy_search_clear"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_syy_search_history"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="5dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_syy_search_history" />
+
+        <android.support.constraint.Group
+            android:id="@+id/group_syy_search_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="rv_syy_search_history,tv_syy_search_history_clear,tv_syy_search_history" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_syy_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:paddingEnd="0dp"
+            android:paddingStart="5dp"
+            android:visibility="gone"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/cl_syy_search_container" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

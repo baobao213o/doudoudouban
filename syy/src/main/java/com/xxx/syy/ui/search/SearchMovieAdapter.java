@@ -1,5 +1,4 @@
-package com.xxx.syy.ui.movie;
-
+package com.xxx.syy.ui.search;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -18,24 +17,19 @@ import com.xxx.syy.ui.movie.detail.MovieDetailActivity;
 
 import java.util.ArrayList;
 
-/**
- * Created by gaoruochen on 18-5-9.
- */
-
-public class MovieAdapter extends BaseQuickAdapter<Subjects, MovieAdapter.MovieHolder> {
+public class SearchMovieAdapter extends BaseQuickAdapter<Subjects, SearchMovieAdapter.MovieHolder> {
 
     private Activity mContext;
 
-    MovieAdapter(Activity context, ArrayList<Subjects> datas) {
-        super(R.layout.syy_item_movie, datas);
+    SearchMovieAdapter(Activity context, ArrayList<Subjects> datas) {
+        super(R.layout.syy_item_search_movie, datas);
         this.mContext = context;
     }
 
     @Override
     protected void convert(MovieHolder holder, final Subjects item) {
-
-        holder.iv_syy_movie_item_avatar.setImageURI(item.images.large);
-        holder.tv_syy_movie_item_name.setText(item.title);
+        holder.iv_syy_search_movie_item_avatar.setImageURI(item.images.large);
+        holder.tv_syy_search_movie_item_name.setText(item.title);
         StringBuilder sb = new StringBuilder(item.year);
         for (Character cast : item.casts) {
             if (sb.toString().length() > 40) {
@@ -49,16 +43,16 @@ public class MovieAdapter extends BaseQuickAdapter<Subjects, MovieAdapter.MovieH
             }
             sb.append("/").append(director.name);
         }
-        holder.tv_syy_movie_item_detail.setText(sb.toString());
+        holder.tv_syy_search_movie_item_detail.setText(sb.toString());
 
         Subjects.RatingBean ratingBean = item.rating;
         float rate = ratingBean.average / ratingBean.max * 5;
 
-        holder.rating_syy_movie_item_score.setRating(rate);
-        holder.rating_syy_movie_item_score.setVisibility((int) rate == 0 ? View.INVISIBLE : View.VISIBLE);
-        holder.tv_syy_movie_item_noscore.setVisibility((int) rate == 0 ? View.VISIBLE : View.GONE);
+        holder.rating_syy_search_movie_item_score.setRating(rate);
+        holder.rating_syy_search_movie_item_score.setVisibility((int) rate == 0 ? View.INVISIBLE : View.VISIBLE);
+        holder.tv_syy_search_movie_item_noscore.setVisibility((int) rate == 0 ? View.VISIBLE : View.GONE);
 
-        holder.tv_syy_movie_item_score.setText(String.valueOf(ratingBean.average));
+        holder.tv_syy_search_movie_item_score.setText(String.valueOf(ratingBean.average));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,22 +68,20 @@ public class MovieAdapter extends BaseQuickAdapter<Subjects, MovieAdapter.MovieH
         });
     }
 
-    public static class MovieHolder extends BaseViewHolder {
+    class MovieHolder extends BaseViewHolder {
 
-        private SimpleDraweeView iv_syy_movie_item_avatar;
-        private TextView tv_syy_movie_item_name, tv_syy_movie_item_detail, tv_syy_movie_item_score, tv_syy_movie_item_noscore;
-        private RatingBar rating_syy_movie_item_score;
+        private SimpleDraweeView iv_syy_search_movie_item_avatar;
+        private TextView tv_syy_search_movie_item_name, tv_syy_search_movie_item_detail, tv_syy_search_movie_item_score, tv_syy_search_movie_item_noscore;
+        private RatingBar rating_syy_search_movie_item_score;
 
-        public MovieHolder(View view) {
+        MovieHolder(View view) {
             super(view);
-            iv_syy_movie_item_avatar = view.findViewById(R.id.iv_syy_movie_item_avatar);
-            tv_syy_movie_item_name = view.findViewById(R.id.tv_syy_movie_item_name);
-            rating_syy_movie_item_score = view.findViewById(R.id.rating_syy_movie_item_score);
-            tv_syy_movie_item_detail = view.findViewById(R.id.tv_syy_movie_item_detail);
-            tv_syy_movie_item_score = view.findViewById(R.id.tv_syy_movie_item_score);
-            tv_syy_movie_item_noscore = view.findViewById(R.id.tv_syy_movie_item_noscore);
+            iv_syy_search_movie_item_avatar = view.findViewById(R.id.iv_syy_search_movie_item_avatar);
+            tv_syy_search_movie_item_name = view.findViewById(R.id.tv_syy_search_movie_item_name);
+            rating_syy_search_movie_item_score = view.findViewById(R.id.rating_syy_search_movie_item_score);
+            tv_syy_search_movie_item_detail = view.findViewById(R.id.tv_syy_search_movie_item_detail);
+            tv_syy_search_movie_item_score = view.findViewById(R.id.tv_syy_search_movie_item_score);
+            tv_syy_search_movie_item_noscore = view.findViewById(R.id.tv_syy_search_movie_item_noscore);
         }
     }
-
-
 }

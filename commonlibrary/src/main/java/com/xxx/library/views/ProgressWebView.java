@@ -58,6 +58,7 @@ public class ProgressWebView extends WebView {
 
     }
 
+
     private class MyWebCromeClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {

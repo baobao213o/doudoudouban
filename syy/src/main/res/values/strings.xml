@@ -1,13 +1,23 @@
 <resources>
     <string name="app_name">syy</string>
-    <string name="syy_container_movie">电影</string>
-    <string name="syy_container_music">音乐</string>
-    <string name="syy_container_book">读书</string>
-
+    <string name="syy_movie">电影</string>
+    <string name="syy_music">音乐</string>
+    <string name="syy_book">读书</string>
+    <string name="syy_search">搜索</string>
+    <string name="syy_search_hint">搜索影视</string>
+    <string name="syy_search_history">历史搜索</string>
+    <string name="syy_search_clear">清空</string>
+    <string name="syy_search_nodata">啥都没有</string>
 
     <string-array name="syy_movie_type">
         <item>Top250</item>
         <item>北美票房榜</item>
+    </string-array>
+
+    <string-array name="syy_search_type">
+        <item>影视</item>
+        <item>图书</item>
+        <item>音乐</item>
     </string-array>
 
     <string name="syy_movie_item_noscore">暂无评分</string>
@@ -23,8 +33,9 @@
     <string name="syy_movie_director">导演</string>
     <string name="syy_movie_casts">主要演员</string>
     <string name="syy_movie_character">影人</string>
-    <string name="syy_movie">影视</string>
+
 
     <string name="syy_transition_movie_detail_img">syy_movie_detail_img</string>
-
+    <string name="syy_transition_search_img">syy_transition_search_img</string>
+    <string name="syy_transition_search_title">syy_transition_search_title</string>
 </resources>

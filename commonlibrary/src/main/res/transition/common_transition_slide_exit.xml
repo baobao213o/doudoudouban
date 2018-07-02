@@ -13,16 +13,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
-
-    android:transitionOrdering="together">
-    <fade
-        android:duration="350"
-        android:interpolator="@android:interpolator/linear" />
-    <slide
-        android:duration="350"
-        android:interpolator="@android:interpolator/fast_out_linear_in"
-        android:slideEdge="end" />
+<slide xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="350"
+    android:interpolator="@android:interpolator/fast_out_linear_in"
+    android:slideEdge="end" />
 
 
-</transitionSet>

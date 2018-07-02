@@ -2,9 +2,13 @@ package com.xxx.library.base;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.transition.Slide;
+import android.view.Gravity;
+import android.view.animation.Animation;
 
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.mvp.presenter.BasePresenter;
@@ -34,7 +38,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         super.onAttach(context);
         presenter = createPresenter();
     }
-
 
     @Override
     public void showLoading(final Disposable disposable, boolean cancel) {
@@ -72,7 +75,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable,int requestCode) {
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable, int requestCode) {
         //始终显示最新信息
 
     }
@@ -87,7 +90,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         }
         CommonDialogFragment errorDialog = DialogFragmentHelper.createMessageDialog(errorMsg, true);
         ft.add(errorDialog, DialogFragmentHelper.TIPS_TAG);
-        ft.commit();
+        ft.commitAllowingStateLoss();
         fm.executePendingTransactions();
     }
 

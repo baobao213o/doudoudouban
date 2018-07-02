@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xxx.broadcast.ui.container.BroadcastFragment;
@@ -27,7 +29,6 @@ import com.xxx.library.user.BaseUserActivity;
 import com.xxx.library.user.IUserFragment;
 import com.xxx.library.utils.ColorUtils;
 import com.xxx.library.utils.DeviceUtil;
-import com.xxx.library.views.ToastHelper;
 import com.xxx.my.ui.user.UserFragment;
 import com.xxx.syy.ui.container.SyyFragment;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
@@ -45,6 +46,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
     private IUserFragment leftFragment;
     private DrawerLayout drawer;
     private Toolbar toolbar;
+    private ImageView ib_main_search;
 
     private int naviSelectType;
 
@@ -58,7 +60,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
     private static final String FRAG_TAG_BROADCAST = "broadcast";
     private static final String FRAG_TAG_GROUP = "group";
 
-    private int index = FRAG_DIARY;
+    private int index = FRAG_SYY;
     private static final int FRAG_DIARY = 1;
     private static final int FRAG_SYY = 2;
     private static final int FRAG_BROADCAST = 3;
@@ -106,6 +108,13 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
             }
         });
         initMenuFragment();
+        ib_main_search = findViewById(R.id.ib_main_search);
+        ib_main_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                syyFragment.onSearchClick(v);
+            }
+        });
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SELECTED_ITEM, index);
             diaryFragment = (DiaryFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_DIARY);
@@ -128,8 +137,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
 
     private void showFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.setTransitionStyle(R.transition.common_transition_slide_enter);
-//        fragmentTransaction.setCustomAnimations(R.anim.common_anim_slide_in,R.anim.common_anim_slide_out);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         hideFragment(fragmentTransaction);
         switch (index) {
             case FRAG_DIARY:
@@ -173,7 +181,6 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
     }
 
 
-
     private void hideFragment(FragmentTransaction fragmentTransaction) {
         if (index != FRAG_DIARY && diaryFragment != null) {
             fragmentTransaction.hide(diaryFragment);
@@ -192,9 +199,6 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.main_toolbar_seach:
-                ToastHelper.showToast("search");
-                break;
             case R.id.context_menu:
                 if (getSupportFragmentManager().findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
                     mMenuDialogFragment.show(getSupportFragmentManager(), ContextMenuDialogFragment.TAG);
@@ -254,16 +258,16 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
     public boolean onPrepareOptionsMenu(Menu menu) {
         switch (index) {
             case FRAG_DIARY:
-                menu.findItem(R.id.main_toolbar_seach).setVisible(false);
+                ib_main_search.setVisibility(View.GONE);
                 break;
             case FRAG_SYY:
-                menu.findItem(R.id.main_toolbar_seach).setVisible(true);
+                ib_main_search.setVisibility(View.VISIBLE);
                 break;
             case FRAG_BROADCAST:
-                menu.findItem(R.id.main_toolbar_seach).setVisible(false);
+                ib_main_search.setVisibility(View.GONE);
                 break;
             case FRAG_GROUP:
-                menu.findItem(R.id.main_toolbar_seach).setVisible(false);
+                ib_main_search.setVisibility(View.GONE);
                 break;
         }
         return super.onPrepareOptionsMenu(menu);

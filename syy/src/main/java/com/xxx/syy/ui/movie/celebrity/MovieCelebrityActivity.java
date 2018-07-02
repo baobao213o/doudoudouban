@@ -143,7 +143,7 @@ public class MovieCelebrityActivity extends BaseActivity<MovieCelebrityPresenter
             for (CelebrityInfo.WorksBean worksBean : info.works) {
                 list.add(worksBean.subject);
             }
-            adapter.setList(list);
+            adapter.setNewData(list);
         }
 
     }

@@ -42,10 +42,4 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="FragmentTransition">
-        <item name="android:fragmentAllowEnterTransitionOverlap">false</item>
-        <item name="android:fragmentAllowReturnTransitionOverlap">false</item>
-        <!--<item name="android:fragmentEnterTransition">@tran</item>-->
-    </style>
-
 </resources>

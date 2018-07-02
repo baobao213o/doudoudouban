@@ -37,6 +37,7 @@ public class WebViewActivity extends BaseActivity {
             getWindow().setStatusBarColor(toolbarColor);
 
             webView = findViewById(R.id.webview_common);
+            webView.setBackgroundColor(0);
 
             String url = getIntent().getStringExtra(TAG_URL);
 

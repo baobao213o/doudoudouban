@@ -197,9 +197,7 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
                             fab_syy_movie_detail_share.isFocus = false;
                         }
                     }
-
                 }
-
             }
         });
 
@@ -245,6 +243,10 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
         srl_syy_movie_detail.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (LoadingLayoutHelper.isLoading(content_syy_movie_detail)) {
+                    srl_syy_movie_detail.setRefreshing(false);
+                    return;
+                }
                 loadingShade(Loading_loading);
                 presenter.getMovieDetail(getIntent().getStringExtra("id"));
             }
@@ -321,8 +323,8 @@ public class MovieDetailActivity extends BaseActivity<MovieDetailPresenter> impl
         tv_syy_movie_detail_scorenum.setText(String.format(getString(R.string.common_people), info.ratings_count));
 
         stv_syy_movie_detail_intro.limitTextViewString(info.summary, 140);
-        directorAdapter.setList((ArrayList<Character>) info.directors);
-        castsAdapter.setList((ArrayList<Character>) info.casts);
+        directorAdapter.setNewData(info.directors);
+        castsAdapter.setNewData(info.casts);
         tv_syy_movie_detail_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -54,12 +54,4 @@
         android:text="@string/main_auth_sign_in"
         android:textStyle="bold" />
 
-    <ImageButton
-        android:id="@+id/imagebutton_auth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/common_image_bear"
-        android:background="@color/black"
-        />
-
 </LinearLayout>
