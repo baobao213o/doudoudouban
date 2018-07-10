@@ -3,8 +3,8 @@ package com.xxx.syy.ui.search;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.view.View;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -17,7 +17,7 @@ import com.xxx.syy.ui.movie.detail.MovieDetailActivity;
 
 import java.util.ArrayList;
 
-public class SearchMovieAdapter extends BaseQuickAdapter<Subjects, SearchMovieAdapter.MovieHolder> {
+public class SearchMovieAdapter extends BaseQuickAdapter<Subjects, BaseViewHolder> {
 
     private Activity mContext;
 
@@ -27,9 +27,11 @@ public class SearchMovieAdapter extends BaseQuickAdapter<Subjects, SearchMovieAd
     }
 
     @Override
-    protected void convert(MovieHolder holder, final Subjects item) {
-        holder.iv_syy_search_movie_item_avatar.setImageURI(item.images.large);
-        holder.tv_syy_search_movie_item_name.setText(item.title);
+    protected void convert(BaseViewHolder holder, final Subjects item) {
+
+
+        ((SimpleDraweeView) holder.getView(R.id.iv_syy_search_movie_item_avatar)).setImageURI(item.images.large);
+        ((TextView) holder.getView(R.id.tv_syy_search_movie_item_name)).setText(item.title);
         StringBuilder sb = new StringBuilder(item.year);
         for (Character cast : item.casts) {
             if (sb.toString().length() > 40) {
@@ -43,16 +45,15 @@ public class SearchMovieAdapter extends BaseQuickAdapter<Subjects, SearchMovieAd
             }
             sb.append("/").append(director.name);
         }
-        holder.tv_syy_search_movie_item_detail.setText(sb.toString());
+        ((TextView) holder.getView(R.id.tv_syy_search_movie_item_detail)).setText(sb.toString());
 
         Subjects.RatingBean ratingBean = item.rating;
         float rate = ratingBean.average / ratingBean.max * 5;
 
-        holder.rating_syy_search_movie_item_score.setRating(rate);
-        holder.rating_syy_search_movie_item_score.setVisibility((int) rate == 0 ? View.INVISIBLE : View.VISIBLE);
-        holder.tv_syy_search_movie_item_noscore.setVisibility((int) rate == 0 ? View.VISIBLE : View.GONE);
-
-        holder.tv_syy_search_movie_item_score.setText(String.valueOf(ratingBean.average));
+        ((AppCompatRatingBar) holder.getView(R.id.rating_syy_search_movie_item_score)).setRating(rate);
+        holder.getView(R.id.rating_syy_search_movie_item_score).setVisibility((int) rate == 0 ? View.INVISIBLE : View.VISIBLE);
+        holder.getView(R.id.tv_syy_search_movie_item_noscore).setVisibility((int) rate == 0 ? View.VISIBLE : View.GONE);
+        ((TextView) holder.getView(R.id.tv_syy_search_movie_item_score)).setText(String.valueOf(ratingBean.average));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,22 +67,5 @@ public class SearchMovieAdapter extends BaseQuickAdapter<Subjects, SearchMovieAd
                 mContext.startActivity(intent, options.toBundle());
             }
         });
-    }
-
-    class MovieHolder extends BaseViewHolder {
-
-        private SimpleDraweeView iv_syy_search_movie_item_avatar;
-        private TextView tv_syy_search_movie_item_name, tv_syy_search_movie_item_detail, tv_syy_search_movie_item_score, tv_syy_search_movie_item_noscore;
-        private RatingBar rating_syy_search_movie_item_score;
-
-        MovieHolder(View view) {
-            super(view);
-            iv_syy_search_movie_item_avatar = view.findViewById(R.id.iv_syy_search_movie_item_avatar);
-            tv_syy_search_movie_item_name = view.findViewById(R.id.tv_syy_search_movie_item_name);
-            rating_syy_search_movie_item_score = view.findViewById(R.id.rating_syy_search_movie_item_score);
-            tv_syy_search_movie_item_detail = view.findViewById(R.id.tv_syy_search_movie_item_detail);
-            tv_syy_search_movie_item_score = view.findViewById(R.id.tv_syy_search_movie_item_score);
-            tv_syy_search_movie_item_noscore = view.findViewById(R.id.tv_syy_search_movie_item_noscore);
-        }
     }
 }

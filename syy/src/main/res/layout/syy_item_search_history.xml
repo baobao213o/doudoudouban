@@ -3,11 +3,14 @@
     android:id="@+id/tv_syy_search_item_q"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
     android:textColor="@color/grey_8"
     android:textSize="16sp"
     tools:text="asdjahsdkjhaskdhjasd"
     android:foreground="?android:attr/selectableItemBackground"
+    android:paddingStart="15dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     />
 
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.DraweeTransition;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -75,6 +76,7 @@ public class MovieCelebrityActivity extends BaseActivity<MovieCelebrityPresenter
             ll_syy_movie_celebrity_anim_container = findViewById(R.id.ll_syy_movie_celebrity_anim_container);
             RecyclerView rv_syy_movie_celebrity = findViewById(R.id.rv_syy_movie_celebrity);
             rv_syy_movie_celebrity.setAdapter(adapter = new MovieCelebrityAdapter(this, list));
+            adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
             rv_syy_movie_celebrity.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
             presenter.getCelebrityInfo(getIntent().getStringExtra("id"));

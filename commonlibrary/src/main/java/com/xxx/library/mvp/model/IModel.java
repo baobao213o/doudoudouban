@@ -16,4 +16,6 @@ public interface IModel {
     <T> Observable<T> modifyDataFromLocal(Function<Realm, T> function);
 
     <T extends RealmModel> Flowable<List<T>> getDataFromLocal(Class<T> clazz);
+
+    <T extends RealmModel> boolean deleteDataFromLocal(Class<T> clazz, int index);
 }

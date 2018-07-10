@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xxx.library.base.BaseActivity;
 import com.xxx.library.network.exception.ExceptionHandle;
 import com.xxx.library.utils.DeviceUtil;
@@ -43,8 +44,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     private EditText et_syy_search_content;
     private ViewGroup cl_syy_search_container;
     private Spinner spinner;
-    private RecyclerView rv_syy_search_history,rv_syy_search_result;
-    private View notDataView;
+    private RecyclerView rv_syy_search_result;
 
     private int currentType = TAG_MOVIE;
     private SearchMovieAdapter searchMovieAdapter;
@@ -88,7 +88,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
                 public void afterTextChanged(Editable s) {
                     if (TextUtils.isEmpty(s.toString())) {
                         group_syy_search_history.setVisibility(View.VISIBLE);
-                        rv_syy_search_result.setVisibility(View.GONE);
+                        rv_syy_search_result.setVisibility(View.INVISIBLE);
                         presenter.getHistory();
                     }
                 }
@@ -125,7 +125,10 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
             findViewById(R.id.tv_syy_search_history_clear).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    if (presenter.clearHistory()) {
+                        histories.clear();
+                        historyAdapter.setNewData(histories);
+                    }
                 }
             });
 
@@ -137,15 +140,15 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     private void initResultRecyclerView() {
         rv_syy_search_result = findViewById(R.id.rv_syy_search_result);
         rv_syy_search_result.setAdapter(searchMovieAdapter = new SearchMovieAdapter(this, movieDatas));
+        searchMovieAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
 
-//        notDataView = getLayoutInflater().inflate(R.layout.syy_item_search_history_nodata, cl_syy_search_container, false);
-
-        rv_syy_search_history = findViewById(R.id.rv_syy_search_history);
-        rv_syy_search_history.setAdapter(historyAdapter = new SearchHistoryAdapter(this, histories));
-        historyAdapter.setOnItemClickListener(new SearchHistoryAdapter.OnItemClickListener() {
+        RecyclerView rv_syy_search_history = findViewById(R.id.rv_syy_search_history);
+        rv_syy_search_history.setAdapter(historyAdapter = new SearchHistoryAdapter(histories));
+        historyAdapter.openLoadAnimation();
+        historyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position) {
-                String q = historyAdapter.getList().get(position).q;
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                String q = historyAdapter.getData().get(position).q;
                 et_syy_search_content.setText(q);
                 et_syy_search_content.setSelection(q.length());
                 search(true);
@@ -173,7 +176,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         switch (type) {
             case TAG_MOVIE:
                 group_syy_search_history.setVisibility(View.GONE);
-//                LoadingLayoutHelper.addLoadingView(cl_syy_search_container);
+                LoadingLayoutHelper.addLoadingView(cl_syy_search_container);
                 presenter.searchMovies(q, TAG_MOVIE);
                 currentQ = q;
                 break;
@@ -205,25 +208,20 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     @Override
     public void showSearchMovies(SearchMovieInfo movieInfo) {
         LoadingLayoutHelper.removeLoadingView(cl_syy_search_container);
-//        searchMovieAdapter.setEmptyView(notDataView);
-        searchMovieAdapter.setEmptyView(R.layout.syy_item_search_history_nodata,(ViewGroup) rv_syy_search_result.getParent());
+        rv_syy_search_result.setVisibility(View.VISIBLE);
+        group_syy_search_history.setVisibility(View.GONE);
+        movieDatas = (ArrayList<Subjects>) movieInfo.subjects;
+        searchMovieAdapter.setEmptyView(R.layout.syy_item_search_history_nodata, (ViewGroup) rv_syy_search_result.getParent());
 
+        searchMovieAdapter.setNewData(movieDatas);
         History history = new History();
         history.q = currentQ;
         presenter.saveHistory(history);
-
-        group_syy_search_history.setVisibility(View.GONE);
-        rv_syy_search_result.setVisibility(View.VISIBLE);
-
-        movieDatas = (ArrayList<Subjects>) movieInfo.subjects;
-        searchMovieAdapter.setNewData(movieDatas);
-
-
     }
 
     @Override
     public void showHistory(List<History> histories) {
-        historyAdapter.setList((ArrayList<History>) histories);
+        historyAdapter.setNewData(this.histories = (ArrayList<History>) histories);
     }
 
     @Override

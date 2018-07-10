@@ -61,4 +61,8 @@ class SearchPresenter extends BasePresenter<SearchContract.View> {
         });
     }
 
+    boolean clearHistory() {
+        return mModel.deleteDataFromLocal(History.class, -1);
+    }
+
 }

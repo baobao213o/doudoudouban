@@ -1,6 +1,8 @@
 package com.xxx.library.mvp.model;
 
 
+import android.support.annotation.NonNull;
+
 import com.xxx.library.network.RetrofitManager;
 import com.xxx.library.realm.RealmConfig;
 import com.xxx.library.realm.RealmObserver;
@@ -47,7 +49,7 @@ public class BaseModel implements IModel {
                     }
                     return t;
                 }
-                return t;
+                return null;
             }
         });
     }
@@ -57,7 +59,7 @@ public class BaseModel implements IModel {
         final Realm realm = RealmConfig.getDefaultConfigReal();
         return realm.where(clazz).findAll().asFlowable().filter(new Predicate<RealmResults<T>>() {
             @Override
-            public boolean test(RealmResults<T> ts) throws Exception {
+            public boolean test(RealmResults<T> ts) {
                 return ts.isLoaded();
             }
         }).doAfterNext(new Consumer<RealmResults<T>>() {
@@ -71,10 +73,33 @@ public class BaseModel implements IModel {
             }
         }).map(new Function<RealmResults<T>, List<T>>() {
             @Override
-            public List<T> apply(RealmResults<T> ts) throws Exception {
+            public List<T> apply(RealmResults<T> ts) {
                 return realm.copyFromRealm(ts);
             }
         });
     }
+
+    @Override
+    public <T extends RealmModel> boolean deleteDataFromLocal(Class<T> clazz, final int positon) {
+        final Realm mRealm = RealmConfig.getDefaultConfigReal();
+        final RealmResults<T> results = mRealm.where(clazz).findAll();
+        try {
+            mRealm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(@NonNull Realm realm) {
+                    if (positon < 0) {
+                        results.deleteAllFromRealm();
+                    } else {
+                        results.deleteFromRealm(positon);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
 }

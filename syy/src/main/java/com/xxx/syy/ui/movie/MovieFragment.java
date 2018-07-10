@@ -3,12 +3,12 @@ package com.xxx.syy.ui.movie;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
 import com.nightonke.boommenu.BoomMenuButton;
@@ -22,6 +22,7 @@ import com.xxx.syy.entity.Top250MovieInfo;
 import com.xxx.syy.entity.USBoxMovieInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lumenghz.com.pullrefresh.PullToRefreshView;
 
@@ -34,7 +35,6 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     private PullToRefreshView srl_syy_movie;
     private RecyclerView rv_syy_movie;
     private MovieAdapter adapter;
-    private BoomMenuButton menuButton;
     private ArrayList<Subjects> list = new ArrayList<>();
     private int type;
     private static final int TOP250 = 0;
@@ -43,6 +43,7 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     private int start = 0;
     private final static int pageSize = 10;
     private boolean isRefresh = true;
+    private boolean isGetDataSuccess = false;
 
     @Nullable
     @Override
@@ -55,7 +56,7 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
 
     private void initMenu(View view) {
 
-        menuButton = view.findViewById(R.id.menu_syy_movie);
+        BoomMenuButton menuButton = view.findViewById(R.id.menu_syy_movie);
         final String[] array = getResources().getStringArray(R.array.syy_movie_type);
         int[] colorRes = {R.drawable.common_image_bat, R.drawable.common_image_bear, R.drawable.common_image_bee,
                 R.drawable.common_image_butterfly, R.drawable.common_image_cat, R.drawable.common_image_deer,
@@ -70,12 +71,6 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
         } catch (Exception e) {
             e.printStackTrace();
         }
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         menuButton.setOnBoomListener(new OnBoomListenerAdapter() {
             @Override
             public void onClicked(int index, BoomButton boomButton) {
@@ -112,6 +107,17 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
         rv_syy_movie = view.findViewById(R.id.rv_syy_movie);
         srl_syy_movie = view.findViewById(R.id.srl_syy_movie);
         rv_syy_movie.setAdapter(adapter = new MovieAdapter(getActivity(), list));
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                isRefresh = false;
+                if (isGetDataSuccess) {
+                    start += pageSize;
+                }
+                requestData();
+            }
+        }, rv_syy_movie);
 
         srl_syy_movie.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
@@ -127,23 +133,6 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
             public void run() {
                 srl_syy_movie.setRefreshing(true);
                 requestData();
-            }
-        });
-        rv_syy_movie.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int totalItemCount = recyclerView.getAdapter().getItemCount();
-                int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
-                int visibleItemCount = recyclerView.getChildCount();
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItemPosition == totalItemCount - 1
-                        && visibleItemCount > 0) {
-                    isRefresh = false;
-                    start += pageSize;
-                    requestData();
-                }
             }
         });
 
@@ -172,28 +161,26 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable, int requestCode) {
         super.onFailure(responseThrowable, requestCode);
         srl_syy_movie.setRefreshing(false);
-        switch (requestCode) {
-            case TOP250:
-                type = USBOX;
-                break;
-            case USBOX:
-                type = TOP250;
-                break;
-            default:
-                break;
-        }
+        adapter.loadMoreFail();
+        isGetDataSuccess = false;
     }
 
 
     @Override
     public void showTop250Movies(Top250MovieInfo top250MovieInfo) {
+        isGetDataSuccess = true;
         srl_syy_movie.setRefreshing(false);
-        ArrayList<Subjects> datas = (ArrayList<Subjects>) adapter.getData();
+        List<Subjects> subjects = top250MovieInfo.subjects;
         if (isRefresh) {
-            datas.clear();
+            adapter.setNewData(subjects);
+        } else {
+            adapter.addData(subjects);
         }
-        datas.addAll(top250MovieInfo.subjects);
-        adapter.setNewData(datas);
+        if (subjects.size() < pageSize) {
+            adapter.loadMoreEnd(isRefresh);
+        } else {
+            adapter.loadMoreComplete();
+        }
         if (isBoomCLick) {
             rv_syy_movie.scrollToPosition(0);
             isBoomCLick = false;
@@ -208,6 +195,7 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
             subjects.add(bean.subject);
         }
         adapter.setNewData(subjects);
+        adapter.loadMoreEnd(false);
         if (isBoomCLick) {
             rv_syy_movie.scrollToPosition(0);
             isBoomCLick = false;

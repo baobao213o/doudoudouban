@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Created by gaoruochen on 18-5-9.
  */
 
-public class MovieCharatersAdapter extends BaseQuickAdapter<Character, MovieCharatersAdapter.MovieHolder> {
+public class MovieCharatersAdapter extends BaseQuickAdapter<Character,BaseViewHolder> {
 
     private Activity activity;
     private int color;
@@ -36,17 +36,18 @@ public class MovieCharatersAdapter extends BaseQuickAdapter<Character, MovieChar
     }
 
     @Override
-    protected void convert(MovieHolder holder, final Character character) {
+    protected void convert(BaseViewHolder holder, final Character character) {
         String url;
         try {
             url = character.avatars.large;
         } catch (Exception e) {
             url = "";
         }
-        holder.iv_syy_movie_cast_avatar.setImageURI(url);
-        holder.tv_syy_movie_cast_name.setText(character.name);
+
+        ((SimpleDraweeView) holder.getView(R.id.iv_syy_movie_cast_avatar)).setImageURI(url);
+        ((TextView) holder.getView(R.id.tv_syy_movie_cast_name)).setText(character.name);
         final String finalUrl = url;
-        holder.iv_syy_movie_cast_avatar.setOnClickListener(new View.OnClickListener() {
+        holder.getView(R.id.iv_syy_movie_cast_avatar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, MovieCelebrityActivity.class);
@@ -59,18 +60,4 @@ public class MovieCharatersAdapter extends BaseQuickAdapter<Character, MovieChar
             }
         });
     }
-
-    class MovieHolder extends BaseViewHolder {
-
-        private SimpleDraweeView iv_syy_movie_cast_avatar;
-        private TextView tv_syy_movie_cast_name;
-
-        MovieHolder(View view) {
-            super(view);
-            iv_syy_movie_cast_avatar = view.findViewById(R.id.iv_syy_movie_cast_avatar);
-            tv_syy_movie_cast_name = view.findViewById(R.id.tv_syy_movie_cast_name);
-        }
-    }
-
-
 }

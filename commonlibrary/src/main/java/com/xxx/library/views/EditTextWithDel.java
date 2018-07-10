@@ -70,7 +70,7 @@ public class EditTextWithDel extends AppCompatEditText implements View.OnFocusCh
         Drawable right = visible ? mClearDrawable : null;
         setCompoundDrawables(getCompoundDrawables()[0],
                 getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
-        setPadding(getPaddingLeft(),getPaddingTop(),DeviceUtil.dip2px(5),getPaddingBottom());
+        setPadding(getPaddingLeft(),getPaddingTop(),DeviceUtil.dip2px(10),getPaddingBottom());
     }
 
     @Override
