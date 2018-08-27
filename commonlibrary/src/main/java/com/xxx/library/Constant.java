@@ -61,8 +61,6 @@ public interface Constant {
 
         String AROUTER_MAIN_SPLASH = "/main/splash/SplashActivity";
 
-        String AROUTER_MAIN_AUTH_AUTHENTICATION = "/main/auth/AuthenticationActivity";
-
         String AROUTER_MAIN_MAIN = "/main/main/MainActivity";
     }
 

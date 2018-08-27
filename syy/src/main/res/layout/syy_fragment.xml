@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_syy"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bnv_syy"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="54dp"
         android:background="@color/white"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabIndicatorHeight="4dp"
-        app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextColor="@color/grey_5"
-        android:elevation="3dp"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/syy_bottom_navigation">
+
+        <View style="@style/Divider" />
+
+    </android.support.design.widget.BottomNavigationView>
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_syy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
 

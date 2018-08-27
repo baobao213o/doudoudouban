@@ -1,4 +1,4 @@
-package com.xxx.douban.entity;
+package com.xxx.library.account;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

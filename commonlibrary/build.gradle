@@ -38,9 +38,7 @@ dependencies {
     //palette
     api "com.android.support:palette-v7:${compiles.supportLibrary}"
 
-
     api "com.android.support.constraint:constraint-layout:${compiles.constraintLayout}"
-
     //arouter
     api "com.alibaba:arouter-api:${compiles.arouterApi}"
     //rxjava
@@ -61,15 +59,15 @@ dependencies {
     api "com.nightonke:boommenu:${compiles.boommenu}"
     //SwipeRefres
     api "com.github.lubeast:PullToRefresh:${compiles.PullToRefresh}"
-    //loading
-    api "com.wang.avi:library:${compiles.loading}"
     //侧边栏菜单
     api 'com.github.Yalantis:Context-Menu.Android:1.0.8'
-
+    //fresco
     api "com.facebook.fresco:fresco:${compiles.fresco}"
     api "com.facebook.fresco:webpsupport:${compiles.fresco}"
-
     //adapter
-    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
+    api "com.github.CymChad:BaseRecyclerViewAdapterHelper:${compiles.adapter}"
+    //lottie
+    api "com.airbnb.android:lottie:${compiles.lottie}"
+
 }
 

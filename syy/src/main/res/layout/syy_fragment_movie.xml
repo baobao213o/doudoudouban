@@ -22,11 +22,13 @@
 
     </lumenghz.com.pullrefresh.PullToRefreshView>
 
-    <com.nightonke.boommenu.BoomMenuButton
+    <com.xxx.library.views.FocusableBoomMenu
         android:id="@+id/menu_syy_movie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="10dp"
+        android:elevation="2dp"
         app:bmb_buttonEnum="ham"
         app:bmb_buttonPlaceEnum="buttonPlace_ham_2"
         app:bmb_piecePlaceEnum="piecePlace_ham_2"

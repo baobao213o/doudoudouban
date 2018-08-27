@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.wang.avi.AVLoadingIndicatorView;
+import com.airbnb.lottie.LottieAnimationView;
 import com.xxx.library.BaseApplication;
 import com.xxx.library.R;
 import com.xxx.library.utils.DeviceUtil;
@@ -81,8 +81,7 @@ public class LoadingLayoutHelper {
         }
         //不加会被已覆盖的控件抢夺焦点
         loadingView.setOnClickListener(null);
-        AVLoadingIndicatorView view_loading = loadingView.findViewById(R.id.view_loading);
-        view_loading.show();
+        LottieAnimationView view_loading = loadingView.findViewById(R.id.view_loading);
         view_loading.setVisibility(View.VISIBLE);
         TextView tv_loading_fail = loadingView.findViewById(R.id.tv_loading_fail);
         tv_loading_fail.setVisibility(View.GONE);
@@ -103,13 +102,13 @@ public class LoadingLayoutHelper {
                 }
             }
 
-            final AVLoadingIndicatorView view_loading = loadingView.findViewById(R.id.view_loading);
+            final LottieAnimationView view_loading = loadingView.findViewById(R.id.view_loading);
             ObjectAnimator animator = ObjectAnimator.ofFloat(loadingView, "translationY", 0, loadingView.getHeight());
             animator.setDuration(500);
             animator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    view_loading.hide();
+                    view_loading.cancelAnimation();
                     viewGroup.removeView(loadingView);
                 }
             });
@@ -167,8 +166,8 @@ public class LoadingLayoutHelper {
         }
         //不加会被已覆盖的控件抢夺焦点
         loadingView.setOnClickListener(null);
-        AVLoadingIndicatorView view_loading = loadingView.findViewById(R.id.view_loading);
-        view_loading.hide();
+        LottieAnimationView view_loading = loadingView.findViewById(R.id.view_loading);
+        view_loading.setVisibility(View.GONE);
         TextView tv_loading_fail = loadingView.findViewById(R.id.tv_loading_fail);
         if (!TextUtils.isEmpty(error)) {
             tv_loading_fail.setText(error);
@@ -180,7 +179,7 @@ public class LoadingLayoutHelper {
 
     private static class OnClickWrapper implements View.OnClickListener {
 
-        private AVLoadingIndicatorView view_loading;
+        private LottieAnimationView view_loading;
         private TextView tv_loading_fail;
         private View.OnClickListener onClickListener;
 
@@ -193,7 +192,6 @@ public class LoadingLayoutHelper {
         @Override
         public void onClick(View v) {
             tv_loading_fail.setVisibility(View.GONE);
-            view_loading.show();
             view_loading.setVisibility(View.VISIBLE);
             onClickListener.onClick(v);
         }
@@ -208,7 +206,7 @@ public class LoadingLayoutHelper {
     public static boolean isLoading(ViewGroup viewGroup) {
         View loadingView = viewGroup.findViewWithTag(TAG);
         if (loadingView != null) {
-            AVLoadingIndicatorView view_loading = loadingView.findViewById(R.id.view_loading);
+            LottieAnimationView view_loading = loadingView.findViewById(R.id.view_loading);
             return view_loading.getVisibility() == View.VISIBLE;
         } else {
             return false;

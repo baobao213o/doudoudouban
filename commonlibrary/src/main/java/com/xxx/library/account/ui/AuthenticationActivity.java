@@ -1,4 +1,4 @@
-package com.xxx.douban.ui.auth;
+package com.xxx.library.account.ui;
 
 
 import android.accounts.Account;
@@ -17,12 +17,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.xxx.douban.R;
-import com.xxx.douban.entity.AuthStatus;
 import com.xxx.library.Constant;
+import com.xxx.library.R;
 import com.xxx.library.account.AccountHelper;
 import com.xxx.library.account.AppCompatAccountAuthenticatorActivity;
+import com.xxx.library.account.AuthStatus;
 import com.xxx.library.entity.AuthenticationResponse;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.network.exception.ExceptionHandle;
@@ -40,7 +39,6 @@ import static com.xxx.library.Constant.AuthenticationAccount.EXTRA_AUTH_MODE;
 /**
  *
  */
-@Route(path = "/main/auth/AuthenticationActivity")
 public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivity<AuthenticationPresenter> implements AuthenticationContract.View {
 
     private AutoCompleteTextView etUser;
@@ -54,16 +52,16 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity_auth);
+        setContentView(R.layout.common_activity_auth);
 
         authMode = getIntent().getIntExtra(EXTRA_AUTH_MODE, -1);
 
-        etUser = findViewById(R.id.tv_main_auth_user);
-        etPwd = findViewById(R.id.et_main_auth_pwd);
-        tilUser = findViewById(R.id.til_main_auth_user);
-        tilPwd = findViewById(R.id.til_main_auth_pwd);
+        etUser = findViewById(R.id.tv_common_auth_user);
+        etPwd = findViewById(R.id.et_common_auth_pwd);
+        tilUser = findViewById(R.id.til_common_auth_user);
+        tilPwd = findViewById(R.id.til_common_auth_pwd);
 
-        findViewById(R.id.tv_main_auth_sign_in).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tv_common_auth_sign_in).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 authentication();
@@ -93,11 +91,11 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
         String usr = etUser.getText().toString().trim();
         String pwd = etPwd.getText().toString().trim();
         if (!FormUtil.checkEmail(usr) && !FormUtil.isValidPhoneNumber(usr)) {
-            tilUser.setError(getString(R.string.main_auth_verify_user));
+            tilUser.setError(getString(R.string.common_auth_verify_user));
             return;
         }
         if (TextUtils.isEmpty(pwd)) {
-            tilPwd.setError(getString(R.string.main_auth_verify_pwd));
+            tilPwd.setError(getString(R.string.common_auth_verify_pwd));
             return;
         }
         tilUser.setError("");
@@ -116,8 +114,8 @@ public class AuthenticationActivity extends AppCompatAccountAuthenticatorActivit
     }
 
     @Override
-    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable,int requestCode) {
-        super.onFailure(responseThrowable,requestCode);
+    public void onFailure(ExceptionHandle.ResponseThrowable responseThrowable, int requestCode) {
+        super.onFailure(responseThrowable, requestCode);
         tilPwd.setError(responseThrowable.message);
     }
 

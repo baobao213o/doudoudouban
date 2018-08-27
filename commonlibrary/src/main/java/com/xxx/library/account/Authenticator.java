@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.core.LogisticsCenter;
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xxx.library.Constant;
+import com.xxx.library.account.ui.AuthenticationActivity;
 import com.xxx.library.entity.AuthenticationResponse;
 import com.xxx.library.network.RetrofitManager;
 import com.xxx.library.utils.CommonLogger;
@@ -44,24 +45,25 @@ public class Authenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
         Postcard postcard;
+        Class destination;
         if (AccountHelper.getInstance().getActiveAccount() != null) {
             postcard = ARouter.getInstance().build(Constant.ARouter.AROUTER_MAIN_MAIN);
+            LogisticsCenter.completion(postcard);
+            destination = postcard.getDestination();
         } else {
-            postcard = ARouter.getInstance().build(Constant.ARouter.AROUTER_MAIN_AUTH_AUTHENTICATION);
+            destination = AuthenticationActivity.class;
         }
-        LogisticsCenter.completion(postcard);
-        Class destination = postcard.getDestination();
         Intent intent = new Intent(mContext, destination);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
         intent.putExtra(EXTRA_AUTH_MODE, AUTH_MODE_NEW);
-        final Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT, intent);
         return bundle;
 
     }
 
     @Override
-    public Bundle confirmCredentials(AccountAuthenticatorResponse response, Account account, Bundle options) throws NetworkErrorException {
+    public Bundle confirmCredentials(AccountAuthenticatorResponse response, Account account, Bundle options) {
         return null;
     }
 
@@ -109,7 +111,7 @@ public class Authenticator extends AbstractAccountAuthenticator {
     }
 
     @Override
-    public String getAuthTokenLabel(String authTokenType)  {
+    public String getAuthTokenLabel(String authTokenType) {
         return null;
     }
 

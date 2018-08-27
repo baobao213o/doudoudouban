@@ -5,41 +5,38 @@
     android:id="@+id/eddf_common_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/activity_bg"
     android:focusable="true"
     android:focusableInTouchMode="true"
     app:dragDismissDistance="112dp"
     app:dragDismissScale="0.95"
-    android:background="@color/activity_bg"
     tools:context=".base.WebViewActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_common_webview"
+        style="@style/Toolbar"
+        app:contentInsetStart="0dp">
+
+        <TextView
+            android:id="@+id/tv_common_webview_tb_inner"
+            style="@style/Textview_Toolbar_Inner" />
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:layout_marginTop="50dp">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_common_webview"
-                style="@style/Toolbar"
-                app:contentInsetStart="0dp">
-
-                <TextView
-                    android:id="@+id/tv_common_webview_tb_inner"
-                    style="@style/Textview_Toolbar_Inner" />
-            </android.support.v7.widget.Toolbar>
-
+            android:layout_height="match_parent">
 
             <com.xxx.library.views.ProgressWebView
                 android:id="@+id/webview_common"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
 
-        </LinearLayout>
+        </FrameLayout>
 
 
     </android.support.v4.widget.NestedScrollView>

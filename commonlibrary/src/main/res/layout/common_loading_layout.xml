@@ -7,14 +7,16 @@
     android:background="@color/activity_bg"
     android:elevation="6dp">
 
-    <com.wang.avi.AVLoadingIndicatorView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/view_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/common_waiting"
+        app:lottie_loop="true"
         android:layout_gravity="center"
         android:layout_marginBottom="60dp"
-        app:indicatorColor="@color/grey_4"
-        app:indicatorName="PacmanIndicator" />
+        />
 
     <TextView
         android:id="@+id/tv_loading_fail"
@@ -22,12 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="60dp"
+        android:drawablePadding="8dp"
         android:drawableTop="@drawable/common_svg_warn"
         android:text="@string/common_loading_fail"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:drawablePadding="8dp"
-        />
+        tools:visibility="visible" />
 
 </FrameLayout>
 

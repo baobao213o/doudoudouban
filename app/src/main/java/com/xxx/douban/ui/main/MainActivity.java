@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -55,17 +54,12 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
     private BroadcastFragment broadcastFragment;
     private GroupFragment groupFragment;
 
-    private static final String FRAG_TAG_DIARY = "diary";
-    private static final String FRAG_TAG_SYY = "syy";
-    private static final String FRAG_TAG_BROADCAST = "broadcast";
-    private static final String FRAG_TAG_GROUP = "group";
+    private static final String FRAG_TAG_DIARY = "1";
+    private static final String FRAG_TAG_SYY = "2";
+    private static final String FRAG_TAG_BROADCAST = "3";
+    private static final String FRAG_TAG_GROUP = "4";
 
-    private int index = FRAG_SYY;
-    private static final int FRAG_DIARY = 1;
-    private static final int FRAG_SYY = 2;
-    private static final int FRAG_BROADCAST = 3;
-    private static final int FRAG_GROUP = 4;
-
+    private String index = FRAG_TAG_SYY;
 
     private static final String SELECTED_ITEM = "arg_selected_item";
 
@@ -116,7 +110,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
             }
         });
         if (savedInstanceState != null) {
-            index = savedInstanceState.getInt(SELECTED_ITEM, index);
+            index = savedInstanceState.getString(SELECTED_ITEM, FRAG_TAG_SYY);
             diaryFragment = (DiaryFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_DIARY);
             syyFragment = (SyyFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_SYY);
             broadcastFragment = (BroadcastFragment) getSupportFragmentManager().findFragmentByTag(FRAG_TAG_BROADCAST);
@@ -131,7 +125,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(SELECTED_ITEM, index);
+        outState.putString(SELECTED_ITEM, index);
         super.onSaveInstanceState(outState);
     }
 
@@ -140,7 +134,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         hideFragment(fragmentTransaction);
         switch (index) {
-            case FRAG_DIARY:
+            case FRAG_TAG_DIARY:
                 if (diaryFragment == null) {
                     diaryFragment = new DiaryFragment();
                     fragmentTransaction.add(R.id.container_main, diaryFragment, FRAG_TAG_DIARY);
@@ -149,7 +143,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
                 }
                 toolbar.setTitle(getString(R.string.main_bottom_navi_diary));
                 break;
-            case FRAG_SYY:
+            case FRAG_TAG_SYY:
                 if (syyFragment == null) {
                     syyFragment = new SyyFragment();
                     fragmentTransaction.add(R.id.container_main, syyFragment, FRAG_TAG_SYY);
@@ -158,7 +152,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
                 }
                 toolbar.setTitle(getString(R.string.main_bottom_navi_syy));
                 break;
-            case FRAG_BROADCAST:
+            case FRAG_TAG_BROADCAST:
                 if (broadcastFragment == null) {
                     broadcastFragment = new BroadcastFragment();
                     fragmentTransaction.add(R.id.container_main, broadcastFragment, FRAG_TAG_BROADCAST);
@@ -167,7 +161,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
                 }
                 toolbar.setTitle(getString(R.string.main_bottom_navi_broadcast));
                 break;
-            case FRAG_GROUP:
+            case FRAG_TAG_GROUP:
                 if (groupFragment == null) {
                     groupFragment = new GroupFragment();
                     fragmentTransaction.add(R.id.container_main, groupFragment, FRAG_TAG_GROUP);
@@ -182,16 +176,16 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
 
 
     private void hideFragment(FragmentTransaction fragmentTransaction) {
-        if (index != FRAG_DIARY && diaryFragment != null) {
+        if (!index.equals(FRAG_TAG_DIARY) && diaryFragment != null) {
             fragmentTransaction.hide(diaryFragment);
         }
-        if (index != FRAG_SYY && syyFragment != null) {
+        if (!index.equals(FRAG_TAG_SYY) && syyFragment != null) {
             fragmentTransaction.hide(syyFragment);
         }
-        if (index != FRAG_BROADCAST && broadcastFragment != null) {
+        if (!index.equals(FRAG_TAG_BROADCAST) && broadcastFragment != null) {
             fragmentTransaction.hide(broadcastFragment);
         }
-        if (index != FRAG_GROUP && groupFragment != null) {
+        if (!index.equals(FRAG_TAG_GROUP) && groupFragment != null) {
             fragmentTransaction.hide(groupFragment);
         }
     }
@@ -257,16 +251,16 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         switch (index) {
-            case FRAG_DIARY:
+            case FRAG_TAG_DIARY:
                 ib_main_search.setVisibility(View.GONE);
                 break;
-            case FRAG_SYY:
+            case FRAG_TAG_SYY:
                 ib_main_search.setVisibility(View.VISIBLE);
                 break;
-            case FRAG_BROADCAST:
+            case FRAG_TAG_BROADCAST:
                 ib_main_search.setVisibility(View.GONE);
                 break;
-            case FRAG_GROUP:
+            case FRAG_TAG_GROUP:
                 ib_main_search.setVisibility(View.GONE);
                 break;
         }
@@ -322,7 +316,7 @@ public class MainActivity extends BaseUserActivity<TestPresenter> implements IVi
         if (i == 0) {
             return;
         }
-        index = i;
+        index = String.valueOf(i);
         showFragment();
     }
 

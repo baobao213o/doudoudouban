@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/syy_item_movie"
+        android:icon="@drawable/syy_svg_bottom_movie"
+        android:title="@string/syy_movie" />
+    <item
+        android:id="@+id/syy_item_book"
+        android:icon="@drawable/syy_svg_bottom_book"
+        android:title="@string/syy_book" />
+    <item
+        android:id="@+id/syy_item_music"
+        android:icon="@drawable/syy_svg_bottom_music"
+        android:title="@string/syy_music" />
+</menu>

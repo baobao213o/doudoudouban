@@ -1,5 +1,7 @@
 package com.xxx.syy.ui.movie;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,12 +13,13 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.nightonke.boommenu.BoomButtons.BoomButton;
 import com.nightonke.boommenu.BoomButtons.HamButton;
-import com.nightonke.boommenu.BoomMenuButton;
 import com.nightonke.boommenu.OnBoomListenerAdapter;
 import com.xxx.library.base.BaseFragment;
 import com.xxx.library.mvp.model.BaseModel;
 import com.xxx.library.network.exception.ExceptionHandle;
+import com.xxx.library.views.FocusableBoomMenu;
 import com.xxx.syy.R;
+import com.xxx.syy.entity.History;
 import com.xxx.syy.entity.Subjects;
 import com.xxx.syy.entity.Top250MovieInfo;
 import com.xxx.syy.entity.USBoxMovieInfo;
@@ -32,8 +35,25 @@ import lumenghz.com.pullrefresh.PullToRefreshView;
 
 public class MovieFragment extends BaseFragment<MoviePresenter> implements MovieContract.View {
 
+
+    public interface OnScrollOrientation {
+        //上滑
+        void up();
+
+        //下滑
+        void down();
+    }
+
+    private OnScrollOrientation listener;
+
+    public void setListener(OnScrollOrientation listener) {
+        this.listener = listener;
+    }
+
     private PullToRefreshView srl_syy_movie;
     private RecyclerView rv_syy_movie;
+    private FocusableBoomMenu menuButton;
+
     private MovieAdapter adapter;
     private ArrayList<Subjects> list = new ArrayList<>();
     private int type;
@@ -44,6 +64,7 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
     private final static int pageSize = 10;
     private boolean isRefresh = true;
     private boolean isGetDataSuccess = false;
+    private boolean isGone = false;
 
     @Nullable
     @Override
@@ -56,7 +77,7 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
 
     private void initMenu(View view) {
 
-        BoomMenuButton menuButton = view.findViewById(R.id.menu_syy_movie);
+        menuButton = view.findViewById(R.id.menu_syy_movie);
         final String[] array = getResources().getStringArray(R.array.syy_movie_type);
         int[] colorRes = {R.drawable.common_image_bat, R.drawable.common_image_bear, R.drawable.common_image_bee,
                 R.drawable.common_image_butterfly, R.drawable.common_image_cat, R.drawable.common_image_deer,
@@ -101,6 +122,15 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
                 }
             }
         });
+        History history = new History();
+        System.out.println(getSimpleClassNameImpl(history.getClass()));
+    }
+
+    private String getSimpleClassNameImpl(Class clazz) {
+        if (clazz.equals(com.xxx.syy.entity.History.class)) {
+            return "AuthStatus";
+        }
+        throw new IllegalArgumentException("1111");
     }
 
     private void initRecyclerview(View view) {
@@ -118,6 +148,40 @@ public class MovieFragment extends BaseFragment<MoviePresenter> implements Movie
                 requestData();
             }
         }, rv_syy_movie);
+
+
+        final ObjectAnimator disappear = ObjectAnimator.ofPropertyValuesHolder(
+                menuButton,
+                PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f),
+                PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0f));
+        disappear.setDuration(300);
+
+
+        rv_syy_movie.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (listener != null) {
+                    if (Math.abs(dy) > 3) {
+                        if (dy < 0) {
+                            listener.up();
+                            if (isGone && !disappear.isRunning()) {
+                                disappear.reverse();
+                                isGone = false;
+                                menuButton.isFocus = true;
+                            }
+                        } else {
+                            listener.down();
+                            if (!isGone && !disappear.isRunning()) {
+                                disappear.start();
+                                isGone = true;
+                                menuButton.isFocus = false;
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
         srl_syy_movie.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override

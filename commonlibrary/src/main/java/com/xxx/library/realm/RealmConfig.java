@@ -11,12 +11,14 @@ public class RealmConfig {
 
     private static final String REALM_NAME = "doudoudouban.realm";
 
-    private RealmConfig(){}
+    private RealmConfig() {
+    }
 
-    public static Realm getDefaultConfigReal(){
-        return  Realm.getInstance(new RealmConfiguration.Builder()
+    public static Realm getDefaultConfigReal() {
+        return Realm.getInstance(new RealmConfiguration.Builder()
                 .name(REALM_NAME)
                 .deleteRealmIfMigrationNeeded()
+                .modules(Realm.getDefaultModule(), new LibraryModule())
                 .build());
 
     }

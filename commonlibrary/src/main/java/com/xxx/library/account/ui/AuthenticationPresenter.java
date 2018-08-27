@@ -1,9 +1,9 @@
-package com.xxx.douban.ui.auth;
+package com.xxx.library.account.ui;
 
 import android.annotation.SuppressLint;
 
-import com.xxx.douban.entity.AuthStatus;
 import com.xxx.library.Constant;
+import com.xxx.library.account.AuthStatus;
 import com.xxx.library.account.AuthenticationApi;
 import com.xxx.library.entity.AuthenticationResponse;
 import com.xxx.library.mvp.model.BaseModel;

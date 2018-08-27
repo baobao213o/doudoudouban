@@ -1,6 +1,6 @@
-package com.xxx.douban.ui.auth;
+package com.xxx.library.account.ui;
 
-import com.xxx.douban.entity.AuthStatus;
+import com.xxx.library.account.AuthStatus;
 import com.xxx.library.mvp.view.IView;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by gaoruochen on 18-4-8.
  */
 
-public class AuthenticationContract {
+class AuthenticationContract {
 
     interface View extends IView {
 

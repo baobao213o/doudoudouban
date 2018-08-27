@@ -32,6 +32,10 @@
         <activity android:name=".base.WebViewActivity"
             android:theme="@style/BaseAppTheme.Common.Translucent"
             />
+        <activity
+            android:name=".account.ui.AuthenticationActivity"
+            android:launchMode="singleTop"
+            />
     </application>
 
 </manifest>
